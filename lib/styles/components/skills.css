@@ -1,4 +1,4 @@
-/* lib/styles/components/skills.css */
+/* VtM Skills Container */
 .vtm-skills-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -11,12 +11,16 @@
   margin: 0 auto;
   width: 100%;
 }
+
+/* Category Section */
 .vtm-skill-category {
   background: var(--background-primary);
   padding: 12px;
   border-radius: 6px;
   border: 1px solid var(--background-modifier-border);
 }
+
+/* Category Title */
 .vtm-category-title {
   margin: 0 0 12px 0;
   padding: 6px 0;
@@ -27,35 +31,50 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+/* Skill Row */
 .vtm-skill-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* This centers items vertically */
   padding: 6px 8px;
   margin: 4px 0;
   border-radius: 4px;
   transition: background-color 0.2s;
   min-height: 32px;
+  /* Ensures consistent row height */
 }
+
 .vtm-skill-row:hover {
   background: var(--background-secondary);
 }
+
+/* Skill Name */
 .vtm-skill-name {
   font-size: 13px;
   color: var(--text-normal);
   font-weight: 500;
   flex: 1;
   line-height: 20px;
+  /* Matches dot height for alignment */
 }
+
+/* Dots Container */
 .vtm-dots-container {
   display: flex;
   gap: 3px;
   align-items: center;
+  /* Centers dots vertically */
   flex-shrink: 0;
+  /* Prevents dots from shrinking */
 }
+
+/* Individual Dot */
 .vtm-dot {
   cursor: pointer;
   font-size: 16px;
+  /* Slightly smaller for better fit */
   color: var(--text-muted);
   transition: all 0.15s ease;
   user-select: none;
@@ -65,85 +84,40 @@
   align-items: center;
   justify-content: center;
   line-height: 1;
+  /* Removes extra line spacing */
 }
+
 .vtm-dot:hover {
   transform: scale(1.2);
   color: var(--text-accent);
 }
+
 .vtm-dot.filled {
   color: var(--text-accent);
 }
+
+/* Mobile adjustments */
 @media (max-width: 600px) {
   .vtm-skills-container {
     gap: 12px;
     padding: 10px;
   }
+
   .vtm-skill-row {
     padding: 8px 6px;
   }
+
   .vtm-skill-name {
     font-size: 12px;
   }
+
   .vtm-dot {
     font-size: 14px;
     width: 18px;
     height: 18px;
   }
+
   .vtm-dots-container {
     gap: 2px;
   }
 }
-
-/* lib/styles/components/attributes.css */
-.vtm-attributes-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 15px;
-  background: var(--background-secondary);
-  border-radius: 8px;
-  font-family: var(--font-interface);
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-}
-.vtm-attribute-category {
-  background: var(--background-primary);
-  padding: 12px;
-  border-radius: 6px;
-  border: 1px solid var(--background-modifier-border);
-}
-.vtm-attribute-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 8px;
-  margin: 4px 0;
-  border-radius: 4px;
-  transition: background-color 0.2s;
-  min-height: 32px;
-}
-.vtm-attribute-row:hover {
-  background: var(--background-secondary);
-}
-.vtm-attribute-name {
-  font-size: 13px;
-  color: var(--text-normal);
-  font-weight: 500;
-  flex: 1;
-  line-height: 20px;
-}
-@media (max-width: 600px) {
-  .vtm-attributes-container {
-    gap: 12px;
-    padding: 10px;
-  }
-  .vtm-attribute-row {
-    padding: 8px 6px;
-  }
-  .vtm-attribute-name {
-    font-size: 12px;
-  }
-}
-
-/* lib/styles/index.css */

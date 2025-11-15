@@ -1,0 +1,157 @@
+import { App } from 'obsidian';
+import { BaseView } from './BaseView';
+import { KeyValueStore } from '../services/KeyValueStore';
+
+export class SkillsView extends BaseView {
+	codeblock = 'vtm-skills';
+	private store: KeyValueStore;
+	private filePath: string;
+
+	private readonly skills = {
+		Physical: [
+			'Athletics',
+			'Brawl',
+			'Craft',
+			'Drive',
+			'Firearms',
+			'Melee',
+			'Larceny',
+			'Stealth',
+			'Survival',
+		],
+		Social: [
+			'Animal Ken',
+			'Etiquette',
+			'Insight',
+			'Intimidation',
+			'Leadership',
+			'Performance',
+			'Persuasion',
+			'Streetwise',
+			'Subterfuge',
+		],
+		Mental: [
+			'Academics',
+			'Awareness',
+			'Finance',
+			'Investigation',
+			'Medicine',
+			'Occult',
+			'Politics',
+			'Science',
+			'Technology',
+		],
+	};
+
+	constructor(app: App, store: KeyValueStore, filePath: string) {
+		super(app);
+		this.store = store;
+		this.filePath = filePath;
+	}
+
+	register(source: string, el: HTMLElement, ctx: any): void {
+		el.empty();
+		const container = el.createDiv({ cls: 'vtm-skills-container' });
+
+		Object.entries(this.skills).forEach(([category, skillList]) => {
+			this.renderCategory(container, category, skillList);
+		});
+	}
+
+	private renderCategory(
+		container: HTMLElement,
+		category: string,
+		skillList: string[],
+	): void {
+		const section = container.createDiv({ cls: 'vtm-skill-category' });
+		section.createEl('h3', { text: category, cls: 'vtm-category-title' });
+
+		skillList.forEach((skill) => {
+			this.renderSkill(section, skill);
+		});
+	}
+
+	private renderSkill(container: HTMLElement, skillName: string): void {
+		const skillRow = container.createDiv({ cls: 'vtm-skill-row' });
+		skillRow.createSpan({ text: skillName, cls: 'vtm-skill-name' });
+
+		const dotsContainer = skillRow.createDiv({ cls: 'vtm-dots-container' });
+
+		// Store key now includes file path: "filepath|skill.SkillName"
+		const storeKey = `${this.filePath}|skill.${skillName}`;
+		const currentValue = this.store.get(storeKey) || 0;
+
+		for (let i = 0; i < 5; i++) {
+			const dot = dotsContainer.createSpan({ cls: 'vtm-dot' });
+
+			if (i < currentValue) {
+				dot.textContent = '●';
+				dot.addClass('filled');
+			} else {
+				dot.textContent = '○';
+			}
+
+			const dotIndex = i + 1;
+
+			// left click - set value
+			dot.addEventListener('click', () => {
+				this.setSkillValue(skillName, dotIndex, container);
+			});
+
+			// right click - reset value
+			dot.addEventListener('contextmenu', (event) => {
+				event.preventDefault();
+				this.resetSkill(skillName, container);
+			});
+		}
+	}
+
+	private async setSkillValue(
+		skillName: string,
+		value: number,
+		container: HTMLElement,
+	): Promise<void> {
+		const storeKey = `${this.filePath}|skill.${skillName}`;
+		const currentValue = this.store.get(storeKey) || 0;
+
+		if (currentValue === value) {
+			await this.store.set(storeKey, value - 1);
+		} else {
+			await this.store.set(storeKey, value);
+		}
+
+		let rootContainer = container;
+		while (
+			rootContainer &&
+			!rootContainer.classList.contains('vtm-skills-container')
+		) {
+			rootContainer = rootContainer.parentElement!;
+		}
+
+		const parentEl = rootContainer.parentElement!;
+		parentEl.empty();
+		this.register('', parentEl, {});
+	}
+
+	private async resetSkill(
+		skillName: string,
+		container: HTMLElement,
+	): Promise<void> {
+		const storeKey = `${this.filePath}|skill.${skillName}`;
+		await this.store.set(storeKey, 0);
+
+		let rootContainer = container;
+		while (
+			rootContainer &&
+			!rootContainer.classList.contains('vtm-skills-container')
+		) {
+			rootContainer = rootContainer.parentElement!;
+		}
+
+		const parentElement = rootContainer.parentElement!;
+		parentElement.empty();
+		this.register('', parentElement, {});
+
+		console.log(`${skillName} reset to 0`);
+	}
+}
