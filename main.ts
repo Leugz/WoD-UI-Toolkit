@@ -7,6 +7,8 @@ import { EventBus } from 'lib/services/EventBus';
 import { WillpowerView } from 'lib/views/WillpowerView';
 import { HungerView } from 'lib/views/HungerView';
 import { HumanityView } from 'lib/views/HumanityView';
+import { PowerView } from 'lib/views/PowerView';
+import { DisciplinesView } from 'lib/views/DisciplinesView';
 
 export default class VtmUIToolkitPlugin extends Plugin {
 	store: KeyValueStore;
@@ -111,6 +113,36 @@ export default class VtmUIToolkitPlugin extends Plugin {
 					this.eventBus,
 				);
 				humanityView.register(source, el, ctx);
+			},
+		);
+
+		// Disciplines
+		this.registerMarkdownCodeBlockProcessor(
+			'vtm-disciplines',
+			(source, el, ctx) => {
+				const filePath = ctx.sourcePath || 'unknown';
+				const disciplinesView = new DisciplinesView(
+					this.app,
+					this.store,
+					filePath,
+					this.eventBus,
+				);
+				disciplinesView.register(source, el, ctx);
+			},
+		);
+
+		// Discipline Power
+		this.registerMarkdownCodeBlockProcessor(
+			'vtm-power',
+			(source, el, ctx) => {
+				const filePath = ctx.sourcePath || 'unknown';
+				const powerView = new PowerView(
+					this.app,
+					this.store,
+					filePath,
+					this.eventBus,
+				);
+				powerView.register(source, el, ctx);
 			},
 		);
 

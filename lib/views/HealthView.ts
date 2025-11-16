@@ -95,41 +95,35 @@ export class HealthView extends BaseView {
 
 	private async cycleDamageAtIndex(index: number): Promise<void> {
 		const currentDamage = this.getDamageAtIndex(index);
-		let newDamage: DamageType;
 
-		// Cycle: none → superficial → aggravated → none
 		if (currentDamage === 'none') {
-			newDamage = 'superficial';
-		} else if (currentDamage === 'superficial') {
-			newDamage = 'aggravated';
-		} else {
-			newDamage = 'none';
-		}
+			// Empty → Superficial: Fill this box and all before it
+			// BUT don't downgrade aggravated to superficial
+			for (let i = 0; i <= index; i++) {
+				const key = `${this.filePath}|health.${i}`;
+				const existingDamage = this.getDamageAtIndex(i);
 
-		// Set damage at this index
-		const storeKey = `${this.filePath}|health.${index}`;
-		await this.store.set(storeKey, newDamage);
-
-		// If setting to superficial or aggravated, fill all previous boxes with at least superficial
-		if (newDamage !== 'none') {
-			for (let i = 0; i < index; i++) {
-				const prevKey = `${this.filePath}|health.${i}`;
-				const prevDamage = this.store.get(prevKey);
-				if (!prevDamage || prevDamage === 'none') {
-					await this.store.set(prevKey, 'superficial');
+				// Only set to superficial if it's currently none
+				if (existingDamage === 'none') {
+					await this.store.set(key, 'superficial');
 				}
+				// If it's already aggravated, leave it as aggravated
 			}
-		}
-
-		// If clearing this box, clear all boxes after it too
-		if (newDamage === 'none') {
+		} else if (currentDamage === 'superficial') {
+			// Superficial → Aggravated: Upgrade this box and all before it to aggravated
+			for (let i = 0; i <= index; i++) {
+				const key = `${this.filePath}|health.${i}`;
+				await this.store.set(key, 'aggravated');
+			}
+		} else {
+			// Aggravated → None: Clear this box and all after it
 			const staminaKey = `${this.filePath}|attribute.Stamina`;
 			const stamina = this.store.get(staminaKey) ?? 1;
 			const maxHealth = 3 + stamina;
 
-			for (let i = index + 1; i < maxHealth; i++) {
-				const nextKey = `${this.filePath}|health.${i}`;
-				await this.store.set(nextKey, 'none');
+			for (let i = index; i < maxHealth; i++) {
+				const key = `${this.filePath}|health.${i}`;
+				await this.store.set(key, 'none');
 			}
 		}
 
