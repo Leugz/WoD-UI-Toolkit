@@ -1,14 +1,14 @@
-import { KeyValueStore } from 'lib/services/KeyValueStore';
-import { BaseView } from './BaseView';
-import { EventBus } from 'lib/services/EventBus';
 import { App } from 'obsidian';
+import { BaseView } from './BaseView';
+import { KeyValueStore } from '../services/KeyValueStore';
+import { EventBus } from '../services/EventBus';
 
 export class WillpowerView extends BaseView {
 	codeblock = 'vtm-willpower';
 	private store: KeyValueStore;
 	private filePath: string;
 	private eventBus: EventBus;
-	private containerElement: HTMLElement | null = null;
+	private containerEl: HTMLElement | null = null;
 
 	constructor(
 		app: App,
@@ -18,99 +18,94 @@ export class WillpowerView extends BaseView {
 	) {
 		super(app);
 		this.store = store;
+		this.filePath = filePath;
 		this.eventBus = eventBus;
 
+		// Listen for Composure or Resolve changes
 		this.eventBus.on(`${this.filePath}:composure-changed`, () => {
-			this.refresh();
+			if (this.containerEl) {
+				this.containerEl.empty();
+				this.register('', this.containerEl, {});
+			}
 		});
 		this.eventBus.on(`${this.filePath}:resolve-changed`, () => {
-			this.refresh();
+			if (this.containerEl) {
+				this.containerEl.empty();
+				this.register('', this.containerEl, {});
+			}
 		});
 	}
 
-	private refresh(): void {
-		if (this.containerElement) {
-			this.containerElement.empty();
-			this.register('', this.containerElement, {});
-		}
-	}
+	register(source: string, el: HTMLElement, ctx: any): void {
+		el.empty();
+		this.containerEl = el;
 
-	register(source: string, element: HTMLElement, ctx: any): void {
-		element.empty();
-		this.containerElement = element;
+		const container = el.createDiv({ cls: 'vtm-willpower-container' });
 
-		const container = element.createDiv({ cls: 'vtm-willpower-container' });
-
+		// Calculate max willpower (Composure + Resolve)
 		const composureKey = `${this.filePath}|attribute.Composure`;
 		const resolveKey = `${this.filePath}|attribute.Resolve`;
 		const composure = this.store.get(composureKey) ?? 1;
 		const resolve = this.store.get(resolveKey) ?? 1;
 		const maxWillpower = composure + resolve;
 
+		// Get current willpower
 		const currentKey = `${this.filePath}|willpower.current`;
 		let currentWillpower = this.store.get(currentKey);
 
+		// If never set, default to max
 		if (currentWillpower === undefined) {
 			currentWillpower = maxWillpower;
 			this.store.set(currentKey, maxWillpower);
 		}
 
+		// Header with inline reset button
 		const header = container.createDiv({ cls: 'vtm-willpower-header' });
-		header.createDiv('h3', {
+		header.createEl('h3', {
 			text: 'Willpower',
-			cls: 'vtm-willpower-counter',
+			cls: 'vtm-willpower-title',
 		});
 
-		const counter = header.createDiv({ cls: 'vtm-willpower-counter' });
+		const rightSide = header.createDiv({
+			cls: 'vtm-willpower-header-right',
+		});
+
+		// Reset button first
+		const resetBtn = rightSide.createEl('button', {
+			text: '↻',
+			cls: 'vtm-willpower-reset-btn',
+			attr: { 'aria-label': 'Reset to max' },
+		});
+		resetBtn.addEventListener('click', () => {
+			this.setWillpower(maxWillpower, container);
+		});
+
+		// Counter second
+		const counter = rightSide.createDiv({ cls: 'vtm-willpower-counter' });
 		counter.setText(`${currentWillpower} / ${maxWillpower}`);
 
+		// Willpower boxes
 		const boxesContainer = container.createDiv({
 			cls: 'vtm-willpower-boxes',
 		});
 
 		for (let i = 0; i < maxWillpower; i++) {
-			this.renderWillpowerBox(boxesContainer, i, currentWillpower);
+			this.renderWillpowerBox(
+				boxesContainer,
+				i,
+				currentWillpower,
+				container,
+			);
 		}
-
-		const controls = container.createDiv({ cls: 'vtm-willpower-controls' });
-
-		const spendBtn = controls.createEl('button', {
-			text: '- Spend',
-			cls: 'vtm-willpower-btn spend',
-		});
-		spendBtn.addEventListener('click', () => {
-			if (currentWillpower > 0) {
-				this.setWillpower(currentWillpower - 1);
-			}
-		});
-
-		const regainBtn = controls.createEl('button', {
-			text: '+ Regain',
-			cls: 'vtm-willpower-btn regain',
-		});
-
-		regainBtn.addEventListener('click', () => {
-			if (currentWillpower < maxWillpower) {
-				this.setWillpower(currentWillpower + 1);
-			}
-		});
-
-		const resetBtn = controls.createEl('button', {
-			text: '↻ Reset to Max',
-			cls: 'vtm-willpower-btn reset',
-		});
-
-		resetBtn.addEventListener('click', () => {
-			this.setWillpower(maxWillpower);
-		});
 	}
 
 	private renderWillpowerBox(
-		container: HTMLElement,
+		boxContainer: HTMLElement,
 		index: number,
 		currentWillpower: number,
+		rootContainer: HTMLElement,
 	): void {
-		const box = container.createDiv({ cls: 'vtm-willpower-box' });
+		const box = boxContainer.createDiv({ cls: 'vtm-willpower-box' });
 
 		if (index < currentWillpower) {
 			box.addClass('filled');
@@ -119,15 +114,30 @@ export class WillpowerView extends BaseView {
 			box.setText('○');
 		}
 
+		// Click to set willpower to this level
 		box.addEventListener('click', () => {
-			this.setWillpower(index + 1);
+			this.setWillpower(index + 1, rootContainer);
 		});
 	}
 
-	private async setWillpower(value: number): Promise<void> {
+	private async setWillpower(
+		value: number,
+		container: HTMLElement,
+	): Promise<void> {
 		const currentKey = `${this.filePath}|willpower.current`;
-
 		await this.store.set(currentKey, value);
-		this.refresh;
+
+		// Re-render using the same pattern as other views
+		let rootContainer = container;
+		while (
+			rootContainer &&
+			!rootContainer.classList.contains('vtm-willpower-container')
+		) {
+			rootContainer = rootContainer.parentElement!;
+		}
+
+		const parentEl = rootContainer.parentElement!;
+		parentEl.empty();
+		this.register('', parentEl, {});
 	}
 }

@@ -4,6 +4,9 @@ import { AttributesView } from './lib/views/AttributesView';
 import { KeyValueStore } from './lib/services/KeyValueStore';
 import { HealthView } from 'lib/views/HealthView';
 import { EventBus } from 'lib/services/EventBus';
+import { WillpowerView } from 'lib/views/WillpowerView';
+import { HungerView } from 'lib/views/HungerView';
+import { HumanityView } from 'lib/views/HumanityView';
 
 export default class VtmUIToolkitPlugin extends Plugin {
 	store: KeyValueStore;
@@ -63,6 +66,51 @@ export default class VtmUIToolkitPlugin extends Plugin {
 				);
 
 				healthView.register(source, element, ctx);
+			},
+		);
+
+		// Willpower
+		this.registerMarkdownCodeBlockProcessor(
+			'vtm-willpower',
+			(source, element, ctx) => {
+				const filePath = ctx.sourcePath || 'unknown';
+				const willpowerView = new WillpowerView(
+					this.app,
+					this.store,
+					filePath,
+					this.eventBus,
+				);
+				willpowerView.register(source, element, ctx);
+			},
+		);
+
+		// Hunger:
+		this.registerMarkdownCodeBlockProcessor(
+			'vtm-hunger',
+			(source, el, ctx) => {
+				const filePath = ctx.sourcePath || 'unknown';
+				const hungerView = new HungerView(
+					this.app,
+					this.store,
+					filePath,
+					this.eventBus,
+				);
+				hungerView.register(source, el, ctx);
+			},
+		);
+
+		// Humanity
+		this.registerMarkdownCodeBlockProcessor(
+			'vtm-humanity',
+			(source, el, ctx) => {
+				const filePath = ctx.sourcePath || 'unknown';
+				const humanityView = new HumanityView(
+					this.app,
+					this.store,
+					filePath,
+					this.eventBus,
+				);
+				humanityView.register(source, el, ctx);
 			},
 		);
 

@@ -1,7 +1,7 @@
 import { App } from 'obsidian';
 import { BaseView } from './BaseView';
 import { KeyValueStore } from '../services/KeyValueStore';
-import { EventBus } from 'lib/services/EventBus';
+import { EventBus } from '../services/EventBus';
 
 export class AttributesView extends BaseView {
 	codeblock = 'vtm-attributes';
@@ -111,6 +111,12 @@ export class AttributesView extends BaseView {
 		if (attributeName === 'Stamina') {
 			this.eventBus.emit(`${this.filePath}:stamina-changed`);
 		}
+		if (attributeName === 'Composure') {
+			this.eventBus.emit(`${this.filePath}:composure-changed`);
+		}
+		if (attributeName === 'Resolve') {
+			this.eventBus.emit(`${this.filePath}:resolve-changed`);
+		}
 
 		let rootContainer = container;
 
@@ -138,7 +144,7 @@ export class AttributesView extends BaseView {
 		}
 
 		let rootContainer = container;
-		
+
 		while (
 			rootContainer &&
 			!rootContainer.classList.contains('vtm-attributes-container')

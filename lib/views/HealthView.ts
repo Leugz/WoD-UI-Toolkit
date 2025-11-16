@@ -52,19 +52,20 @@ export class HealthView extends BaseView {
 			this.renderHealthBox(boxesContainer, i);
 		}
 
-		const legend = container.createDiv({ cls: 'vtn-health-legend' });
+		const legend = container.createDiv({ cls: 'vtm-health-legend' });
 		legend.createSpan({
-			text: 'Click to cycle: Empty → Superficial (/) → Aggravated (X) | Right-click to clear',
+			text: 'Click to cycle: Empty → Superficial (/) → Aggravated (X) | Right-click to clear from here',
 			cls: 'vtm-health-legend-text',
 		});
 	}
 
 	private renderHealthBox(container: HTMLElement, index: number): void {
-		const storeKey = `${this.filePath}|health.${index}`;
-		const damageType: DamageType = this.store.get(storeKey) || 'none';
-
 		const box = container.createDiv({ cls: 'vtm-health-box' });
 
+		// Get ALL health damage to determine this box's state
+		const damageType = this.getDamageAtIndex(index);
+
+		// Set visual based on damage type
 		if (damageType === 'superficial') {
 			box.setText('/');
 			box.addClass('superficial');
@@ -75,40 +76,84 @@ export class HealthView extends BaseView {
 			box.setText('');
 		}
 
-		// Left click - Superficial damage
+		// Left click - cycle through states at this position
 		box.addEventListener('click', () => {
-			let nextType: DamageType;
-
-			if (damageType === 'none') {
-				nextType = 'superficial';
-			} else if (damageType === 'superficial') {
-				nextType = 'aggravated';
-			} else {
-				nextType = 'none';
-			}
-
-			this.setDamage(index, nextType);
+			this.cycleDamageAtIndex(index);
 		});
 
-		box.addEventListener('contextmenu', (event) => {
-			event.preventDefault();
-			this.setDamage(index, 'none');
+		// Right click - clear all damage from this point onwards
+		box.addEventListener('contextmenu', (e) => {
+			e.preventDefault();
+			this.clearDamageFromIndex(index);
 		});
 	}
 
-	private async setDamage(
-		index: number,
-		damageType: DamageType,
-	): Promise<void> {
+	private getDamageAtIndex(index: number): DamageType {
 		const storeKey = `${this.filePath}|health.${index}`;
-		await this.store.set(storeKey, damageType);
+		return this.store.get(storeKey) || 'none';
+	}
 
-		let rootContainer = document.querySelector('.vtm-health-container');
+	private async cycleDamageAtIndex(index: number): Promise<void> {
+		const currentDamage = this.getDamageAtIndex(index);
+		let newDamage: DamageType;
 
-		if (rootContainer) {
-			const parentElement = rootContainer.parentElement!;
-			parentElement.empty();
-			this.register('', parentElement, {});
+		// Cycle: none → superficial → aggravated → none
+		if (currentDamage === 'none') {
+			newDamage = 'superficial';
+		} else if (currentDamage === 'superficial') {
+			newDamage = 'aggravated';
+		} else {
+			newDamage = 'none';
+		}
+
+		// Set damage at this index
+		const storeKey = `${this.filePath}|health.${index}`;
+		await this.store.set(storeKey, newDamage);
+
+		// If setting to superficial or aggravated, fill all previous boxes with at least superficial
+		if (newDamage !== 'none') {
+			for (let i = 0; i < index; i++) {
+				const prevKey = `${this.filePath}|health.${i}`;
+				const prevDamage = this.store.get(prevKey);
+				if (!prevDamage || prevDamage === 'none') {
+					await this.store.set(prevKey, 'superficial');
+				}
+			}
+		}
+
+		// If clearing this box, clear all boxes after it too
+		if (newDamage === 'none') {
+			const staminaKey = `${this.filePath}|attribute.Stamina`;
+			const stamina = this.store.get(staminaKey) ?? 1;
+			const maxHealth = 3 + stamina;
+
+			for (let i = index + 1; i < maxHealth; i++) {
+				const nextKey = `${this.filePath}|health.${i}`;
+				await this.store.set(nextKey, 'none');
+			}
+		}
+
+		this.refresh();
+	}
+
+	private async clearDamageFromIndex(index: number): Promise<void> {
+		const staminaKey = `${this.filePath}|attribute.Stamina`;
+		const stamina = this.store.get(staminaKey) ?? 1;
+		const maxHealth = 3 + stamina;
+
+		// Clear this box and all boxes after it
+		for (let i = index; i < maxHealth; i++) {
+			const key = `${this.filePath}|health.${i}`;
+			await this.store.set(key, 'none');
+		}
+
+		this.refresh();
+	}
+
+	private refresh(): void {
+		if (this.containerElement) {
+			this.containerElement.empty();
+			this.register('', this.containerElement, {});
 		}
 	}
 }

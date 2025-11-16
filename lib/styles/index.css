@@ -3,3 +3,6 @@
 @import './components/skills.css';
 @import './components/attributes.css';
 @import './components/health.css';
+@import './components/willpower.css';
+@import './components/hunger.css';
+@import './components/humanity.css';
