@@ -1,0 +1,98 @@
+/* VtM Health Container */
+.vtm-health-container {
+  padding: 12px;
+  background: var(--background-secondary);
+  border-radius: 6px;
+  font-family: var(--font-interface);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Health Title */
+.vtm-health-title {
+  margin: 0 0 10px 0;
+  padding: 4px 0;
+  border-bottom: 2px solid var(--text-accent);
+  color: var(--text-accent);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Health Boxes Container */
+.vtm-health-boxes {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+/* Individual Health Box */
+.vtm-health-box {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--text-muted);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  background: var(--background-primary);
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.vtm-health-box:hover {
+  border-color: var(--text-accent);
+  transform: scale(1.08);
+}
+
+/* Superficial Damage */
+.vtm-health-box.superficial {
+  background: var(--background-modifier-error-hover);
+  color: var(--text-error);
+  border-color: var(--text-error);
+}
+
+/* Aggravated Damage */
+.vtm-health-box.aggravated {
+  background: var(--background-modifier-error);
+  color: var(--text-on-accent);
+  border-color: var(--color-red);
+}
+
+/* Legend */
+.vtm-health-legend {
+  margin-top: 8px;
+  padding: 6px;
+  background: var(--background-primary);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.vtm-health-legend-text {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+  .vtm-health-container {
+    padding: 10px;
+  }
+
+  .vtm-health-box {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+    gap: 4px;
+  }
+
+  .vtm-health-legend-text {
+    font-size: 9px;
+  }
+}

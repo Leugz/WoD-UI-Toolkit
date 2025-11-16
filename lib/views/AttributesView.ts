@@ -1,11 +1,13 @@
 import { App } from 'obsidian';
 import { BaseView } from './BaseView';
 import { KeyValueStore } from '../services/KeyValueStore';
+import { EventBus } from 'lib/services/EventBus';
 
 export class AttributesView extends BaseView {
 	codeblock = 'vtm-attributes';
 	private store: KeyValueStore;
 	private filePath: string;
+	private eventBus: EventBus;
 
 	private readonly attributes = {
 		Physical: ['Strength', 'Dexterity', 'Stamina'],
@@ -13,10 +15,16 @@ export class AttributesView extends BaseView {
 		Mental: ['Intelligence', 'Wits', 'Resolve'],
 	};
 
-	constructor(app: App, store: KeyValueStore, filePath: string) {
+	constructor(
+		app: App,
+		store: KeyValueStore,
+		filePath: string,
+		eventBus: EventBus,
+	) {
 		super(app);
 		this.store = store;
 		this.filePath = filePath;
+		this.eventBus = eventBus;
 	}
 
 	register(source: string, element: HTMLElement, ctx: any): void {
@@ -100,7 +108,12 @@ export class AttributesView extends BaseView {
 			await this.store.set(storeKey, value);
 		}
 
+		if (attributeName === 'Stamina') {
+			this.eventBus.emit(`${this.filePath}:stamina-changed`);
+		}
+
 		let rootContainer = container;
+
 		while (
 			rootContainer &&
 			!rootContainer.classList.contains('vtm-attributes-container')
@@ -108,9 +121,9 @@ export class AttributesView extends BaseView {
 			rootContainer = rootContainer.parentElement!;
 		}
 
-		const parentEl = rootContainer.parentElement!;
-		parentEl.empty();
-		this.register('', parentEl, {});
+		const parentElement = rootContainer.parentElement!;
+		parentElement.empty();
+		this.register('', parentElement, {});
 	}
 
 	private async resetAttribute(
@@ -120,7 +133,12 @@ export class AttributesView extends BaseView {
 		const storeKey = `${this.filePath}|attribute.${attributeName}`;
 		await this.store.set(storeKey, 1); // Reset to 1
 
+		if (attributeName === 'Stamina') {
+			this.eventBus.emit(`${this.filePath}:stamina-changed`);
+		}
+
 		let rootContainer = container;
+		
 		while (
 			rootContainer &&
 			!rootContainer.classList.contains('vtm-attributes-container')

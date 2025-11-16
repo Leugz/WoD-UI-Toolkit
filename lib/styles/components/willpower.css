@@ -1,0 +1,137 @@
+/* VtM Willpower Container */
+.vtm-willpower-container {
+  padding: 12px;
+  background: var(--background-secondary);
+  border-radius: 6px;
+  font-family: var(--font-interface);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Willpower Header */
+.vtm-willpower-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--text-accent);
+}
+
+.vtm-willpower-title {
+  margin: 0;
+  color: var(--text-accent);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.vtm-willpower-counter {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-normal);
+  background: var(--background-primary);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+/* Willpower Boxes */
+.vtm-willpower-boxes {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.vtm-willpower-box {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--text-muted);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  background: var(--background-primary);
+  transition: all 0.15s ease;
+  user-select: none;
+  color: var(--text-muted);
+}
+
+.vtm-willpower-box:hover {
+  border-color: var(--text-accent);
+  transform: scale(1.08);
+}
+
+.vtm-willpower-box.filled {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  border-color: var(--interactive-accent);
+}
+
+/* Controls */
+.vtm-willpower-controls {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.vtm-willpower-btn {
+  flex: 1;
+  min-width: 80px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: var(--font-interface);
+}
+
+.vtm-willpower-btn.spend {
+  background: var(--background-modifier-error);
+  color: var(--text-on-accent);
+}
+
+.vtm-willpower-btn.spend:hover {
+  background: var(--background-modifier-error-hover);
+}
+
+.vtm-willpower-btn.regain {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+.vtm-willpower-btn.regain:hover {
+  background: var(--interactive-accent-hover);
+}
+
+.vtm-willpower-btn.reset {
+  background: var(--background-modifier-border);
+  color: var(--text-normal);
+}
+
+.vtm-willpower-btn.reset:hover {
+  background: var(--background-modifier-border-hover);
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .vtm-willpower-container {
+    padding: 10px;
+  }
+
+  .vtm-willpower-box {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+
+  .vtm-willpower-btn {
+    font-size: 11px;
+    padding: 5px 8px;
+  }
+}
