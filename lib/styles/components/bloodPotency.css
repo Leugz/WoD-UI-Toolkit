@@ -1,5 +1,5 @@
-/* VtM Hunger Container */
-.vtm-hunger-container {
+/* Blood Potency Container */
+.vtm-blood-potency-container {
   padding: 12px;
   background: var(--background-secondary);
   border-radius: 6px;
@@ -8,54 +8,39 @@
   margin: 0 auto;
 }
 
-/* Hunger Header */
-.vtm-hunger-header {
+/* Header */
+.vtm-bp-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
   padding-bottom: 8px;
-  border-bottom: 2px solid var(--text-error);
+  border-bottom: 2px solid #dc2626;
 }
 
-.vtm-hunger-title {
+.vtm-bp-title {
   margin: 0;
-  color: var(--text-error);
+  color: #dc2626;
   font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.vtm-hunger-header-right {
+.vtm-bp-header-right {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-direction: row-reverse;
 }
 
-.vtm-hunger-level {
+.vtm-bp-display {
   font-size: 12px;
   font-weight: bold;
-  padding: 4px 10px;
-  border-radius: 4px;
-  background: var(--background-primary);
   color: var(--text-normal);
 }
 
-.vtm-hunger-level.warning {
-  background: rgba(255, 165, 0, 0.3);
-  color: orange;
-  border: 1px solid orange;
-}
-
-.vtm-hunger-level.danger {
-  background: rgba(220, 38, 38, 0.3);
-  color: #ff6b6b;
-  border: 1px solid #ff6b6b;
-}
-
-.vtm-hunger-reset-btn {
+.vtm-bp-reset-btn {
   width: 24px;
   height: 24px;
   padding: 0;
@@ -72,24 +57,24 @@
   justify-content: center;
 }
 
-.vtm-hunger-reset-btn:hover {
+.vtm-bp-reset-btn:hover {
   background: var(--background-modifier-border);
   color: var(--text-normal);
   border-color: var(--text-muted);
 }
 
-/* Hunger Dice */
-.vtm-hunger-dice {
+/* Dots */
+.vtm-bp-dots {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   flex-wrap: wrap;
-  margin-bottom: 10px;
   align-items: center;
   justify-content: center;
+  margin-bottom: 12px;
 }
 
-.vtm-hunger-die {
-  font-size: 40px;
+.vtm-bp-dot {
+  font-size: 24px;
   cursor: pointer;
   transition: all 0.15s ease;
   user-select: none;
@@ -97,45 +82,60 @@
   line-height: 1;
 }
 
-.vtm-hunger-die:hover {
-  transform: scale(1.15);
+.vtm-bp-dot:hover {
+  transform: scale(1.2);
+  filter: brightness(1.2);
 }
 
-.vtm-hunger-die.filled {
-  color: var(--text-error);
-  filter: drop-shadow(0 0 4px var(--text-error));
+.vtm-bp-dot.filled {
+  color: #dc2626;
 }
 
-/* Description */
-.vtm-hunger-description {
-  font-size: 11px;
-  color: var(--text-muted);
-  font-style: italic;
-  text-align: center;
-  padding: 8px;
+/* Derived Stats */
+.vtm-bp-stats {
   background: var(--background-primary);
   border-radius: 4px;
-  line-height: 1.4;
+  padding: 10px 12px;
+}
+
+.vtm-bp-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 12px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.vtm-bp-stat-row:last-child {
+  border-bottom: none;
+}
+
+.vtm-bp-stat-label {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.vtm-bp-stat-value {
+  color: var(--text-normal);
+  font-weight: 500;
 }
 
 /* Mobile */
 @media (max-width: 600px) {
-  .vtm-hunger-container {
+  .vtm-blood-potency-container {
     padding: 10px;
   }
-
-  .vtm-hunger-die {
-    font-size: 36px;
+  
+  .vtm-bp-dot {
+    font-size: 20px;
   }
-
-  .vtm-hunger-level {
+  
+  .vtm-bp-stats {
+    padding: 8px 10px;
+  }
+  
+  .vtm-bp-stat-row {
     font-size: 11px;
-    padding: 3px 8px;
-  }
-
-  .vtm-hunger-reset-btn {
-    font-size: 12px;
-    width: 22px;
-    height: 22px;
   }
 }

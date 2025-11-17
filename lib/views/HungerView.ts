@@ -22,11 +22,11 @@ export class HungerView extends BaseView {
 		this.eventBus = eventBus;
 	}
 
-	register(source: string, element: HTMLElement, ctx: any): void {
-		element.empty();
-		this.containerEl = element;
+	register(source: string, el: HTMLElement, ctx: any): void {
+		el.empty();
+		this.containerEl = el;
 
-		const container = element.createDiv({ cls: 'vtm-hunger-container' });
+		const container = el.createDiv({ cls: 'vtm-hunger-container' });
 
 		// Get current hunger (0-5)
 		const hungerKey = `${this.filePath}|hunger`;
@@ -44,6 +44,7 @@ export class HungerView extends BaseView {
 
 		const rightSide = header.createDiv({ cls: 'vtm-hunger-header-right' });
 
+		// Reset button first
 		const resetBtn = rightSide.createEl('button', {
 			text: '↻',
 			cls: 'vtm-hunger-reset-btn',
@@ -53,6 +54,7 @@ export class HungerView extends BaseView {
 			this.setHunger(1, container);
 		});
 
+		// Hunger level second
 		const hungerLevel = rightSide.createDiv({ cls: 'vtm-hunger-level' });
 		hungerLevel.setText(this.getHungerLabel(currentHunger));
 
@@ -62,17 +64,8 @@ export class HungerView extends BaseView {
 			hungerLevel.addClass('warning');
 		}
 
-		// Hunger dice display
+		// Hunger dice display (just the 5 dice, no zero button)
 		const diceContainer = container.createDiv({ cls: 'vtm-hunger-dice' });
-
-		const zeroBox = diceContainer.createDiv({ cls: 'vtm-hunger-zero' });
-		zeroBox.setText('✦');
-		if (currentHunger === 0) {
-			zeroBox.addClass('active');
-		}
-		zeroBox.addEventListener('click', () => {
-			this.setHunger(0, container);
-		});
 
 		for (let i = 0; i < 5; i++) {
 			this.renderHungerDie(diceContainer, i, currentHunger);
@@ -91,15 +84,20 @@ export class HungerView extends BaseView {
 		const die = container.createDiv({ cls: 'vtm-hunger-die' });
 
 		if (index < currentHunger) {
+			die.setText('⬢');
 			die.addClass('filled');
-			die.setText('⬢'); // Filled hexagon for hunger dice
 		} else {
-			die.setText('⬡'); // Empty hexagon
+			die.setText('⬡');
 		}
 
 		// Click to set hunger to this level
+		// Special case: clicking the first filled die when hunger=1 sets to 0
 		die.addEventListener('click', () => {
-			this.setHunger(index + 1, container);
+			if (currentHunger === 1 && index === 0) {
+				this.setHunger(0, container);
+			} else {
+				this.setHunger(index + 1, container);
+			}
 		});
 	}
 
@@ -126,12 +124,12 @@ export class HungerView extends BaseView {
 
 	private getHungerLabel(hunger: number): string {
 		const labels = [
-			'Sated',
-			'Hungry',
-			'Famished',
-			'Starving',
-			'Ravenous',
-			'The Beast',
+			'Sated', // 0
+			'Hungry', // 1
+			'Famished', // 2
+			'Starving', // 3
+			'Ravenous', // 4
+			'The Beast', // 5
 		];
 		return `${hunger} - ${labels[hunger]}`;
 	}

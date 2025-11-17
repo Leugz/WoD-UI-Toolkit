@@ -90,33 +90,32 @@ export class WillpowerView extends BaseView {
 		});
 
 		for (let i = 0; i < maxWillpower; i++) {
-			this.renderWillpowerBox(
-				boxesContainer,
-				i,
-				currentWillpower,
-				container,
-			);
+			this.renderWillpowerBox(boxesContainer, i, currentWillpower);
 		}
 	}
 
 	private renderWillpowerBox(
-		boxContainer: HTMLElement,
+		container: HTMLElement,
 		index: number,
 		currentWillpower: number,
-		rootContainer: HTMLElement,
 	): void {
-		const box = boxContainer.createDiv({ cls: 'vtm-willpower-box' });
+		const box = container.createDiv({ cls: 'vtm-willpower-box' });
 
 		if (index < currentWillpower) {
-			box.addClass('filled');
 			box.setText('●');
+			box.addClass('filled');
 		} else {
 			box.setText('○');
 		}
 
 		// Click to set willpower to this level
+		// Special case: clicking the first filled box when willpower=1 sets to 0
 		box.addEventListener('click', () => {
-			this.setWillpower(index + 1, rootContainer);
+			if (currentWillpower === 1 && index === 0) {
+				this.setWillpower(0, container);
+			} else {
+				this.setWillpower(index + 1, container);
+			}
 		});
 	}
 

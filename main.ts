@@ -9,6 +9,7 @@ import { HungerView } from 'lib/views/HungerView';
 import { HumanityView } from 'lib/views/HumanityView';
 import { PowerView } from 'lib/views/PowerView';
 import { DisciplinesView } from 'lib/views/DisciplinesView';
+import { BloodPotencyView } from 'lib/views/BloodPotencyView';
 
 export default class VtmUIToolkitPlugin extends Plugin {
 	store: KeyValueStore;
@@ -131,7 +132,7 @@ export default class VtmUIToolkitPlugin extends Plugin {
 			},
 		);
 
-		// Discipline Power
+		// Discipline Power Card
 		this.registerMarkdownCodeBlockProcessor(
 			'vtm-power',
 			(source, el, ctx) => {
@@ -143,6 +144,21 @@ export default class VtmUIToolkitPlugin extends Plugin {
 					this.eventBus,
 				);
 				powerView.register(source, el, ctx);
+			},
+		);
+
+		// Blood Potency
+		this.registerMarkdownCodeBlockProcessor(
+			'vtm-blood-potency',
+			(source, el, ctx) => {
+				const filePath = ctx.sourcePath || 'unknown';
+				const bloodPotencyView = new BloodPotencyView(
+					this.app,
+					this.store,
+					filePath,
+					this.eventBus,
+				);
+				bloodPotencyView.register(source, el, ctx);
 			},
 		);
 

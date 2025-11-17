@@ -90,15 +90,20 @@ export class HumanityView extends BaseView {
 		const icon = container.createDiv({ cls: 'vtm-humanity-icon' });
 
 		if (value <= currentHumanity) {
-			icon.setText('◆'); // Filled diamond for humanity
+			icon.setText('◆');
 			icon.addClass('filled');
 		} else {
-			icon.setText('◇'); // Empty diamond
+			icon.setText('◇');
 		}
 
 		// Click to set humanity to this level
+		// Special case: clicking the first filled icon when humanity=1 sets to 0
 		icon.addEventListener('click', () => {
-			this.setHumanity(value, container);
+			if (currentHumanity === 1 && value === 1) {
+				this.setHumanity(0, container);
+			} else {
+				this.setHumanity(value, container);
+			}
 		});
 	}
 

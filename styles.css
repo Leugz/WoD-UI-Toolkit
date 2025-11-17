@@ -411,24 +411,6 @@
   align-items: center;
   justify-content: center;
 }
-.vtm-hunger-zero {
-  font-size: 32px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  user-select: none;
-  color: var(--text-muted);
-  line-height: 1;
-  padding: 0;
-  border: none;
-  background: none;
-}
-.vtm-hunger-zero:hover {
-  transform: scale(1.15);
-  filter: brightness(1.2);
-}
-.vtm-hunger-zero.active {
-  color: var(--interactive-accent);
-}
 .vtm-hunger-die {
   font-size: 40px;
   cursor: pointer;
@@ -457,9 +439,6 @@
 @media (max-width: 600px) {
   .vtm-hunger-container {
     padding: 10px;
-  }
-  .vtm-hunger-zero {
-    font-size: 28px;
   }
   .vtm-hunger-die {
     font-size: 36px;
@@ -810,6 +789,125 @@
   .vtm-power-description {
     padding: 10px 12px;
     font-size: 12px;
+  }
+}
+
+/* lib/styles/components/bloodPotency.css */
+.vtm-blood-potency-container {
+  padding: 12px;
+  background: var(--background-secondary);
+  border-radius: 6px;
+  font-family: var(--font-interface);
+  max-width: 500px;
+  margin: 0 auto;
+}
+.vtm-bp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #dc2626;
+}
+.vtm-bp-title {
+  margin: 0;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.vtm-bp-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-direction: row-reverse;
+}
+.vtm-bp-display {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--text-normal);
+}
+.vtm-bp-reset-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 14px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: var(--font-interface);
+  background: transparent;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.vtm-bp-reset-btn:hover {
+  background: var(--background-modifier-border);
+  color: var(--text-normal);
+  border-color: var(--text-muted);
+}
+.vtm-bp-dots {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.vtm-bp-dot {
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  color: var(--text-muted);
+  line-height: 1;
+}
+.vtm-bp-dot:hover {
+  transform: scale(1.2);
+  filter: brightness(1.2);
+}
+.vtm-bp-dot.filled {
+  color: #dc2626;
+}
+.vtm-bp-stats {
+  background: var(--background-primary);
+  border-radius: 4px;
+  padding: 10px 12px;
+}
+.vtm-bp-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 12px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+.vtm-bp-stat-row:last-child {
+  border-bottom: none;
+}
+.vtm-bp-stat-label {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.vtm-bp-stat-value {
+  color: var(--text-normal);
+  font-weight: 500;
+}
+@media (max-width: 600px) {
+  .vtm-blood-potency-container {
+    padding: 10px;
+  }
+  .vtm-bp-dot {
+    font-size: 20px;
+  }
+  .vtm-bp-stats {
+    padding: 8px 10px;
+  }
+  .vtm-bp-stat-row {
+    font-size: 11px;
   }
 }
 
