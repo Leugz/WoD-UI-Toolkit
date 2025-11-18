@@ -7,10 +7,11 @@ import { EventBus } from 'lib/services/EventBus';
 import { WillpowerView } from 'lib/views/WillpowerView';
 import { HungerView } from 'lib/views/HungerView';
 import { HumanityView } from 'lib/views/HumanityView';
-import { PowerView } from 'lib/views/PowerView';
+import { PowerListView } from 'lib/views/PowerView';
 import { DisciplinesView } from 'lib/views/DisciplinesView';
 import { BloodPotencyView } from 'lib/views/BloodPotencyView';
 import { ExperienceView } from 'lib/views/ExperienceView';
+import { MeritsFlawsListView } from 'lib/views/MeritsFlawsView';
 
 export default class VtmUIToolkitPlugin extends Plugin {
 	store: KeyValueStore;
@@ -135,16 +136,16 @@ export default class VtmUIToolkitPlugin extends Plugin {
 
 		// Discipline Power Card
 		this.registerMarkdownCodeBlockProcessor(
-			'vtm-power',
+			'vtm-power-list',
 			(source, el, ctx) => {
 				const filePath = ctx.sourcePath || 'unknown';
-				const powerView = new PowerView(
+				const powerListView = new PowerListView(
 					this.app,
 					this.store,
 					filePath,
 					this.eventBus,
 				);
-				powerView.register(source, el, ctx);
+				powerListView.register(source, el, ctx);
 			},
 		);
 
@@ -175,6 +176,21 @@ export default class VtmUIToolkitPlugin extends Plugin {
 					this.eventBus,
 				);
 				experienceView.register(source, el, ctx);
+			},
+		);
+
+		// Merits & Flaws
+		this.registerMarkdownCodeBlockProcessor(
+			'vtm-merits-flaws-list',
+			(source, el, ctx) => {
+				const filePath = ctx.sourcePath || 'unknown';
+				const meritsFlawsListView = new MeritsFlawsListView(
+					this.app,
+					this.store,
+					filePath,
+					this.eventBus,
+				);
+				meritsFlawsListView.register(source, el, ctx);
 			},
 		);
 
