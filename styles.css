@@ -911,4 +911,235 @@
   }
 }
 
+/* lib/styles/components/experience.css */
+.vtm-experience-container {
+  padding: 15px;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  font-family: var(--font-interface);
+  max-width: 600px;
+  margin: 0 auto;
+}
+.vtm-xp-title {
+  margin: 0 0 12px 0;
+  padding: 6px 0;
+  border-bottom: 2px solid var(--color-yellow);
+  color: var(--color-yellow);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.vtm-xp-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.vtm-xp-card {
+  background: var(--background-primary);
+  border: 2px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 16px 12px;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+.vtm-xp-card.total {
+  border-color: var(--interactive-accent);
+}
+.vtm-xp-card.spent {
+  border-color: var(--text-error);
+}
+.vtm-xp-card.available {
+  border-color: var(--color-green);
+  background: rgba(34, 197, 94, 0.1);
+}
+.vtm-xp-card-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.vtm-xp-card-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-normal);
+  line-height: 1;
+}
+.vtm-xp-card.total .vtm-xp-card-value {
+  color: var(--interactive-accent);
+}
+.vtm-xp-card.spent .vtm-xp-card-value {
+  color: var(--text-error);
+}
+.vtm-xp-card.available .vtm-xp-card-value {
+  color: var(--color-green);
+}
+.vtm-xp-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 8px;
+  background: var(--background-primary);
+  border-radius: 6px;
+}
+.vtm-xp-controls-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+.vtm-xp-buttons {
+  display: flex;
+  gap: 6px;
+}
+.vtm-xp-btn {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  background: var(--background-secondary);
+  color: var(--text-normal);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: var(--font-interface);
+  min-width: 40px;
+}
+.vtm-xp-btn:hover {
+  background: var(--interactive-hover);
+  border-color: var(--interactive-accent);
+}
+.vtm-xp-reset-container {
+  text-align: center;
+  margin-top: 12px;
+}
+.vtm-xp-reset-btn {
+  padding: 8px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  background: var(--background-modifier-error);
+  color: var(--text-on-accent);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: var(--font-interface);
+}
+.vtm-xp-reset-btn:hover {
+  background: var(--background-modifier-error-hover);
+}
+@media (max-width: 600px) {
+  .vtm-experience-container {
+    padding: 12px;
+  }
+  .vtm-xp-cards {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .vtm-xp-card {
+    padding: 12px 10px;
+  }
+  .vtm-xp-card-value {
+    font-size: 28px;
+  }
+  .vtm-xp-controls {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .vtm-xp-controls-label {
+    text-align: center;
+  }
+  .vtm-xp-buttons {
+    justify-content: center;
+  }
+}
+
+/* lib/styles/components/merits-flaws.css */
+.vtm-merits-flaws-container {
+  padding: 15px;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  font-family: var(--font-interface);
+  max-width: 700px;
+  margin: 0 auto;
+}
+.vtm-merits-flaws-title {
+  margin: 0 0 12px 0;
+  padding: 6px 0;
+  border-bottom: 2px solid var(--interactive-accent);
+  color: var(--interactive-accent);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.vtm-merits-flaws-empty {
+  font-style: italic;
+  color: var(--text-muted);
+  padding: 10px;
+}
+.vtm-merits-flaws-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.vtm-merit-flaw-entry {
+  background: var(--background-primary);
+  padding: 12px 16px;
+  border-radius: 6px;
+  border: 2px solid var(--background-modifier-border);
+  transition: border-color 0.2s ease;
+}
+.vtm-merit-flaw-entry:hover {
+  border-color: var(--interactive-accent);
+  box-shadow: 0 2px 8px rgba(100, 100, 255, 0.2);
+}
+.vtm-merit-flaw-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.vtm-merit-flaw-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+.vtm-merit-flaw-dots {
+  display: flex;
+  gap: 4px;
+}
+.vtm-merit-flaw-dot {
+  font-size: 18px;
+  color: var(--interactive-accent);
+  user-select: none;
+}
+.vtm-merit-flaw-description {
+  color: var(--text-muted);
+  font-size: 13px;
+  white-space: pre-wrap;
+  line-height: 1.4;
+}
+@media (max-width: 600px) {
+  .vtm-merits-flaws-container {
+    padding: 12px;
+  }
+  .vtm-merit-flaw-entry {
+    padding: 10px 12px;
+  }
+  .vtm-merit-flaw-name {
+    font-size: 13px;
+  }
+  .vtm-merit-flaw-dot {
+    font-size: 16px;
+  }
+  .vtm-merit-flaw-description {
+    font-size: 12px;
+  }
+}
+
 /* lib/styles/index.css */

@@ -10,6 +10,7 @@ import { HumanityView } from 'lib/views/HumanityView';
 import { PowerView } from 'lib/views/PowerView';
 import { DisciplinesView } from 'lib/views/DisciplinesView';
 import { BloodPotencyView } from 'lib/views/BloodPotencyView';
+import { ExperienceView } from 'lib/views/ExperienceView';
 
 export default class VtmUIToolkitPlugin extends Plugin {
 	store: KeyValueStore;
@@ -159,6 +160,21 @@ export default class VtmUIToolkitPlugin extends Plugin {
 					this.eventBus,
 				);
 				bloodPotencyView.register(source, el, ctx);
+			},
+		);
+
+		// Experience Track
+		this.registerMarkdownCodeBlockProcessor(
+			'vtm-experience',
+			(source, el, ctx) => {
+				const filePath = ctx.sourcePath || 'unknown';
+				const experienceView = new ExperienceView(
+					this.app,
+					this.store,
+					filePath,
+					this.eventBus,
+				);
+				experienceView.register(source, el, ctx);
 			},
 		);
 

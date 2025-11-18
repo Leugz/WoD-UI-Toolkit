@@ -1,0 +1,177 @@
+/* Experience Container */
+.vtm-experience-container {
+  padding: 15px;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  font-family: var(--font-interface);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Title */
+.vtm-xp-title {
+  margin: 0 0 12px 0;
+  padding: 6px 0;
+  border-bottom: 2px solid var(--color-yellow);
+  color: var(--color-yellow);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* XP Cards Grid */
+.vtm-xp-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.vtm-xp-card {
+  background: var(--background-primary);
+  border: 2px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 16px 12px;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.vtm-xp-card.total {
+  border-color: var(--interactive-accent);
+}
+
+.vtm-xp-card.spent {
+  border-color: var(--text-error);
+}
+
+.vtm-xp-card.available {
+  border-color: var(--color-green);
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.vtm-xp-card-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.vtm-xp-card-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-normal);
+  line-height: 1;
+}
+
+.vtm-xp-card.total .vtm-xp-card-value {
+  color: var(--interactive-accent);
+}
+
+.vtm-xp-card.spent .vtm-xp-card-value {
+  color: var(--text-error);
+}
+
+.vtm-xp-card.available .vtm-xp-card-value {
+  color: var(--color-green);
+}
+
+/* Controls */
+.vtm-xp-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 8px;
+  background: var(--background-primary);
+  border-radius: 6px;
+}
+
+.vtm-xp-controls-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.vtm-xp-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.vtm-xp-btn {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  background: var(--background-secondary);
+  color: var(--text-normal);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: var(--font-interface);
+  min-width: 40px;
+}
+
+.vtm-xp-btn:hover {
+  background: var(--interactive-hover);
+  border-color: var(--interactive-accent);
+}
+
+/* Reset Button */
+.vtm-xp-reset-container {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.vtm-xp-reset-btn {
+  padding: 8px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  background: var(--background-modifier-error);
+  color: var(--text-on-accent);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: var(--font-interface);
+}
+
+.vtm-xp-reset-btn:hover {
+  background: var(--background-modifier-error-hover);
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .vtm-experience-container {
+    padding: 12px;
+  }
+
+  .vtm-xp-cards {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .vtm-xp-card {
+    padding: 12px 10px;
+  }
+
+  .vtm-xp-card-value {
+    font-size: 28px;
+  }
+
+  .vtm-xp-controls {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  .vtm-xp-controls-label {
+    text-align: center;
+  }
+
+  .vtm-xp-buttons {
+    justify-content: center;
+  }
+}
