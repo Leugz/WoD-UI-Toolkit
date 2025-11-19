@@ -6,7 +6,7 @@ import { HealthView } from 'lib/views/HealthView';
 import { EventBus } from 'lib/services/EventBus';
 import { WillpowerView } from 'lib/views/WillpowerView';
 import { HungerView } from 'lib/views/HungerView';
-import { HumanityView } from 'lib/views/HumanityView';
+import { HumanityView } from 'lib/views/MoralityTrackerView';
 import { PowerListView } from 'lib/views/PowerView';
 import { DisciplinesView } from 'lib/views/DisciplinesView';
 import { BloodPotencyView } from 'lib/views/BloodPotencyView';
@@ -115,6 +115,7 @@ export default class VtmUIToolkitPlugin extends Plugin {
 					this.store,
 					filePath,
 					this.eventBus,
+					VTM_CONFIG.morality, // Pass morality config
 				);
 				humanityView.register(source, el, ctx);
 			},

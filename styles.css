@@ -449,7 +449,7 @@
   }
 }
 
-/* lib/styles/components/humanity.css */
+/* lib/styles/components/morality-tracker.css */
 .vtm-humanity-container {
   padding: 12px;
   background: var(--background-secondary);
@@ -581,7 +581,7 @@
   margin-bottom: 10px;
   gap: 8px;
 }
-.vtm-stains-rightSide {
+.vtm-stains-rightside {
   display: flex;
   align-items: center;
   gap: 8px;
