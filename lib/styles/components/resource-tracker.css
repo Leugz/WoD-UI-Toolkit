@@ -1,0 +1,133 @@
+.vtm-resource-container {
+  padding: 15px;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  font-family: var(--font-interface);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.vtm-resource-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.vtm-resource-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vtm-resource-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.vtm-resource-title {
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-normal);
+}
+
+.vtm-resource-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vtm-resource-reset-btn {
+  padding: 4px 8px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  background: var(--background-secondary);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: var(--font-interface);
+}
+
+.vtm-resource-reset-btn:hover {
+  background: var(--interactive-hover);
+  color: var(--text-normal);
+}
+
+.vtm-resource-level {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  background: rgba(100, 100, 255, 0.1);
+  border: 1px solid rgba(100, 100, 255, 0.3);
+  border-radius: 4px;
+  color: var(--interactive-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.vtm-resource-level.warning {
+  background: rgba(255, 165, 0, 0.1);
+  border-color: orange;
+  color: orange;
+}
+
+.vtm-resource-level.danger {
+  background: rgba(220, 38, 38, 0.1);
+  border-color: var(--text-error);
+  color: var(--text-error);
+}
+
+.vtm-resource-icons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.vtm-resource-icon-dot {
+  font-size: 48px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+.vtm-resource-icon-dot:hover {
+  transform: scale(1.2);
+  filter: brightness(1.3);
+}
+
+.vtm-resource-icon-dot.filled {
+  color: var(--text-error);
+  filter: drop-shadow(0 0 4px var(--text-error));
+}
+
+.vtm-resource-description {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 8px;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .vtm-resource-container {
+    padding: 12px;
+  }
+
+  .vtm-resource-icon-dot {
+    font-size: 44px;
+  }
+
+  .vtm-resource-icons {
+    gap: 8px;
+  }
+}

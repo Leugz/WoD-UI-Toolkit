@@ -12,6 +12,7 @@ import { DisciplinesView } from 'lib/views/DisciplinesView';
 import { BloodPotencyView } from 'lib/views/BloodPotencyView';
 import { ExperienceView } from 'lib/views/ExperienceView';
 import { MeritsFlawsListView } from 'lib/views/MeritsFlawsView';
+import { VTM_CONFIG } from 'lib/config/GameConfig';
 
 export default class VtmUIToolkitPlugin extends Plugin {
 	store: KeyValueStore;
@@ -20,7 +21,6 @@ export default class VtmUIToolkitPlugin extends Plugin {
 	async onload() {
 		console.log('VtM Plugin loading...');
 
-		// Initialize store with plugin instance
 		this.store = new KeyValueStore(this);
 		this.eventBus = new EventBus();
 		await this.store.load();
@@ -99,6 +99,7 @@ export default class VtmUIToolkitPlugin extends Plugin {
 					this.store,
 					filePath,
 					this.eventBus,
+					VTM_CONFIG.resource, // Pass config
 				);
 				hungerView.register(source, el, ctx);
 			},
