@@ -2,12 +2,14 @@ import { App } from 'obsidian';
 import { BaseView } from './BaseView';
 import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
+import { ResourceConfig } from '../config/GameConfig';
 
-export class HungerView extends BaseView {
-	codeblock = 'vtm-hunger';
+export class ResourceTrackerView extends BaseView {
+	codeblock: string;
 	private store: KeyValueStore;
 	private filePath: string;
 	private eventBus: EventBus;
+	private config: ResourceConfig;
 	private containerEl: HTMLElement | null = null;
 
 	constructor(
@@ -15,104 +17,117 @@ export class HungerView extends BaseView {
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
+		config: ResourceConfig,
 	) {
 		super(app);
 		this.store = store;
 		this.filePath = filePath;
 		this.eventBus = eventBus;
+		this.config = config;
+		this.codeblock = config.codeblock;
 	}
 
 	register(source: string, el: HTMLElement, ctx: any): void {
 		el.empty();
 		this.containerEl = el;
 
-		const container = el.createDiv({ cls: 'vtm-hunger-container' });
+		const container = el.createDiv({ cls: 'vtm-resource-container' });
 
-		// Get current hunger (0-5)
-		const hungerKey = `${this.filePath}|hunger`;
-		let currentHunger = this.store.get(hungerKey);
+		const resourceKey = `${this.filePath}|${this.config.codeblock}`;
+		let currentValue = this.store.get(resourceKey) ?? 0;
 
-		// Default to 1 if never set
-		if (currentHunger === undefined) {
-			currentHunger = 1;
-			this.store.set(hungerKey, 1);
-		}
+		const header = container.createDiv({ cls: 'vtm-resource-header' });
+		const titleDiv = header.createDiv({ cls: 'vtm-resource-title-group' });
 
-		// Header with inline reset button
-		const header = container.createDiv({ cls: 'vtm-hunger-header' });
-		header.createEl('h3', { text: 'Hunger', cls: 'vtm-hunger-title' });
+		const icon = titleDiv.createSpan({ cls: 'vtm-resource-icon' });
+		icon.setText(this.config.icon);
 
-		const rightSide = header.createDiv({ cls: 'vtm-hunger-header-right' });
+		titleDiv.createEl('h3', {
+			text: this.config.name,
+			cls: 'vtm-resource-title',
+		});
 
-		// Reset button first
+		const rightSide = header.createDiv({
+			cls: 'vtm-resource-header-right',
+		});
+
 		const resetBtn = rightSide.createEl('button', {
 			text: '↻',
-			cls: 'vtm-hunger-reset-btn',
-			attr: { 'aria-label': 'Reset to 1' },
+			cls: 'vtm-resource-reset-btn',
+			attr: { 'aria-label': 'Reset to 0' },
 		});
 		resetBtn.addEventListener('click', () => {
-			this.setHunger(1, container);
+			this.setValue(0, container);
 		});
 
-		// Hunger level second
-		const hungerLevel = rightSide.createDiv({ cls: 'vtm-hunger-level' });
-		hungerLevel.setText(this.getHungerLabel(currentHunger));
+		const level = this.config.levels.find((l) => l.value === currentValue);
+		const levelLabel = rightSide.createDiv({ cls: 'vtm-resource-level' });
+		levelLabel.setText(level?.label || '');
 
-		if (currentHunger >= 4) {
-			hungerLevel.addClass('danger');
-		} else if (currentHunger >= 2) {
-			hungerLevel.addClass('warning');
+		if (currentValue >= this.config.max - 1) {
+			levelLabel.addClass('danger');
+		} else if (currentValue >= Math.floor(this.config.max / 2)) {
+			levelLabel.addClass('warning');
 		}
 
-		// Hunger dice display (just the 5 dice, no zero button)
-		const diceContainer = container.createDiv({ cls: 'vtm-hunger-dice' });
+		const iconsContainer = container.createDiv({
+			cls: 'vtm-resource-icons',
+		});
 
-		for (let i = 0; i < 5; i++) {
-			this.renderHungerDie(diceContainer, i, currentHunger);
+		for (let i = 0; i < this.config.max; i++) {
+			this.renderIcon(iconsContainer, i, currentValue, container);
 		}
 
 		// Description
-		const desc = container.createDiv({ cls: 'vtm-hunger-description' });
-		desc.setText(this.getHungerDescription(currentHunger));
+		const currentLevel = this.config.levels.find(
+			(l) => l.value === currentValue,
+		);
+		if (currentLevel) {
+			const desc = container.createDiv({
+				cls: 'vtm-resource-description',
+			});
+			desc.setText(currentLevel.description);
+		}
 	}
 
-	private renderHungerDie(
+	private renderIcon(
 		container: HTMLElement,
 		index: number,
-		currentHunger: number,
+		currentValue: number,
+		rootContainer: HTMLElement,
 	): void {
-		const die = container.createDiv({ cls: 'vtm-hunger-die' });
+		const icon = container.createDiv({ cls: 'vtm-resource-icon-dot' });
 
-		if (index < currentHunger) {
-			die.setText('⬢');
-			die.addClass('filled');
+		if (index < currentValue) {
+			icon.setText('⬢');
+			icon.addClass('filled');
 		} else {
-			die.setText('⬡');
+			icon.setText('⬡');
 		}
 
-		// Click to set hunger to this level
-		// Special case: clicking the first filled die when hunger=1 sets to 0
-		die.addEventListener('click', () => {
-			if (currentHunger === 1 && index === 0) {
-				this.setHunger(0, container);
+		icon.addEventListener('click', () => {
+			if (currentValue === 1 && index === 0) {
+				this.setValue(0, rootContainer);
 			} else {
-				this.setHunger(index + 1, container);
+				this.setValue(index + 1, rootContainer);
 			}
 		});
 	}
 
-	private async setHunger(
+	private async setValue(
 		value: number,
 		container: HTMLElement,
 	): Promise<void> {
-		const hungerKey = `${this.filePath}|hunger`;
-		await this.store.set(hungerKey, value);
+		const resourceKey = `${this.filePath}|${this.config.codeblock}`;
+		await this.store.set(resourceKey, value);
+		this.refresh(container);
+	}
 
-		// Re-render
+	private refresh(container: HTMLElement): void {
 		let rootContainer = container;
 		while (
 			rootContainer &&
-			!rootContainer.classList.contains('vtm-hunger-container')
+			!rootContainer.classList.contains('vtm-resource-container')
 		) {
 			rootContainer = rootContainer.parentElement!;
 		}
@@ -121,28 +136,17 @@ export class HungerView extends BaseView {
 		parentEl.empty();
 		this.register('', parentEl, {});
 	}
+}
 
-	private getHungerLabel(hunger: number): string {
-		const labels = [
-			'Sated', // 0
-			'Hungry', // 1
-			'Famished', // 2
-			'Starving', // 3
-			'Ravenous', // 4
-			'The Beast', // 5
-		];
-		return `${hunger} - ${labels[hunger]}`;
-	}
-
-	private getHungerDescription(hunger: number): string {
-		const descriptions = [
-			'You are sated. No Hunger dice.',
-			'Slightly hungry. 1 Hunger die replaces a normal die.',
-			'Hungry. 2 Hunger dice replace normal dice.',
-			'Starving. 3 Hunger dice. The Beast stirs.',
-			'Ravenous. 4 Hunger dice. Frenzy tests likely.',
-			'The Beast takes over. 5 Hunger dice. Cannot use Willpower.',
-		];
-		return descriptions[hunger];
+// VTM-specific wrapper
+export class HungerView extends ResourceTrackerView {
+	constructor(
+		app: App,
+		store: KeyValueStore,
+		filePath: string,
+		eventBus: EventBus,
+		config: ResourceConfig,
+	) {
+		super(app, store, filePath, eventBus, config);
 	}
 }

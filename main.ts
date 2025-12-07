@@ -6,10 +6,13 @@ import { HealthView } from 'lib/views/HealthView';
 import { EventBus } from 'lib/services/EventBus';
 import { WillpowerView } from 'lib/views/WillpowerView';
 import { HungerView } from 'lib/views/HungerView';
-import { HumanityView } from 'lib/views/HumanityView';
-import { PowerView } from 'lib/views/PowerView';
-import { DisciplinesView } from 'lib/views/DisciplinesView';
+import { HumanityView } from 'lib/views/MoralityTrackerView';
+import { PowerListView } from 'lib/views/PowerView';
+import { PowerSystemView } from 'lib/views/PowerSystemView';
 import { BloodPotencyView } from 'lib/views/BloodPotencyView';
+import { ExperienceTrackerView } from 'lib/views/ExperienceTrackerView';
+import { MeritsFlawsListView } from 'lib/views/MeritsFlawsView';
+import { VTM_CONFIG } from 'lib/config/GameConfig';
 
 export default class VtmUIToolkitPlugin extends Plugin {
 	store: KeyValueStore;
@@ -18,7 +21,6 @@ export default class VtmUIToolkitPlugin extends Plugin {
 	async onload() {
 		console.log('VtM Plugin loading...');
 
-		// Initialize store with plugin instance
 		this.store = new KeyValueStore(this);
 		this.eventBus = new EventBus();
 		await this.store.load();
@@ -97,6 +99,7 @@ export default class VtmUIToolkitPlugin extends Plugin {
 					this.store,
 					filePath,
 					this.eventBus,
+					VTM_CONFIG.resource, // Pass config
 				);
 				hungerView.register(source, el, ctx);
 			},
@@ -112,6 +115,7 @@ export default class VtmUIToolkitPlugin extends Plugin {
 					this.store,
 					filePath,
 					this.eventBus,
+					VTM_CONFIG.morality, // Pass morality config
 				);
 				humanityView.register(source, el, ctx);
 			},
@@ -122,11 +126,13 @@ export default class VtmUIToolkitPlugin extends Plugin {
 			'vtm-disciplines',
 			(source, el, ctx) => {
 				const filePath = ctx.sourcePath || 'unknown';
-				const disciplinesView = new DisciplinesView(
+				const disciplinesView = new PowerSystemView(
 					this.app,
+					this,
 					this.store,
 					filePath,
 					this.eventBus,
+					VTM_CONFIG.powerSystem,
 				);
 				disciplinesView.register(source, el, ctx);
 			},
@@ -134,16 +140,16 @@ export default class VtmUIToolkitPlugin extends Plugin {
 
 		// Discipline Power Card
 		this.registerMarkdownCodeBlockProcessor(
-			'vtm-power',
+			'vtm-power-list',
 			(source, el, ctx) => {
 				const filePath = ctx.sourcePath || 'unknown';
-				const powerView = new PowerView(
+				const powerListView = new PowerListView(
 					this.app,
 					this.store,
 					filePath,
 					this.eventBus,
 				);
-				powerView.register(source, el, ctx);
+				powerListView.register(source, el, ctx);
 			},
 		);
 
@@ -159,6 +165,36 @@ export default class VtmUIToolkitPlugin extends Plugin {
 					this.eventBus,
 				);
 				bloodPotencyView.register(source, el, ctx);
+			},
+		);
+
+		// Experience Track
+		this.registerMarkdownCodeBlockProcessor(
+			'vtm-experience',
+			(source, el, ctx) => {
+				const filePath = ctx.sourcePath || 'unknown';
+				const experienceView = new ExperienceTrackerView(
+					this.app,
+					this.store,
+					filePath,
+					this.eventBus,
+				);
+				experienceView.register(source, el, ctx);
+			},
+		);
+
+		// Merits & Flaws
+		this.registerMarkdownCodeBlockProcessor(
+			'vtm-merits-flaws-list',
+			(source, el, ctx) => {
+				const filePath = ctx.sourcePath || 'unknown';
+				const meritsFlawsListView = new MeritsFlawsListView(
+					this.app,
+					this.store,
+					filePath,
+					this.eventBus,
+				);
+				meritsFlawsListView.register(source, el, ctx);
 			},
 		);
 

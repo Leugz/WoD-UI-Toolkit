@@ -4,8 +4,9 @@
 @import './components/attributes.css';
 @import './components/health.css';
 @import './components/willpower.css';
-@import './components/hunger.css';
-@import './components/humanity.css';
+@import './components/resource-tracker.css';
+@import './components/morality-tracker.css';
 @import './components/disciplines.css';
-@import './components/power.css';
 @import './components/bloodPotency.css';
+@import './components/experience.css';
+@import './components/generic-card.css';

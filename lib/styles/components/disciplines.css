@@ -112,3 +112,36 @@
 
   /* ... */
 }
+
+/* Discipline Icon Styling */
+.vtm-discipline-icon {
+  width: 56px;
+  height: 56px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0 auto 8px;
+  transition: all 0.2s ease;
+  filter: brightness(0.9);
+}
+
+.vtm-discipline-card:hover .vtm-discipline-icon {
+  filter: brightness(1.1);
+  transform: scale(1.05);
+}
+
+.vtm-discipline-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Fallback text icon */
+.vtm-discipline-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: var(--text-muted);
+}
