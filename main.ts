@@ -8,9 +8,9 @@ import { WillpowerView } from 'lib/views/WillpowerView';
 import { HungerView } from 'lib/views/HungerView';
 import { HumanityView } from 'lib/views/MoralityTrackerView';
 import { PowerListView } from 'lib/views/PowerView';
-import { DisciplinesView } from 'lib/views/DisciplinesView';
+import { PowerSystemView } from 'lib/views/PowerSystemView';
 import { BloodPotencyView } from 'lib/views/BloodPotencyView';
-import { ExperienceView } from 'lib/views/ExperienceView';
+import { ExperienceTrackerView } from 'lib/views/ExperienceTrackerView';
 import { MeritsFlawsListView } from 'lib/views/MeritsFlawsView';
 import { VTM_CONFIG } from 'lib/config/GameConfig';
 
@@ -126,11 +126,13 @@ export default class VtmUIToolkitPlugin extends Plugin {
 			'vtm-disciplines',
 			(source, el, ctx) => {
 				const filePath = ctx.sourcePath || 'unknown';
-				const disciplinesView = new DisciplinesView(
+				const disciplinesView = new PowerSystemView(
 					this.app,
+					this,
 					this.store,
 					filePath,
 					this.eventBus,
+					VTM_CONFIG.powerSystem,
 				);
 				disciplinesView.register(source, el, ctx);
 			},
@@ -171,7 +173,7 @@ export default class VtmUIToolkitPlugin extends Plugin {
 			'vtm-experience',
 			(source, el, ctx) => {
 				const filePath = ctx.sourcePath || 'unknown';
-				const experienceView = new ExperienceView(
+				const experienceView = new ExperienceTrackerView(
 					this.app,
 					this.store,
 					filePath,

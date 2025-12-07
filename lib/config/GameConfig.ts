@@ -25,7 +25,7 @@ export interface PowerSystemConfig {
 	name: string;
 	singularName: string;
 	codeblock: string;
-	iconMap: Record<string, string>;
+	iconMap?: Record<string, string>;
 }
 
 export interface GameConfig {
@@ -119,20 +119,6 @@ export const VTM_CONFIG: GameConfig = {
 		name: 'Disciplines',
 		singularName: 'Discipline',
 		codeblock: 'vtm-disciplines',
-		iconMap: {
-			Animalism: '🐺',
-			Auspex: '👁️',
-			'Blood Sorcery': '🔮',
-			Celerity: '⚡',
-			Dominate: '🎭',
-			Fortitude: '🛡️',
-			Obfuscate: '👤',
-			Oblivion: '💀',
-			Potence: '💪',
-			Presence: '✨',
-			Protean: '🦇',
-			'Thin-Blood Alchemy': '⚗️',
-		},
 	},
 };
 
