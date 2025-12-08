@@ -1,4 +1,4 @@
-.vtm-generic-card-container {
+.wod-card-container {
   max-width: 1200px;
   /* increased max width to fit multiple cards */
   padding: 15px;
@@ -8,7 +8,7 @@
   margin: 0 auto;
 }
 
-.vtm-generic-card-title {
+.wod-card-title {
   margin: 0 0 12px 0;
   padding: 6px 0;
   border-bottom: 2px solid var(--interactive-accent);
@@ -19,19 +19,19 @@
   letter-spacing: 0.5px;
 }
 
-.vtm-generic-card-empty {
+.wod-card-empty {
   font-style: italic;
   color: var(--text-muted);
   padding: 10px;
 }
 
-.vtm-generic-card-list {
+.wod-card-list {
   display: grid;
   gap: 16px;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
-.vtm-generic-card-entry {
+.wod-card-entry {
   background: var(--background-primary);
   padding: 12px 16px;
   border-radius: 6px;
@@ -39,36 +39,52 @@
   transition: border-color 0.2s ease;
 }
 
-.vtm-generic-card-entry:hover {
+.wod-card-entry:hover {
   border-color: var(--interactive-accent);
   box-shadow: 0 2px 8px rgba(100, 100, 255, 0.2);
 }
 
-.vtm-generic-card-header {
+.wod-card-header {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 6px;
 }
 
-.vtm-generic-card-icon {
+.wod-card-icon {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
   font-size: 24px;
   line-height: 1;
 }
 
-.vtm-generic-card-name {
+.wod-card-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+
+  filter: brightness(0.75)
+}
+
+.wod-card-name {
   font-size: 16px;
   font-weight: 600;
   color: var(--text-normal);
   flex-grow: 1;
 }
 
-.vtm-generic-card-tags {
+.wod-card-tags {
   display: flex;
   gap: 6px;
 }
 
-.vtm-generic-card-tag {
+.wod-card-tag {
   background: rgba(147, 51, 234, 0.2);
   border: 1px solid rgb(147, 51, 234);
   color: rgb(147, 51, 234);
@@ -81,18 +97,18 @@
   user-select: none;
 }
 
-.vtm-generic-card-dots {
+.wod-card-dots {
   display: flex;
   gap: 4px;
   user-select: none;
 }
 
-.vtm-generic-card-dot {
+.wod-card-dot {
   font-size: 18px;
   color: var(--interactive-accent);
 }
 
-.vtm-generic-card-description {
+.wod-card-description {
   font-size: 13px;
   color: var(--text-muted);
   white-space: pre-wrap;
@@ -164,23 +180,23 @@
 }
 
 @media (max-width: 600px) {
-  .vtm-generic-card-container {
+  .wod-card-container {
     padding: 12px;
   }
 
-  .vtm-generic-card-entry {
+  .wod-card-entry {
     padding: 10px 12px;
   }
 
-  .vtm-generic-card-name {
+  .wod-card-name {
     font-size: 14px;
   }
 
-  .vtm-generic-card-dot {
+  .wod-card-dot {
     font-size: 16px;
   }
 
-  .vtm-generic-card-description {
+  .wod-card-description {
     font-size: 12px;
   }
 }

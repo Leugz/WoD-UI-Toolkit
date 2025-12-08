@@ -1,42 +1,25 @@
-import { App, parseYaml } from 'obsidian';
+import { App, Plugin, parseYaml } from 'obsidian';
 import { BaseView } from './BaseView';
-import { CardView, CardEntry } from './CardView'; // Import your generic CardView
+import { CardView, CardEntry } from './CardView';
 import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
 
-// Get icon by discipline name
-function getIcon(discipline?: string): string {
-	const icons: Record<string, string> = {
-		Animalism: '🐺',
-		Auspex: '👁️',
-		'Blood Sorcery': '🔮',
-		Celerity: '⚡',
-		Dominate: '🎭',
-		Fortitude: '🛡️',
-		Obfuscate: '👤',
-		Oblivion: '💀',
-		Potence: '💪',
-		Presence: '✨',
-		Protean: '🦇',
-		'Thin-Blood Alchemy': '⚗️',
-	};
-	return icons[discipline || ''] || '◆';
-}
-
 export class PowerListView extends BaseView {
-	codeblock = 'vtm-power-list';
+	codeblock = 'wod-powers-list';
 	private store: KeyValueStore;
 	private filePath: string;
 	private eventBus: EventBus;
-	private containerEl: HTMLElement | null = null;
+	private plugin: Plugin;
 
 	constructor(
 		app: App,
+		plugin: Plugin,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
 	) {
 		super(app);
+		this.plugin = plugin;
 		this.store = store;
 		this.filePath = filePath;
 		this.eventBus = eventBus;
@@ -44,21 +27,15 @@ export class PowerListView extends BaseView {
 
 	register(source: string, el: HTMLElement, ctx: any): void {
 		el.empty();
-		this.containerEl = el;
 
-		// Parse YAML powers list
 		let powers: any[] = [];
 		try {
 			powers = parseYaml(source) || [];
 		} catch {
-			el.createDiv({
-				text: '⚠️ Invalid YAML format',
-				cls: 'vtm-power-error',
-			});
+			el.createDiv({ text: '⚠️ Invalid YAML format', cls: 'wod-error' });
 			return;
 		}
 
-		// Map powers to generic CardEntry[]
 		const entries: CardEntry[] = powers.map((power) => {
 			const tags = [];
 			if (power.discipline) tags.push(power.discipline);
@@ -67,20 +44,33 @@ export class PowerListView extends BaseView {
 			return {
 				name: power.name || 'Unnamed',
 				description: power.description,
-				rating: undefined, // Powers don't use dots rating here
+				rating: undefined,
 				tags,
-				icon: getIcon(power.discipline),
+				icon: this.getPowerIconUrl(power.discipline),
 			};
 		});
 
-		// Use CardView
 		const cardView = new CardView(this.app, {
-			title: 'Discipline Powers',
+			title: 'Powers / Gifts',
 			entries,
 			maxRatingDefault: 5,
-			dotColor: 'rgb(147, 51, 234)', // Purple
+			dotColor: 'rgb(147, 51, 234)',
 		});
 
 		cardView.register('', el, ctx);
+	}
+
+	private getPowerIconUrl(powerName?: string): string {
+		if (!powerName) return '◆';
+
+		let fileName = powerName;
+		if (powerName === 'Blood Sorcery') fileName = 'Thaumaturgy';
+		if (powerName === 'Thin-Blood Alchemy') fileName = 'Thinblood_alchemy';
+
+		const slug = fileName.replace(/ /g, '_');
+		const pluginId = this.plugin.manifest.id;
+		const relativePath = `${this.app.vault.configDir}/plugins/${pluginId}/assets/disciplines/${slug}.png`;
+
+		return this.app.vault.adapter.getResourcePath(relativePath);
 	}
 }

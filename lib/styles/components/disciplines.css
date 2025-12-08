@@ -133,8 +133,11 @@
 .vtm-discipline-icon-img {
   width: 100%;
   height: 100%;
+
   object-fit: contain;
   display: block;
+
+  filter: brightness(0.75)
 }
 
 /* Fallback text icon */

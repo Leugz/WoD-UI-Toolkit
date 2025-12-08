@@ -1,9 +1,9 @@
 {
-	"id": "vtm-ui-toolkit",
-	"name": "VtM UI Toolkit",
+	"id": "wod-ui-toolkit",
+	"name": "World of Darkness UI Toolkit",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "UI elements for Vampire: The Masquerade character sheets",
+	"description": "UI elements for World of Darkness character sheets",
 	"author": "Leugz_",
 	"authorUrl": "https://obsidian.md",
 	"fundingUrl": "https://obsidian.md/pricing",

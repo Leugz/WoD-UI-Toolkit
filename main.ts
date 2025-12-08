@@ -1,207 +1,226 @@
 import { Plugin } from 'obsidian';
+import { KeyValueStore } from './lib/services/KeyValueStore';
+import { EventBus } from 'lib/services/EventBus';
+import { VTM_CONFIG } from 'lib/config/GameConfig';
+
+// views
 import { SkillsView } from './lib/views/SkillsView';
 import { AttributesView } from './lib/views/AttributesView';
-import { KeyValueStore } from './lib/services/KeyValueStore';
 import { HealthView } from 'lib/views/HealthView';
-import { EventBus } from 'lib/services/EventBus';
 import { WillpowerView } from 'lib/views/WillpowerView';
-import { HungerView } from 'lib/views/HungerView';
-import { HumanityView } from 'lib/views/MoralityTrackerView';
-import { PowerListView } from 'lib/views/PowerView';
+import { ResourceTrackerView } from 'lib/views/HungerView';
+import { MoralityTrackerView } from 'lib/views/MoralityTrackerView';
 import { PowerSystemView } from 'lib/views/PowerSystemView';
+import { PowerListView } from 'lib/views/PowerView';
 import { BloodPotencyView } from 'lib/views/BloodPotencyView';
 import { ExperienceTrackerView } from 'lib/views/ExperienceTrackerView';
 import { MeritsFlawsListView } from 'lib/views/MeritsFlawsView';
-import { VTM_CONFIG } from 'lib/config/GameConfig';
 
-export default class VtmUIToolkitPlugin extends Plugin {
+export default class WodUIToolkitPlugin extends Plugin {
 	store: KeyValueStore;
 	eventBus: EventBus;
 
 	async onload() {
-		console.log('VtM Plugin loading...');
+		console.log('WoD UI Toolkit loading...');
 
 		this.store = new KeyValueStore(this);
 		this.eventBus = new EventBus();
 		await this.store.load();
 
-		const allData = this.store.getAll();
-		const keys = Object.keys(allData);
-		console.log('Store loaded with', keys.length, 'entries');
+		// CORE WOD TRACKERS
 
-		// Skills
-		this.registerMarkdownCodeBlockProcessor(
-			'vtm-skills',
-			(source, el, ctx) => {
-				const filePath = ctx.sourcePath || 'unknown';
-				const skillsView = new SkillsView(
-					this.app,
-					this.store,
-					filePath,
-				);
-				skillsView.register(source, el, ctx);
-			},
-		);
+		const registerResource = (codeblockId: string) => {
+			this.registerMarkdownCodeBlockProcessor(
+				codeblockId,
+				(source, el, ctx) => {
+					const view = new ResourceTrackerView(
+						this.app,
+						this.store,
+						ctx.sourcePath || 'unknown',
+						this.eventBus,
+						VTM_CONFIG.resource,
+					);
+					view.register(source, el, ctx);
+				},
+			);
+		};
+		registerResource('wod-resource');
+		registerResource('vtm-hunger');
+
+		const registerMorality = (codeblockId: string) => {
+			this.registerMarkdownCodeBlockProcessor(
+				codeblockId,
+				(source, el, ctx) => {
+					const view = new MoralityTrackerView(
+						this.app,
+						this.store,
+						ctx.sourcePath || 'unknown',
+						this.eventBus,
+						VTM_CONFIG.morality,
+					);
+					view.register(source, el, ctx);
+				},
+			);
+		};
+		registerMorality('wod-morality');
+		registerMorality('vtm-humanity');
+
+		// Disciplines
+		const registerPowerSystem = (codeblockId: string) => {
+			this.registerMarkdownCodeBlockProcessor(
+				codeblockId,
+				(source, el, ctx) => {
+					const view = new PowerSystemView(
+						this.app,
+						this,
+						this.store,
+						ctx.sourcePath || 'unknown',
+						this.eventBus,
+						VTM_CONFIG.powerSystem,
+					);
+					view.register(source, el, ctx);
+				},
+			);
+		};
+		registerPowerSystem('wod-powers');
+		registerPowerSystem('vtm-disciplines');
+
+		const registerPowerList = (codeblockId: string) => {
+			this.registerMarkdownCodeBlockProcessor(
+				codeblockId,
+				(source, el, ctx) => {
+					const view = new PowerListView(
+						this.app,
+						this,
+						this.store,
+						ctx.sourcePath || 'unknown',
+						this.eventBus,
+					);
+					view.register(source, el, ctx);
+				},
+			);
+		};
+		registerPowerList('wod-power-list');
+		registerPowerList('vtm-power-list');
+
+		// CHARACTER SHEET FUNDAMENTALS
+
+		const registerHealth = (codeblockId: string) => {
+			this.registerMarkdownCodeBlockProcessor(
+				codeblockId,
+				(source, el, ctx) => {
+					const view = new HealthView(
+						this.app,
+						this.store,
+						ctx.sourcePath,
+						this.eventBus,
+					);
+					view.register(source, el, ctx);
+				},
+			);
+		};
+		registerHealth('wod-health');
+		registerHealth('vtm-health');
+
+		const registerWillpower = (codeblockId: string) => {
+			this.registerMarkdownCodeBlockProcessor(
+				codeblockId,
+				(source, el, ctx) => {
+					const view = new WillpowerView(
+						this.app,
+						this.store,
+						ctx.sourcePath,
+						this.eventBus,
+					);
+					view.register(source, el, ctx);
+				},
+			);
+		};
+		registerWillpower('wod-willpower');
+		registerWillpower('vtm-willpower');
+
+		const registerXp = (codeblockId: string) => {
+			this.registerMarkdownCodeBlockProcessor(
+				codeblockId,
+				(source, el, ctx) => {
+					const view = new ExperienceTrackerView(
+						this.app,
+						this.store,
+						ctx.sourcePath,
+						this.eventBus,
+					);
+					view.register(source, el, ctx);
+				},
+			);
+		};
+		registerXp('wod-xp');
+		registerXp('vtm-experience');
+
+		// Merits & Flaws
+		const registerMerits = (codeblockId: string) => {
+			this.registerMarkdownCodeBlockProcessor(
+				codeblockId,
+				(source, el, ctx) => {
+					const view = new MeritsFlawsListView(
+						this.app,
+						this.store,
+						ctx.sourcePath,
+						this.eventBus,
+					);
+					view.register(source, el, ctx);
+				},
+			);
+		};
+		registerMerits('wod-merits');
+		registerMerits('vtm-merits-flaws-list');
+
+		// LEGACY / SPECIFIC COMPONENTS (These might need refactoring)
 
 		// Attributes
 		this.registerMarkdownCodeBlockProcessor(
 			'vtm-attributes',
 			(source, el, ctx) => {
-				const filePath = ctx.sourcePath || 'unknown';
-				const attributesView = new AttributesView(
+				const view = new AttributesView(
 					this.app,
 					this.store,
-					filePath,
+					ctx.sourcePath,
 					this.eventBus,
 				);
-				attributesView.register(source, el, ctx);
+				view.register(source, el, ctx);
 			},
 		);
 
-		// Health
+		// Skills
 		this.registerMarkdownCodeBlockProcessor(
-			'vtm-health',
-			(source, element, ctx) => {
-				const filePath = ctx.sourcePath || 'unknown';
-				const healthView = new HealthView(
-					this.app,
-					this.store,
-					filePath,
-					this.eventBus,
-				);
-
-				healthView.register(source, element, ctx);
-			},
-		);
-
-		// Willpower
-		this.registerMarkdownCodeBlockProcessor(
-			'vtm-willpower',
-			(source, element, ctx) => {
-				const filePath = ctx.sourcePath || 'unknown';
-				const willpowerView = new WillpowerView(
-					this.app,
-					this.store,
-					filePath,
-					this.eventBus,
-				);
-				willpowerView.register(source, element, ctx);
-			},
-		);
-
-		// Hunger:
-		this.registerMarkdownCodeBlockProcessor(
-			'vtm-hunger',
+			'vtm-skills',
 			(source, el, ctx) => {
-				const filePath = ctx.sourcePath || 'unknown';
-				const hungerView = new HungerView(
+				const view = new SkillsView(
 					this.app,
 					this.store,
-					filePath,
-					this.eventBus,
-					VTM_CONFIG.resource, // Pass config
+					ctx.sourcePath,
 				);
-				hungerView.register(source, el, ctx);
+				view.register(source, el, ctx);
 			},
 		);
 
-		// Humanity
-		this.registerMarkdownCodeBlockProcessor(
-			'vtm-humanity',
-			(source, el, ctx) => {
-				const filePath = ctx.sourcePath || 'unknown';
-				const humanityView = new HumanityView(
-					this.app,
-					this.store,
-					filePath,
-					this.eventBus,
-					VTM_CONFIG.morality, // Pass morality config
-				);
-				humanityView.register(source, el, ctx);
-			},
-		);
-
-		// Disciplines
-		this.registerMarkdownCodeBlockProcessor(
-			'vtm-disciplines',
-			(source, el, ctx) => {
-				const filePath = ctx.sourcePath || 'unknown';
-				const disciplinesView = new PowerSystemView(
-					this.app,
-					this,
-					this.store,
-					filePath,
-					this.eventBus,
-					VTM_CONFIG.powerSystem,
-				);
-				disciplinesView.register(source, el, ctx);
-			},
-		);
-
-		// Discipline Power Card
-		this.registerMarkdownCodeBlockProcessor(
-			'vtm-power-list',
-			(source, el, ctx) => {
-				const filePath = ctx.sourcePath || 'unknown';
-				const powerListView = new PowerListView(
-					this.app,
-					this.store,
-					filePath,
-					this.eventBus,
-				);
-				powerListView.register(source, el, ctx);
-			},
-		);
-
-		// Blood Potency
+		// Blood Potency (Very specific to VtM/Requiem)
 		this.registerMarkdownCodeBlockProcessor(
 			'vtm-blood-potency',
 			(source, el, ctx) => {
-				const filePath = ctx.sourcePath || 'unknown';
-				const bloodPotencyView = new BloodPotencyView(
+				const view = new BloodPotencyView(
 					this.app,
 					this.store,
-					filePath,
+					ctx.sourcePath,
 					this.eventBus,
 				);
-				bloodPotencyView.register(source, el, ctx);
+				view.register(source, el, ctx);
 			},
 		);
 
-		// Experience Track
-		this.registerMarkdownCodeBlockProcessor(
-			'vtm-experience',
-			(source, el, ctx) => {
-				const filePath = ctx.sourcePath || 'unknown';
-				const experienceView = new ExperienceTrackerView(
-					this.app,
-					this.store,
-					filePath,
-					this.eventBus,
-				);
-				experienceView.register(source, el, ctx);
-			},
-		);
-
-		// Merits & Flaws
-		this.registerMarkdownCodeBlockProcessor(
-			'vtm-merits-flaws-list',
-			(source, el, ctx) => {
-				const filePath = ctx.sourcePath || 'unknown';
-				const meritsFlawsListView = new MeritsFlawsListView(
-					this.app,
-					this.store,
-					filePath,
-					this.eventBus,
-				);
-				meritsFlawsListView.register(source, el, ctx);
-			},
-		);
-
-		console.log('VtM Plugin loaded!');
+		console.log('WoD UI Toolkit loaded!');
 	}
 
 	onunload() {
-		console.log('VtM Plugin unloaded!');
+		console.log('WoD UI Toolkit unloaded!');
 	}
 }
