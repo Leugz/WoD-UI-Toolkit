@@ -123,7 +123,7 @@ export class PowerSystemView extends BaseView {
 		const disciplineSlug = fileName.replace(/ /g, '_');
 
 		const pluginId = this.plugin.manifest.id;
-		const relativePath = `${this.app.vault.configDir}/plugins/${pluginId}/assets/disciplines/${disciplineSlug}.png`;
+		const relativePath = `${this.app.vault.configDir}/plugins/${pluginId}/assets/vtm/disciplines/${disciplineSlug}.png`;
 
 		const resourceUrl =
 			this.app.vault.adapter.getResourcePath(relativePath);

@@ -44,7 +44,7 @@ export const VTM_CONFIG: GameConfig = {
 		name: 'Hunger',
 		codeblock: 'vtm-hunger',
 		max: 5,
-		icon: '🩸',
+		icon: 'assets/vtm/misc/BestialFail.png',
 		levels: [
 			{
 				value: 0,
@@ -123,21 +123,70 @@ export const VTM_CONFIG: GameConfig = {
 };
 
 // WIP
-export const WTA_CONFIG: Partial<GameConfig> = {
+export const WTA_CONFIG: GameConfig = {
 	id: 'wta',
 	name: 'Werewolf: The Apocalypse',
 	resource: {
 		name: 'Rage',
-		codeblock: 'wta-rage',
+		codeblock: 'wod-resource',
 		max: 5,
 		icon: '🐺',
-		levels: [], // To be defined
+		levels: [
+			{ value: 0, label: 'Calm', description: 'No Rage.' },
+			{ value: 1, label: 'Simmering', description: '1 Rage die.' },
+			{ value: 2, label: 'Angered', description: '2 Rage dice.' },
+			{ value: 3, label: 'Furious', description: '3 Rage dice.' },
+			{ value: 4, label: 'Enraged', description: '4 Rage dice.' },
+			{
+				value: 5,
+				label: 'Frenzied',
+				description: '5 Rage dice. Brutal outcome likely.',
+			},
+		],
 	},
-	// ... other configs
+	morality: {
+		name: 'Harmony',
+		codeblock: 'wod-morality',
+		stainName: 'Touchstones',
+		defaultValue: 7,
+		labels: [
+			'Dysphoria',
+			'Dysphoria',
+			'Dysphoria',
+			'Discordant',
+			'Discordant',
+			'Balanced',
+			'Balanced',
+			'Harmonious',
+			'Harmonious',
+			'Ascendant',
+			'Ascendant',
+		],
+		descriptions: [
+			'Total disconnection from Gaia.',
+			'Spiritually lost.',
+			'Spiritually lost.',
+			'Out of balance.',
+			'Out of balance.',
+			'Balanced.',
+			'Balanced.',
+			'Attuned.',
+			'Attuned.',
+			'Ascendant.',
+			'Ascendant.',
+		],
+		hasStains: false, // W5 uses a different system
+		stainFormula: (m) => 0,
+	},
+	powerSystem: {
+		name: 'Gifts',
+		singularName: 'Gift',
+		codeblock: 'wod-powers',
+	},
 };
 
 // Config registry
 export const GAME_CONFIGS: Record<string, GameConfig> = {
 	vtm: VTM_CONFIG,
-	// wta: WTA_CONFIG as GameConfig, // When ready
+	wta: WTA_CONFIG,
 };

@@ -1,14 +1,19 @@
 import { Plugin } from 'obsidian';
 import { KeyValueStore } from './lib/services/KeyValueStore';
 import { EventBus } from 'lib/services/EventBus';
-import { VTM_CONFIG } from 'lib/config/GameConfig';
+import { VTM_CONFIG, WTA_CONFIG, GameConfig } from 'lib/config/GameConfig';
+import {
+	WodSettings,
+	DEFAULT_SETTINGS,
+	WodSettingsTab,
+} from 'lib/settings/Settings';
 
 // views
 import { SkillsView } from './lib/views/SkillsView';
 import { AttributesView } from './lib/views/AttributesView';
 import { HealthView } from 'lib/views/HealthView';
 import { WillpowerView } from 'lib/views/WillpowerView';
-import { ResourceTrackerView } from 'lib/views/HungerView';
+import { ResourceTrackerView } from 'lib/views/ResourceTrackerView';
 import { MoralityTrackerView } from 'lib/views/MoralityTrackerView';
 import { PowerSystemView } from 'lib/views/PowerSystemView';
 import { PowerListView } from 'lib/views/PowerView';
@@ -19,13 +24,27 @@ import { MeritsFlawsListView } from 'lib/views/MeritsFlawsView';
 export default class WodUIToolkitPlugin extends Plugin {
 	store: KeyValueStore;
 	eventBus: EventBus;
+	settings: WodSettings;
+	activeConfig: GameConfig;
 
 	async onload() {
 		console.log('WoD UI Toolkit loading...');
 
+		await this.loadSettings();
+
+		if (this.settings.gameSystem == 'wta') {
+			this.activeConfig = WTA_CONFIG;
+		} else {
+			this.activeConfig = VTM_CONFIG;
+		}
+
+		console.log(`Loaded configuration for: ${this.activeConfig.name}`);
+
 		this.store = new KeyValueStore(this);
 		this.eventBus = new EventBus();
 		await this.store.load();
+
+		this.addSettingTab(new WodSettingsTab(this.app, this));
 
 		// CORE WOD TRACKERS
 
@@ -35,10 +54,11 @@ export default class WodUIToolkitPlugin extends Plugin {
 				(source, el, ctx) => {
 					const view = new ResourceTrackerView(
 						this.app,
+						this,
 						this.store,
 						ctx.sourcePath || 'unknown',
 						this.eventBus,
-						VTM_CONFIG.resource,
+						this.activeConfig.resource,
 					);
 					view.register(source, el, ctx);
 				},
@@ -46,6 +66,7 @@ export default class WodUIToolkitPlugin extends Plugin {
 		};
 		registerResource('wod-resource');
 		registerResource('vtm-hunger');
+		registerResource('wta-rage');
 
 		const registerMorality = (codeblockId: string) => {
 			this.registerMarkdownCodeBlockProcessor(
@@ -56,7 +77,7 @@ export default class WodUIToolkitPlugin extends Plugin {
 						this.store,
 						ctx.sourcePath || 'unknown',
 						this.eventBus,
-						VTM_CONFIG.morality,
+						this.activeConfig.morality,
 					);
 					view.register(source, el, ctx);
 				},
@@ -64,6 +85,7 @@ export default class WodUIToolkitPlugin extends Plugin {
 		};
 		registerMorality('wod-morality');
 		registerMorality('vtm-humanity');
+		registerMorality('wta-harmony');
 
 		// Disciplines
 		const registerPowerSystem = (codeblockId: string) => {
@@ -76,7 +98,7 @@ export default class WodUIToolkitPlugin extends Plugin {
 						this.store,
 						ctx.sourcePath || 'unknown',
 						this.eventBus,
-						VTM_CONFIG.powerSystem,
+						this.activeConfig.powerSystem,
 					);
 					view.register(source, el, ctx);
 				},
@@ -222,5 +244,17 @@ export default class WodUIToolkitPlugin extends Plugin {
 
 	onunload() {
 		console.log('WoD UI Toolkit unloaded!');
+	}
+
+	async loadSettings() {
+		this.settings = Object.assign(
+			{},
+			DEFAULT_SETTINGS,
+			await this.loadData(),
+		);
+	}
+
+	async saveSettings() {
+		await this.saveData(this.settings);
 	}
 }

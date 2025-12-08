@@ -1,4 +1,4 @@
-import { App } from 'obsidian';
+import { App, Plugin } from 'obsidian';
 import { BaseView } from './BaseView';
 import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
@@ -11,15 +11,18 @@ export class ResourceTrackerView extends BaseView {
 	private eventBus: EventBus;
 	private config: ResourceConfig;
 	private containerEl: HTMLElement | null = null;
+	private plugin: Plugin;
 
 	constructor(
 		app: App,
+		plugin: Plugin,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
 		config: ResourceConfig,
 	) {
 		super(app);
+		this.plugin = plugin;
 		this.store = store;
 		this.filePath = filePath;
 		this.eventBus = eventBus;
@@ -39,8 +42,21 @@ export class ResourceTrackerView extends BaseView {
 		const header = container.createDiv({ cls: 'vtm-resource-header' });
 		const titleDiv = header.createDiv({ cls: 'vtm-resource-title-group' });
 
-		const icon = titleDiv.createSpan({ cls: 'vtm-resource-icon' });
-		icon.setText(this.config.icon);
+		const iconSpan = titleDiv.createSpan({ cls: 'vtm-resource-icon' });
+
+		if (
+			this.config.icon.endsWith('.png') ||
+			this.config.icon.includes('/')
+		) {
+			const iconPath = `${this.app.vault.configDir}/plugins/${this.plugin.manifest.id}/${this.config.icon}`;
+			const iconUrl = this.app.vault.adapter.getResourcePath(iconPath);
+
+			iconSpan.createEl('img', {
+				attr: { src: iconUrl, alt: this.config.name },
+			});
+		} else {
+			iconSpan.setText(this.config.icon);
+		}
 
 		titleDiv.createEl('h3', {
 			text: this.config.name,
@@ -54,10 +70,10 @@ export class ResourceTrackerView extends BaseView {
 		const resetBtn = rightSide.createEl('button', {
 			text: '↻',
 			cls: 'vtm-resource-reset-btn',
-			attr: { 'aria-label': 'Reset to 0' },
+			attr: { 'aria-label': 'Reset to 1' },
 		});
 		resetBtn.addEventListener('click', () => {
-			this.setValue(0, container);
+			this.setValue(1, container);
 		});
 
 		const level = this.config.levels.find((l) => l.value === currentValue);
@@ -142,11 +158,12 @@ export class ResourceTrackerView extends BaseView {
 export class HungerView extends ResourceTrackerView {
 	constructor(
 		app: App,
+		plugin: Plugin,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
 		config: ResourceConfig,
 	) {
-		super(app, store, filePath, eventBus, config);
+		super(app, plugin, store, filePath, eventBus, config);
 	}
 }

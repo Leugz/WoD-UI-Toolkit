@@ -69,7 +69,7 @@ export class PowerListView extends BaseView {
 
 		const slug = fileName.replace(/ /g, '_');
 		const pluginId = this.plugin.manifest.id;
-		const relativePath = `${this.app.vault.configDir}/plugins/${pluginId}/assets/disciplines/${slug}.png`;
+		const relativePath = `${this.app.vault.configDir}/plugins/${pluginId}/assets/vtm/disciplines/${slug}.png`;
 
 		return this.app.vault.adapter.getResourcePath(relativePath);
 	}
