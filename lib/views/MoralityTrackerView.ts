@@ -31,7 +31,7 @@ export class MoralityTrackerView extends BaseView {
 		el.empty();
 		this.containerEl = el;
 
-		const container = el.createDiv({ cls: 'vtm-humanity-container' });
+		const container = el.createDiv({ cls: 'wod-morality-container' });
 
 		// Get current morality (0-10)
 		const moralityKey = `${this.filePath}|${this.config.codeblock}`;
@@ -58,20 +58,20 @@ export class MoralityTrackerView extends BaseView {
 		const overflowStains = Math.max(0, currentStains - maxStains);
 
 		// Header with inline reset button
-		const header = container.createDiv({ cls: 'vtm-humanity-header' });
+		const header = container.createDiv({ cls: 'wod-morality-header' });
 		header.createEl('h3', {
 			text: this.config.name,
-			cls: 'vtm-humanity-title',
+			cls: 'wod-morality-title',
 		});
 
 		const rightSide = header.createDiv({
-			cls: 'vtm-humanity-header-right',
+			cls: 'wod-morality-header-right',
 		});
 
 		// Reset button
 		const resetBtn = rightSide.createEl('button', {
 			text: '↻',
-			cls: 'vtm-humanity-reset-btn',
+			cls: 'wod-morality-reset-btn',
 			attr: { 'aria-label': `Reset to ${this.config.defaultValue}` },
 		});
 		resetBtn.addEventListener('click', () => {
@@ -83,7 +83,7 @@ export class MoralityTrackerView extends BaseView {
 
 		// Morality level
 		const moralityLevel = rightSide.createDiv({
-			cls: 'vtm-humanity-level',
+			cls: 'wod-morality-level',
 		});
 		moralityLevel.setText(this.getMoralityLabel(currentMorality));
 
@@ -95,7 +95,7 @@ export class MoralityTrackerView extends BaseView {
 
 		// Morality icons display (1 to 10)
 		const iconsContainer = container.createDiv({
-			cls: 'vtm-humanity-icons',
+			cls: 'wod-morality-icons',
 		});
 
 		for (let i = 1; i <= 10; i++) {
@@ -108,7 +108,7 @@ export class MoralityTrackerView extends BaseView {
 		}
 
 		// Description
-		const desc = container.createDiv({ cls: 'vtm-humanity-description' });
+		const desc = container.createDiv({ cls: 'wod-morality-description' });
 		desc.setText(this.getMoralityDescription(currentMorality));
 
 		// Stains section (if applicable)
@@ -129,7 +129,7 @@ export class MoralityTrackerView extends BaseView {
 		currentMorality: number,
 		rootContainer: HTMLElement,
 	): void {
-		const icon = container.createDiv({ cls: 'vtm-humanity-icon' });
+		const icon = container.createDiv({ cls: 'wod-morality-icon' });
 
 		if (value <= currentMorality) {
 			icon.setText('◆');
@@ -156,23 +156,23 @@ export class MoralityTrackerView extends BaseView {
 		overflowStains: number,
 	): void {
 		const stainsSection = container.createDiv({
-			cls: 'vtm-stains-section',
+			cls: 'wod-stains-section',
 		});
 
 		const stainsHeader = stainsSection.createDiv({
-			cls: 'vtm-stains-header',
+			cls: 'wod-stains-header',
 		});
 		stainsHeader.createEl('span', {
 			text: this.config.stainName,
-			cls: 'vtm-stains-label',
+			cls: 'wod-stains-label',
 		});
 
 		const stainsRightSide = stainsHeader.createDiv({
-			cls: 'vtm-stains-rightside',
+			cls: 'wod-stains-rightside',
 		});
 
 		const stainsCount = stainsRightSide.createDiv({
-			cls: 'vtm-stains-count',
+			cls: 'wod-stains-count',
 		});
 		stainsCount.setText(`${currentStains}/${maxStains}`);
 
@@ -183,7 +183,7 @@ export class MoralityTrackerView extends BaseView {
 		// Clear stains button
 		const clearBtn = stainsRightSide.createEl('button', {
 			text: '↻',
-			cls: 'vtm-stains-btn',
+			cls: 'wod-stains-btn',
 			attr: { 'aria-label': 'Clear all stains' },
 		});
 		clearBtn.addEventListener('click', () => {
@@ -192,7 +192,7 @@ export class MoralityTrackerView extends BaseView {
 
 		// Stain boxes (show max capacity)
 		const stainsContainer = stainsSection.createDiv({
-			cls: 'vtm-stains-boxes',
+			cls: 'wod-stains-boxes',
 		});
 
 		for (let i = 0; i < maxStains; i++) {
@@ -211,7 +211,7 @@ export class MoralityTrackerView extends BaseView {
 		currentStains: number,
 		rootContainer: HTMLElement,
 	): void {
-		const box = container.createDiv({ cls: 'vtm-stain-box' });
+		const box = container.createDiv({ cls: 'wod-stain-box' });
 
 		if (index < currentStains) {
 			box.setText('■');
@@ -235,18 +235,18 @@ export class MoralityTrackerView extends BaseView {
 		overflowStains: number,
 	): void {
 		const impairmentWarning = container.createDiv({
-			cls: 'vtm-impairment-warning',
+			cls: 'wod-impairment-warning',
 		});
 
 		const warningTitle = impairmentWarning.createEl('div', {
-			cls: 'vtm-impairment-title',
+			cls: 'wod-impairment-title',
 		});
 		warningTitle.setText(
 			`⚠️ IMPAIRED (${overflowStains} overflow stain${overflowStains > 1 ? 's' : ''})`,
 		);
 
 		const penaltiesList = impairmentWarning.createEl('ul', {
-			cls: 'vtm-impairment-penalties',
+			cls: 'wod-impairment-penalties',
 		});
 		penaltiesList.createEl('li', { text: '-2 dice to all pools (regret)' });
 		penaltiesList.createEl('li', {
@@ -268,7 +268,7 @@ export class MoralityTrackerView extends BaseView {
 		});
 
 		const note = impairmentWarning.createEl('div', {
-			cls: 'vtm-impairment-note',
+			cls: 'wod-impairment-note',
 		});
 		note.setText(
 			'Impairment lasts until Remorse test at end of session or you snap out.',
@@ -314,7 +314,7 @@ export class MoralityTrackerView extends BaseView {
 		let rootContainer = container;
 		while (
 			rootContainer &&
-			!rootContainer.classList.contains('vtm-humanity-container')
+			!rootContainer.classList.contains('wod-morality-container')
 		) {
 			rootContainer = rootContainer.parentElement!;
 		}

@@ -153,7 +153,7 @@ export default class WodUIToolkitPlugin extends Plugin {
 				},
 			);
 		};
-		registerHealth('wod-health');
+		registerHealth('vtm-health');
 		registerHealth('wod-health');
 
 		const registerWillpower = (codeblockId: string) => {
@@ -170,7 +170,7 @@ export default class WodUIToolkitPlugin extends Plugin {
 				},
 			);
 		};
-		registerWillpower('wod-willpower');
+		registerWillpower('vtm-willpower');
 		registerWillpower('wod-willpower');
 
 		const registerXp = (codeblockId: string) => {
