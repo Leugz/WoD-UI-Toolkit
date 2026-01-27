@@ -43,7 +43,7 @@ export class AttributesView extends BaseView {
 		attributeList: string[],
 	): void {
 		const section = container.createDiv({ cls: 'vtm-attribute-category' });
-		section.createEl('h3', { text: category, cls: 'vtm-category-title' });
+		section.createEl('h3', { text: category, cls: 'wod-category-title' });
 
 		attributeList.forEach((attribute) => {
 			this.renderAttribute(section, attribute);

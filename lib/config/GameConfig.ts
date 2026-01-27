@@ -120,7 +120,7 @@ export const VTM_CONFIG: GameConfig = {
 	powerSystem: {
 		name: 'Disciplines',
 		singularName: 'Discipline',
-		codeblock: 'vtm-disciplines',
+		codeblock: 'wod-powers',
 	},
 
 	attributes: {

@@ -13,7 +13,7 @@
 }
 
 /* Category Section */
-.vtm-skill-category {
+.wod-skill-category {
   background: var(--background-primary);
   padding: 12px;
   border-radius: 6px;
@@ -21,7 +21,7 @@
 }
 
 /* Category Title */
-.vtm-category-title {
+.wod-category-title {
   margin: 0 0 12px 0;
   padding: 6px 0;
   border-bottom: 2px solid var(--text-accent);
@@ -51,7 +51,7 @@
 }
 
 /* Skill Name */
-.vtm-skill-name {
+.wod-skill-name {
   font-size: 13px;
   color: var(--text-normal);
   font-weight: 500;
@@ -107,7 +107,7 @@
     padding: 8px 6px;
   }
 
-  .vtm-skill-name {
+  .wod-skill-name {
     font-size: 12px;
   }
 

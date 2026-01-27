@@ -4,7 +4,7 @@ import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
 
 export class WillpowerView extends BaseView {
-	codeblock = 'vtm-willpower';
+	codeblock = 'wod-willpower';
 	private store: KeyValueStore;
 	private filePath: string;
 	private eventBus: EventBus;
@@ -40,7 +40,7 @@ export class WillpowerView extends BaseView {
 		el.empty();
 		this.containerEl = el;
 
-		const container = el.createDiv({ cls: 'vtm-willpower-container' });
+		const container = el.createDiv({ cls: 'wod-willpower-container' });
 
 		// Calculate max willpower (Composure + Resolve)
 		const composureKey = `${this.filePath}|attribute.Composure`;
@@ -60,20 +60,20 @@ export class WillpowerView extends BaseView {
 		}
 
 		// Header with inline reset button
-		const header = container.createDiv({ cls: 'vtm-willpower-header' });
+		const header = container.createDiv({ cls: 'wod-willpower-header' });
 		header.createEl('h3', {
 			text: 'Willpower',
-			cls: 'vtm-willpower-title',
+			cls: 'wod-willpower-title',
 		});
 
 		const rightSide = header.createDiv({
-			cls: 'vtm-willpower-header-right',
+			cls: 'wod-willpower-header-right',
 		});
 
 		// Reset button first
 		const resetBtn = rightSide.createEl('button', {
 			text: '↻',
-			cls: 'vtm-willpower-reset-btn',
+			cls: 'wod-willpower-reset-btn',
 			attr: { 'aria-label': 'Reset to max' },
 		});
 		resetBtn.addEventListener('click', () => {
@@ -81,7 +81,7 @@ export class WillpowerView extends BaseView {
 		});
 
 		// Counter second
-		const counter = rightSide.createDiv({ cls: 'vtm-willpower-counter' });
+		const counter = rightSide.createDiv({ cls: 'wod-willpower-counter' });
 		counter.setText(`${currentWillpower} / ${maxWillpower}`);
 
 		// Willpower boxes
@@ -130,7 +130,7 @@ export class WillpowerView extends BaseView {
 		let rootContainer = container;
 		while (
 			rootContainer &&
-			!rootContainer.classList.contains('vtm-willpower-container')
+			!rootContainer.classList.contains('wod-willpower-container')
 		) {
 			rootContainer = rootContainer.parentElement!;
 		}

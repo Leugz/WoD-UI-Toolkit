@@ -1,0 +1,51 @@
+.wod-mf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.wod-mf-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wod-mf-section-title {
+  font-size: 1.1em;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--background-modifier-border);
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+
+.wod-mf-section-title.merit {
+  color: var(--text-success, #22c55e);
+  border-color: var(--text-success, #22c55e);
+}
+
+.wod-mf-section-title.flaw {
+  color: var(--text-error, #ef4444);
+  border-color: var(--text-error, #ef4444);
+}
+
+.wod-mf-error {
+  color: var(--text-error);
+  padding: 1rem;
+  border: 1px solid var(--text-error);
+  border-radius: 4px;
+}
+
+.wod-mf-empty {
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .wod-mf-grid {
+    grid-template-columns: 1fr;
+  }
+}

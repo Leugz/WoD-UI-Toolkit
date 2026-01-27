@@ -34,8 +34,8 @@ export class SkillsView extends BaseView {
 		category: string,
 		skillList: string[],
 	): void {
-		const section = container.createDiv({ cls: 'vtm-skill-category' });
-		section.createEl('h3', { text: category, cls: 'vtm-category-title' });
+		const section = container.createDiv({ cls: 'wod-skill-category' });
+		section.createEl('h3', { text: category, cls: 'wod-category-title' });
 
 		skillList.forEach((skill) => {
 			this.renderSkill(section, skill);
@@ -44,7 +44,7 @@ export class SkillsView extends BaseView {
 
 	private renderSkill(container: HTMLElement, skillName: string): void {
 		const skillRow = container.createDiv({ cls: 'wod-skill-row' });
-		skillRow.createSpan({ text: skillName, cls: 'vtm-skill-name' });
+		skillRow.createSpan({ text: skillName, cls: 'wod-skill-name' });
 
 		const dotsContainer = skillRow.createDiv({ cls: 'wod-dots-container' });
 

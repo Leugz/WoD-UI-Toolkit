@@ -6,7 +6,7 @@ import { EventBus } from 'lib/services/EventBus';
 type DamageType = 'none' | 'superficial' | 'aggravated';
 
 export class HealthView extends BaseView {
-	codeblock = 'vtm-health';
+	codeblock = 'wod-health';
 	private store: KeyValueStore;
 	private filePath: string;
 	private eventBus: EventBus;
@@ -35,7 +35,7 @@ export class HealthView extends BaseView {
 		element.empty();
 		this.containerElement = element;
 
-		const container = element.createDiv({ cls: 'vtm-health-container' });
+		const container = element.createDiv({ cls: 'wod-health-container' });
 
 		const staminaKey = `${this.filePath}|attribute.Stamina`;
 		const stamina = this.store.get(staminaKey) ?? 1;
@@ -43,7 +43,7 @@ export class HealthView extends BaseView {
 
 		container.createEl('h3', {
 			text: `Health (${maxHealth} boxes)`,
-			cls: 'vtm-health-title',
+			cls: 'wod-health-title',
 		});
 
 		const boxesContainer = container.createDiv({ cls: 'wod-health-boxes' });
@@ -52,10 +52,10 @@ export class HealthView extends BaseView {
 			this.renderHealthBox(boxesContainer, i);
 		}
 
-		const legend = container.createDiv({ cls: 'vtm-health-legend' });
+		const legend = container.createDiv({ cls: 'wod-health-legend' });
 		legend.createSpan({
 			text: 'Click to cycle: Empty → Superficial (/) → Aggravated (X) | Right-click to clear from here',
-			cls: 'vtm-health-legend-text',
+			cls: 'wod-health-legend-text',
 		});
 	}
 

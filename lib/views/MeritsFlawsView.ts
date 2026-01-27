@@ -1,6 +1,6 @@
 import { App, parseYaml } from 'obsidian';
 import { BaseView } from './BaseView';
-import { CardView, CardEntry } from './CardView';
+import { CardView } from './CardView';
 import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
 
@@ -32,7 +32,7 @@ export class MeritsFlawsListView extends BaseView {
 		} catch {
 			el.createDiv({
 				text: '⚠️ Invalid YAML format',
-				cls: 'vtm-merits-flaws-error',
+				cls: 'wod-mf-error',
 			});
 			return;
 		}
@@ -49,18 +49,18 @@ export class MeritsFlawsListView extends BaseView {
 		if (merits.length === 0 && flaws.length === 0) {
 			el.createDiv({
 				text: 'No merits or flaws defined.',
-				cls: 'vtm-merits-flaws-empty',
+				cls: 'wod-mf-empty',
 			});
 			return;
 		}
 
 		// Create 2-column grid container
-		const gridContainer = el.createDiv({ cls: 'vtm-mf-grid' });
+		const gridContainer = el.createDiv({ cls: 'wod-mf-grid' });
 
 		// Left column: Merits
-		const meritsColumn = gridContainer.createDiv({ cls: 'vtm-mf-column' });
+		const meritsColumn = gridContainer.createDiv({ cls: 'wod-mf-column' });
 		const meritsTitle = meritsColumn.createDiv({
-			cls: 'vtm-mf-section-title merit',
+			cls: 'wod-mf-section-title merit',
 		});
 		meritsTitle.setText('Merits');
 
@@ -82,14 +82,14 @@ export class MeritsFlawsListView extends BaseView {
 		} else {
 			meritsColumn.createDiv({
 				text: 'No merits defined.',
-				cls: 'vtm-mf-empty',
+				cls: 'wod-mf-empty',
 			});
 		}
 
 		// Right column: Flaws
 		const flawsColumn = gridContainer.createDiv({ cls: 'vtm-mf-column' });
 		const flawsTitle = flawsColumn.createDiv({
-			cls: 'vtm-mf-section-title flaw',
+			cls: 'wod-mf-section-title flaw',
 		});
 		flawsTitle.setText('Flaws');
 
@@ -111,7 +111,7 @@ export class MeritsFlawsListView extends BaseView {
 		} else {
 			flawsColumn.createDiv({
 				text: 'No flaws defined.',
-				cls: 'vtm-mf-empty',
+				cls: 'wod-mf-empty',
 			});
 		}
 	}

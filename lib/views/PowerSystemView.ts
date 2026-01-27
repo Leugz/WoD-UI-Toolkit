@@ -43,7 +43,7 @@ export class PowerSystemView extends BaseView {
 		} catch {
 			el.createDiv({
 				text: '⚠️ Invalid format',
-				cls: 'vtm-disciplines-error',
+				cls: 'wod-powers-error',
 			});
 			return;
 		}
@@ -51,20 +51,20 @@ export class PowerSystemView extends BaseView {
 		if (disciplines.length === 0) {
 			el.createDiv({
 				text: `No ${this.config.name.toLowerCase()} defined.`,
-				cls: 'vtm-disciplines-empty',
+				cls: 'wod-powers-empty',
 			});
 			return;
 		}
 
-		const container = el.createDiv({ cls: 'vtm-disciplines-container' });
+		const container = el.createDiv({ cls: 'wod-powers-container' });
 
-		const header = container.createDiv({ cls: 'vtm-disciplines-header' });
+		const header = container.createDiv({ cls: 'wod-powers-header' });
 		header.createEl('h3', {
 			text: this.config.name,
-			cls: 'vtm-disciplines-title',
+			cls: 'wod-powers-title',
 		});
 
-		const grid = container.createDiv({ cls: 'vtm-disciplines-grid' });
+		const grid = container.createDiv({ cls: 'wod-powers-grid' });
 
 		disciplines.forEach((disciplineName) => {
 			this.renderDisciplineCard(grid, disciplineName, source);
@@ -76,22 +76,22 @@ export class PowerSystemView extends BaseView {
 		disciplineName: string,
 		originalSource: string,
 	): void {
-		const card = container.createDiv({ cls: 'vtm-discipline-card' });
+		const card = container.createDiv({ cls: 'wod-power-card' });
 
 		const ratingKey = `${this.filePath}|${this.config.codeblock}.${disciplineName}`;
 		let rating = this.store.get(ratingKey) ?? 0;
 
-		const iconEl = card.createDiv({ cls: 'vtm-discipline-icon' });
+		const iconEl = card.createDiv({ cls: 'wod-power-icon' });
 
 		this.loadDisciplineIcon(iconEl, disciplineName);
 
-		const nameEl = card.createDiv({ cls: 'vtm-discipline-name' });
+		const nameEl = card.createDiv({ cls: 'wod-power-name' });
 		nameEl.setText(disciplineName);
 
-		const dotsContainer = card.createDiv({ cls: 'vtm-discipline-dots' });
+		const dotsContainer = card.createDiv({ cls: 'wod-power-dots' });
 
 		for (let i = 1; i <= 5; i++) {
-			const dot = dotsContainer.createDiv({ cls: 'vtm-discipline-dot' });
+			const dot = dotsContainer.createDiv({ cls: 'wod-power-dot' });
 			dot.setText(i <= rating ? '●' : '○');
 
 			if (i <= rating) {
@@ -134,7 +134,7 @@ export class PowerSystemView extends BaseView {
 				alt: disciplineName,
 				title: disciplineName,
 			},
-			cls: 'vtm-discipline-icon-img',
+			cls: 'wod-power-icon-img',
 		});
 
 		img.onerror = () => {

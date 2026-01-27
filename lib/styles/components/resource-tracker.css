@@ -52,7 +52,7 @@
   gap: 12px;
 }
 
-.vtm-resource-reset-btn {
+.wod-resource-reset-btn {
   padding: 4px 8px;
   font-size: 14px;
   font-weight: 600;
@@ -65,12 +65,12 @@
   font-family: var(--font-interface);
 }
 
-.vtm-resource-reset-btn:hover {
+.wod-resource-reset-btn:hover {
   background: var(--interactive-hover);
   color: var(--wod-accent);
 }
 
-.vtm-resource-level {
+.wod-resource-level {
   font-size: 12px;
   font-weight: 600;
   padding: 4px 12px;
@@ -82,13 +82,13 @@
   letter-spacing: 0.5px;
 }
 
-.vtm-resource-level.warning {
+.wod-resource-level.warning {
   background: rgba(255, 165, 0, 0.1);
   border-color: orange;
   color: orange;
 }
 
-.vtm-resource-level.danger {
+.wod-resource-level.danger {
   background: rgba(220, 38, 38, 0.1);
   border-color: var(--wod-dot-active);
   color: var(--wod-dot-active);
@@ -120,7 +120,7 @@
   filter: drop-shadow(0 0 4px var(--wod-dot-active));
 }
 
-.vtm-resource-description {
+.wod-resource-description {
   text-align: center;
   font-size: 13px;
   color: var(--wod-text-muted);

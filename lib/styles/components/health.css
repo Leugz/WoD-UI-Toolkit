@@ -1,5 +1,5 @@
 /* VtM Health Container */
-.vtm-health-container {
+.wod-health-container {
   padding: 12px;
   background: var(--background-secondary);
   border-radius: 6px;
@@ -9,7 +9,7 @@
 }
 
 /* Health Title */
-.vtm-health-title {
+.wod-health-title {
   margin: 0 0 10px 0;
   padding: 4px 0 8px 0;
   border-bottom: 2px solid var(--text-accent);
@@ -67,7 +67,7 @@
 }
 
 /* Legend */
-.vtm-health-legend {
+.wod-health-legend {
   margin-top: 8px;
   padding: 6px 8px;
   background: var(--background-primary);
@@ -75,7 +75,7 @@
   text-align: center;
 }
 
-.vtm-health-legend-text {
+.wod-health-legend-text {
   font-size: 10px;
   color: var(--text-muted);
   font-style: italic;
@@ -84,7 +84,7 @@
 
 /* Mobile adjustments */
 @media (max-width: 600px) {
-  .vtm-health-container {
+  .wod-health-container {
     padding: 10px;
   }
 
@@ -95,7 +95,7 @@
     gap: 4px;
   }
 
-  .vtm-health-legend-text {
+  .wod-health-legend-text {
     font-size: 9px;
   }
 }

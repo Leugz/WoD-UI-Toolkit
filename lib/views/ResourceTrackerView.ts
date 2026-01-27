@@ -69,7 +69,7 @@ export class ResourceTrackerView extends BaseView {
 
 		const resetBtn = rightSide.createEl('button', {
 			text: '↻',
-			cls: 'vtm-resource-reset-btn',
+			cls: 'wod-resource-reset-btn',
 			attr: { 'aria-label': 'Reset to 1' },
 		});
 		resetBtn.addEventListener('click', () => {
@@ -77,7 +77,7 @@ export class ResourceTrackerView extends BaseView {
 		});
 
 		const level = this.config.levels.find((l) => l.value === currentValue);
-		const levelLabel = rightSide.createDiv({ cls: 'vtm-resource-level' });
+		const levelLabel = rightSide.createDiv({ cls: 'wod-resource-level' });
 		levelLabel.setText(level?.label || '');
 
 		if (currentValue >= this.config.max - 1) {
@@ -100,7 +100,7 @@ export class ResourceTrackerView extends BaseView {
 		);
 		if (currentLevel) {
 			const desc = container.createDiv({
-				cls: 'vtm-resource-description',
+				cls: 'wod-resource-description',
 			});
 			desc.setText(currentLevel.description);
 		}
