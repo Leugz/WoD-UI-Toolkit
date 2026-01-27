@@ -6,54 +6,25 @@ export class SkillsView extends BaseView {
 	codeblock = 'vtm-skills';
 	private store: KeyValueStore;
 	private filePath: string;
+	private skillsData: Record<string, string[]>;
 
-	private readonly skills = {
-		Physical: [
-			'Athletics',
-			'Brawl',
-			'Craft',
-			'Drive',
-			'Firearms',
-			'Melee',
-			'Larceny',
-			'Stealth',
-			'Survival',
-		],
-		Social: [
-			'Animal Ken',
-			'Etiquette',
-			'Insight',
-			'Intimidation',
-			'Leadership',
-			'Performance',
-			'Persuasion',
-			'Streetwise',
-			'Subterfuge',
-		],
-		Mental: [
-			'Academics',
-			'Awareness',
-			'Finance',
-			'Investigation',
-			'Medicine',
-			'Occult',
-			'Politics',
-			'Science',
-			'Technology',
-		],
-	};
-
-	constructor(app: App, store: KeyValueStore, filePath: string) {
+	constructor(
+		app: App,
+		store: KeyValueStore,
+		filePath: string,
+		skillsData: Record<string, string[]>,
+	) {
 		super(app);
 		this.store = store;
 		this.filePath = filePath;
+		this.skillsData = skillsData;
 	}
 
 	register(source: string, el: HTMLElement, ctx: any): void {
 		el.empty();
 		const container = el.createDiv({ cls: 'vtm-skills-container' });
 
-		Object.entries(this.skills).forEach(([category, skillList]) => {
+		Object.entries(this.skillsData).forEach(([category, skillList]) => {
 			this.renderCategory(container, category, skillList);
 		});
 	}

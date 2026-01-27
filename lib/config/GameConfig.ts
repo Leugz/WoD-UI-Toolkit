@@ -34,6 +34,8 @@ export interface GameConfig {
 	resource: ResourceConfig;
 	morality: MoralityConfig;
 	powerSystem: PowerSystemConfig;
+	attributes: Record<string, string[]>;
+	skills: Record<string, string[]>;
 }
 
 export const VTM_CONFIG: GameConfig = {
@@ -120,6 +122,47 @@ export const VTM_CONFIG: GameConfig = {
 		singularName: 'Discipline',
 		codeblock: 'vtm-disciplines',
 	},
+
+	attributes: {
+		Physical: ['Strength', 'Dexterity', 'Stamina'],
+		Social: ['Charisma', 'Manipulation', 'Composure'],
+		Mental: ['Intelligence', 'Wits', 'Resolve'],
+	},
+	skills: {
+		Physical: [
+			'Athletics',
+			'Brawl',
+			'Craft',
+			'Drive',
+			'Firearms',
+			'Melee',
+			'Larceny',
+			'Stealth',
+			'Survival',
+		],
+		Social: [
+			'Animal Ken',
+			'Etiquette',
+			'Insight',
+			'Intimidation',
+			'Leadership',
+			'Performance',
+			'Persuasion',
+			'Streetwise',
+			'Subterfuge',
+		],
+		Mental: [
+			'Academics',
+			'Awareness',
+			'Finance',
+			'Investigation',
+			'Medicine',
+			'Occult',
+			'Politics',
+			'Science',
+			'Technology',
+		],
+	},
 };
 
 // WIP
@@ -128,7 +171,7 @@ export const WTA_CONFIG: GameConfig = {
 	name: 'Werewolf: The Apocalypse',
 	resource: {
 		name: 'Rage',
-		codeblock: 'wod-resource',
+		codeblock: 'wta-rage',
 		max: 5,
 		icon: '🐺',
 		levels: [
@@ -146,7 +189,7 @@ export const WTA_CONFIG: GameConfig = {
 	},
 	morality: {
 		name: 'Harmony',
-		codeblock: 'wod-morality',
+		codeblock: 'wta-harmony',
 		stainName: 'Touchstones',
 		defaultValue: 7,
 		labels: [
@@ -175,13 +218,53 @@ export const WTA_CONFIG: GameConfig = {
 			'Ascendant.',
 			'Ascendant.',
 		],
-		hasStains: false, // W5 uses a different system
+		hasStains: false,
 		stainFormula: (m) => 0,
 	},
 	powerSystem: {
 		name: 'Gifts',
 		singularName: 'Gift',
-		codeblock: 'wod-powers',
+		codeblock: 'wta-gifts',
+	},
+	attributes: {
+		Physical: ['Strength', 'Dexterity', 'Stamina'],
+		Social: ['Charisma', 'Manipulation', 'Composure'],
+		Mental: ['Intelligence', 'Wits', 'Resolve'],
+	},
+	skills: {
+		Physical: [
+			'Athletics',
+			'Brawl',
+			'Craft',
+			'Drive',
+			'Firearms',
+			'Larceny',
+			'Melee',
+			'Stealth',
+			'Survival',
+		],
+		Social: [
+			'Animal Ken',
+			'Etiquette',
+			'Insight',
+			'Intimidation',
+			'Leadership',
+			'Performance',
+			'Persuasion',
+			'Streetwise',
+			'Subterfuge',
+		],
+		Mental: [
+			'Academics',
+			'Awareness',
+			'Finance',
+			'Investigation',
+			'Medicine',
+			'Occult',
+			'Politics',
+			'Science',
+			'Technology',
+		],
 	},
 };
 

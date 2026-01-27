@@ -8,23 +8,20 @@ export class AttributesView extends BaseView {
 	private store: KeyValueStore;
 	private filePath: string;
 	private eventBus: EventBus;
-
-	private readonly attributes = {
-		Physical: ['Strength', 'Dexterity', 'Stamina'],
-		Social: ['Charisma', 'Manipulation', 'Composure'],
-		Mental: ['Intelligence', 'Wits', 'Resolve'],
-	};
+	private attributesData: Record<string, string[]>;
 
 	constructor(
 		app: App,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
+		attributesData: Record<string, string[]>,
 	) {
 		super(app);
 		this.store = store;
 		this.filePath = filePath;
 		this.eventBus = eventBus;
+		this.attributesData = attributesData;
 	}
 
 	register(source: string, element: HTMLElement, ctx: any): void {
@@ -33,9 +30,11 @@ export class AttributesView extends BaseView {
 			cls: 'vtm-attributes-container',
 		});
 
-		Object.entries(this.attributes).forEach(([category, attributeList]) => {
-			this.renderCategory(container, category, attributeList);
-		});
+		Object.entries(this.attributesData).forEach(
+			([category, attributeList]) => {
+				this.renderCategory(container, category, attributeList);
+			},
+		);
 	}
 
 	private renderCategory(

@@ -1,4 +1,4 @@
-import WodUIToolkitPlugin from 'main';
+import { IWodPlugin } from 'lib/interfaces/IWoDPlugin';
 import { App, Notice, PluginSettingTab, Setting } from 'obsidian';
 
 export interface WodSettings {
@@ -10,10 +10,10 @@ export const DEFAULT_SETTINGS: WodSettings = {
 };
 
 export class WodSettingsTab extends PluginSettingTab {
-	plugin: WodUIToolkitPlugin;
+	plugin: IWodPlugin;
 
-	constructor(app: App, plugin: WodUIToolkitPlugin) {
-		super(app, plugin);
+	constructor(app: App, plugin: IWodPlugin) {
+		super(app, plugin as any);
 		this.plugin = plugin;
 	}
 

@@ -1,7 +1,14 @@
 import { Plugin } from 'obsidian';
 import { KeyValueStore } from './lib/services/KeyValueStore';
 import { EventBus } from 'lib/services/EventBus';
-import { VTM_CONFIG, WTA_CONFIG, GameConfig } from 'lib/config/GameConfig';
+import {
+	VTM_CONFIG,
+	WTA_CONFIG,
+	GameConfig,
+	ResourceConfig,
+	MoralityConfig,
+	PowerSystemConfig,
+} from 'lib/config/GameConfig';
 import {
 	WodSettings,
 	DEFAULT_SETTINGS,
@@ -20,6 +27,7 @@ import { PowerListView } from 'lib/views/PowerView';
 import { BloodPotencyView } from 'lib/views/BloodPotencyView';
 import { ExperienceTrackerView } from 'lib/views/ExperienceTrackerView';
 import { MeritsFlawsListView } from 'lib/views/MeritsFlawsView';
+import { ViewRegister } from 'lib/utils/ViewRegister';
 
 export default class WodUIToolkitPlugin extends Plugin {
 	store: KeyValueStore;
@@ -29,7 +37,6 @@ export default class WodUIToolkitPlugin extends Plugin {
 
 	async onload() {
 		console.log('WoD UI Toolkit loading...');
-
 		await this.loadSettings();
 
 		if (this.settings.gameSystem == 'wta') {
@@ -38,74 +45,79 @@ export default class WodUIToolkitPlugin extends Plugin {
 			this.activeConfig = VTM_CONFIG;
 		}
 
-		console.log(`Loaded configuration for: ${this.activeConfig.name}`);
-
 		this.store = new KeyValueStore(this);
 		this.eventBus = new EventBus();
 		await this.store.load();
 
 		this.addSettingTab(new WodSettingsTab(this.app, this));
 
-		// CORE WOD TRACKERS
+		const record = new ViewRegister(this);
 
-		const registerResource = (codeblockId: string) => {
-			this.registerMarkdownCodeBlockProcessor(
-				codeblockId,
-				(source, el, ctx) => {
-					const view = new ResourceTrackerView(
-						this.app,
-						this,
-						this.store,
-						ctx.sourcePath || 'unknown',
-						this.eventBus,
-						this.activeConfig.resource,
-					);
-					view.register(source, el, ctx);
-				},
-			);
-		};
-		registerResource('wod-resource');
-		registerResource('vtm-hunger');
-		registerResource('wta-rage');
+		// hunger | rage
+		record.register<ResourceConfig>(
+			'resource',
+			'resource',
+			(config, ctx) =>
+				new ResourceTrackerView(
+					this.app,
+					this,
+					this.store,
+					ctx.sourcePath,
+					this.eventBus,
+					config,
+				),
+		);
 
-		const registerMorality = (codeblockId: string) => {
-			this.registerMarkdownCodeBlockProcessor(
-				codeblockId,
-				(source, el, ctx) => {
-					const view = new MoralityTrackerView(
-						this.app,
-						this.store,
-						ctx.sourcePath || 'unknown',
-						this.eventBus,
-						this.activeConfig.morality,
-					);
-					view.register(source, el, ctx);
-				},
-			);
-		};
-		registerMorality('wod-morality');
-		registerMorality('vtm-humanity');
-		registerMorality('wta-harmony');
+		// humanity | harmony
+		record.register<MoralityConfig>(
+			'morality',
+			'morality',
+			(config, ctx) =>
+				new MoralityTrackerView(
+					this.app,
+					this.store,
+					ctx.sourcePath,
+					this.eventBus,
+					config,
+				),
+		);
 
-		// Disciplines
-		const registerPowerSystem = (codeblockId: string) => {
-			this.registerMarkdownCodeBlockProcessor(
-				codeblockId,
-				(source, el, ctx) => {
-					const view = new PowerSystemView(
-						this.app,
-						this,
-						this.store,
-						ctx.sourcePath || 'unknown',
-						this.eventBus,
-						this.activeConfig.powerSystem,
-					);
-					view.register(source, el, ctx);
-				},
-			);
-		};
-		registerPowerSystem('wod-powers');
-		registerPowerSystem('vtm-disciplines');
+		// disciplines / gifts
+		record.register<PowerSystemConfig>(
+			'powers',
+			'powerSystem',
+			(config, ctx) =>
+				new PowerSystemView(
+					this.app,
+					this,
+					this.store,
+					ctx.sourcePath,
+					this.eventBus,
+					config,
+				),
+		);
+
+		record.register<Record<string, string[]>>(
+			'attributes',
+			'attributes',
+			(config, ctx) =>
+				new AttributesView(
+					this.app,
+					this.store,
+					ctx.sourcePath,
+					this.eventBus,
+					config,
+				),
+		);
+
+		record.register<Record<string, string[]>>(
+			'skills',
+			'skills',
+			(config, ctx) =>
+				new SkillsView(this.app, this.store, ctx.sourcePath, config),
+		);
+
+		// old \/
 
 		const registerPowerList = (codeblockId: string) => {
 			this.registerMarkdownCodeBlockProcessor(
@@ -197,33 +209,6 @@ export default class WodUIToolkitPlugin extends Plugin {
 		registerMerits('vtm-merits-flaws-list');
 
 		// LEGACY / SPECIFIC COMPONENTS (These might need refactoring)
-
-		// Attributes
-		this.registerMarkdownCodeBlockProcessor(
-			'vtm-attributes',
-			(source, el, ctx) => {
-				const view = new AttributesView(
-					this.app,
-					this.store,
-					ctx.sourcePath,
-					this.eventBus,
-				);
-				view.register(source, el, ctx);
-			},
-		);
-
-		// Skills
-		this.registerMarkdownCodeBlockProcessor(
-			'vtm-skills',
-			(source, el, ctx) => {
-				const view = new SkillsView(
-					this.app,
-					this.store,
-					ctx.sourcePath,
-				);
-				view.register(source, el, ctx);
-			},
-		);
 
 		// Blood Potency (Very specific to VtM/Requiem)
 		this.registerMarkdownCodeBlockProcessor(
