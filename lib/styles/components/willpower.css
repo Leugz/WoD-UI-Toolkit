@@ -64,7 +64,7 @@
 }
 
 /* Willpower Boxes */
-.vtm-willpower-boxes {
+.wod-willpower-boxes {
   display: flex;
   gap: 4px;
   flex-wrap: wrap;
@@ -72,7 +72,7 @@
   justify-content: center;
 }
 
-.vtm-willpower-box {
+.wod-willpower-box {
   width: auto;
   height: auto;
   border: none;
@@ -88,12 +88,12 @@
   color: var(--text-muted);
 }
 
-.vtm-willpower-box:hover {
+.wod-willpower-box:hover {
   transform: scale(1.2);
   filter: brightness(1.2);
 }
 
-.vtm-willpower-box.filled {
+.wod-willpower-box.filled {
   color: var(--interactive-accent);
 }
 
@@ -103,7 +103,7 @@
     padding: 10px;
   }
 
-  .vtm-willpower-box {
+  .wod-willpower-box {
     font-size: 20px;
   }
 

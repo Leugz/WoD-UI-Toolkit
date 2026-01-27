@@ -34,15 +34,15 @@ export class ResourceTrackerView extends BaseView {
 		el.empty();
 		this.containerEl = el;
 
-		const container = el.createDiv({ cls: 'vtm-resource-container' });
+		const container = el.createDiv({ cls: 'wod-resource-container' });
 
 		const resourceKey = `${this.filePath}|${this.config.codeblock}`;
 		let currentValue = this.store.get(resourceKey) ?? 0;
 
-		const header = container.createDiv({ cls: 'vtm-resource-header' });
-		const titleDiv = header.createDiv({ cls: 'vtm-resource-title-group' });
+		const header = container.createDiv({ cls: 'wod-resource-header' });
+		const titleDiv = header.createDiv({ cls: 'wod-resource-title-group' });
 
-		const iconSpan = titleDiv.createSpan({ cls: 'vtm-resource-icon' });
+		const iconSpan = titleDiv.createSpan({ cls: 'wod-resource-icon' });
 
 		if (
 			this.config.icon.endsWith('.png') ||
@@ -60,11 +60,11 @@ export class ResourceTrackerView extends BaseView {
 
 		titleDiv.createEl('h3', {
 			text: this.config.name,
-			cls: 'vtm-resource-title',
+			cls: 'wod-resource-title',
 		});
 
 		const rightSide = header.createDiv({
-			cls: 'vtm-resource-header-right',
+			cls: 'wod-resource-header-right',
 		});
 
 		const resetBtn = rightSide.createEl('button', {
@@ -87,7 +87,7 @@ export class ResourceTrackerView extends BaseView {
 		}
 
 		const iconsContainer = container.createDiv({
-			cls: 'vtm-resource-icons',
+			cls: 'wod-resource-icons',
 		});
 
 		for (let i = 0; i < this.config.max; i++) {
@@ -112,7 +112,7 @@ export class ResourceTrackerView extends BaseView {
 		currentValue: number,
 		rootContainer: HTMLElement,
 	): void {
-		const icon = container.createDiv({ cls: 'vtm-resource-icon-dot' });
+		const icon = container.createDiv({ cls: 'wod-resource-icon-dot' });
 
 		if (index < currentValue) {
 			icon.setText('⬢');
@@ -143,7 +143,7 @@ export class ResourceTrackerView extends BaseView {
 		let rootContainer = container;
 		while (
 			rootContainer &&
-			!rootContainer.classList.contains('vtm-resource-container')
+			!rootContainer.classList.contains('wod-resource-container')
 		) {
 			rootContainer = rootContainer.parentElement!;
 		}

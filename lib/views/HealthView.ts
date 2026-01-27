@@ -46,7 +46,7 @@ export class HealthView extends BaseView {
 			cls: 'vtm-health-title',
 		});
 
-		const boxesContainer = container.createDiv({ cls: 'vtm-health-boxes' });
+		const boxesContainer = container.createDiv({ cls: 'wod-health-boxes' });
 
 		for (let i = 0; i < maxHealth; i++) {
 			this.renderHealthBox(boxesContainer, i);
@@ -60,7 +60,7 @@ export class HealthView extends BaseView {
 	}
 
 	private renderHealthBox(container: HTMLElement, index: number): void {
-		const box = container.createDiv({ cls: 'vtm-health-box' });
+		const box = container.createDiv({ cls: 'wod-health-box' });
 
 		// Get ALL health damage to determine this box's state
 		const damageType = this.getDamageAtIndex(index);

@@ -1,5 +1,5 @@
 /* VtM Attributes Container */
-.vtm-attributes-container {
+.wod-attributes-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
@@ -21,7 +21,7 @@
 }
 
 /* Attribute Row */
-.vtm-attribute-row {
+.wod-attribute-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -32,7 +32,7 @@
   min-height: 32px;
 }
 
-.vtm-attribute-row:hover {
+.wod-attribute-row:hover {
   background: var(--background-secondary);
 }
 
@@ -47,12 +47,12 @@
 
 /* Mobile adjustments */
 @media (max-width: 600px) {
-  .vtm-attributes-container {
+  .wod-attributes-container {
     gap: 12px;
     padding: 10px;
   }
 
-  .vtm-attribute-row {
+  .wod-attribute-row {
     padding: 8px 6px;
   }
 

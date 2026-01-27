@@ -22,7 +22,7 @@ export class SkillsView extends BaseView {
 
 	register(source: string, el: HTMLElement, ctx: any): void {
 		el.empty();
-		const container = el.createDiv({ cls: 'vtm-skills-container' });
+		const container = el.createDiv({ cls: 'wod-skills-container' });
 
 		Object.entries(this.skillsData).forEach(([category, skillList]) => {
 			this.renderCategory(container, category, skillList);
@@ -43,17 +43,17 @@ export class SkillsView extends BaseView {
 	}
 
 	private renderSkill(container: HTMLElement, skillName: string): void {
-		const skillRow = container.createDiv({ cls: 'vtm-skill-row' });
+		const skillRow = container.createDiv({ cls: 'wod-skill-row' });
 		skillRow.createSpan({ text: skillName, cls: 'vtm-skill-name' });
 
-		const dotsContainer = skillRow.createDiv({ cls: 'vtm-dots-container' });
+		const dotsContainer = skillRow.createDiv({ cls: 'wod-dots-container' });
 
 		// Store key now includes file path: "filepath|skill.SkillName"
 		const storeKey = `${this.filePath}|skill.${skillName}`;
 		const currentValue = this.store.get(storeKey) || 0;
 
 		for (let i = 0; i < 5; i++) {
-			const dot = dotsContainer.createSpan({ cls: 'vtm-dot' });
+			const dot = dotsContainer.createSpan({ cls: 'wod-dot' });
 
 			if (i < currentValue) {
 				dot.textContent = '●';
@@ -94,7 +94,7 @@ export class SkillsView extends BaseView {
 		let rootContainer = container;
 		while (
 			rootContainer &&
-			!rootContainer.classList.contains('vtm-skills-container')
+			!rootContainer.classList.contains('wod-skills-container')
 		) {
 			rootContainer = rootContainer.parentElement!;
 		}
@@ -114,7 +114,7 @@ export class SkillsView extends BaseView {
 		let rootContainer = container;
 		while (
 			rootContainer &&
-			!rootContainer.classList.contains('vtm-skills-container')
+			!rootContainer.classList.contains('wod-skills-container')
 		) {
 			rootContainer = rootContainer.parentElement!;
 		}

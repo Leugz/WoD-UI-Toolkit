@@ -1,5 +1,5 @@
 /* VtM Skills Container */
-.vtm-skills-container {
+.wod-skills-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
@@ -33,7 +33,7 @@
 }
 
 /* Skill Row */
-.vtm-skill-row {
+.wod-skill-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -46,7 +46,7 @@
   /* Ensures consistent row height */
 }
 
-.vtm-skill-row:hover {
+.wod-skill-row:hover {
   background: var(--background-secondary);
 }
 
@@ -61,7 +61,7 @@
 }
 
 /* Dots Container */
-.vtm-dots-container {
+.wod-dots-container {
   display: flex;
   gap: 3px;
   align-items: center;
@@ -71,7 +71,7 @@
 }
 
 /* Individual Dot */
-.vtm-dot {
+.wod-dot {
   cursor: pointer;
   font-size: 16px;
   /* Slightly smaller for better fit */
@@ -87,23 +87,23 @@
   /* Removes extra line spacing */
 }
 
-.vtm-dot:hover {
+.wod-dot:hover {
   transform: scale(1.2);
   color: var(--text-accent);
 }
 
-.vtm-dot.filled {
+.wod-dot.filled {
   color: var(--text-accent);
 }
 
 /* Mobile adjustments */
 @media (max-width: 600px) {
-  .vtm-skills-container {
+  .wod-skills-container {
     gap: 12px;
     padding: 10px;
   }
 
-  .vtm-skill-row {
+  .wod-skill-row {
     padding: 8px 6px;
   }
 
@@ -111,13 +111,13 @@
     font-size: 12px;
   }
 
-  .vtm-dot {
+  .wod-dot {
     font-size: 14px;
     width: 18px;
     height: 18px;
   }
 
-  .vtm-dots-container {
+  .wod-dots-container {
     gap: 2px;
   }
 }

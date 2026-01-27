@@ -86,7 +86,7 @@ export class WillpowerView extends BaseView {
 
 		// Willpower boxes
 		const boxesContainer = container.createDiv({
-			cls: 'vtm-willpower-boxes',
+			cls: 'wod-willpower-boxes',
 		});
 
 		for (let i = 0; i < maxWillpower; i++) {
@@ -99,7 +99,7 @@ export class WillpowerView extends BaseView {
 		index: number,
 		currentWillpower: number,
 	): void {
-		const box = container.createDiv({ cls: 'vtm-willpower-box' });
+		const box = container.createDiv({ cls: 'wod-willpower-box' });
 
 		if (index < currentWillpower) {
 			box.setText('●');

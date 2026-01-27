@@ -27,7 +27,7 @@ export class AttributesView extends BaseView {
 	register(source: string, element: HTMLElement, ctx: any): void {
 		element.empty();
 		const container = element.createDiv({
-			cls: 'vtm-attributes-container',
+			cls: 'wod-attributes-container',
 		});
 
 		Object.entries(this.attributesData).forEach(
@@ -54,14 +54,14 @@ export class AttributesView extends BaseView {
 		container: HTMLElement,
 		attributeName: string,
 	): void {
-		const attributeRow = container.createDiv({ cls: 'vtm-attribute-row' });
+		const attributeRow = container.createDiv({ cls: 'wod-attribute-row' });
 		attributeRow.createSpan({
 			text: attributeName,
 			cls: 'vtm-attribute-name',
 		});
 
 		const dotsContainer = attributeRow.createDiv({
-			cls: 'vtm-dots-container',
+			cls: 'wod-dots-container',
 		});
 
 		const storeKey = `${this.filePath}|attribute.${attributeName}`;
@@ -69,7 +69,7 @@ export class AttributesView extends BaseView {
 		const currentValue = this.store.get(storeKey) ?? 1;
 
 		for (let i = 0; i < 5; i++) {
-			const dot = dotsContainer.createSpan({ cls: 'vtm-dot' });
+			const dot = dotsContainer.createSpan({ cls: 'wod-dot' });
 
 			if (i < currentValue) {
 				dot.textContent = '●';
@@ -121,7 +121,7 @@ export class AttributesView extends BaseView {
 
 		while (
 			rootContainer &&
-			!rootContainer.classList.contains('vtm-attributes-container')
+			!rootContainer.classList.contains('wod-attributes-container')
 		) {
 			rootContainer = rootContainer.parentElement!;
 		}
@@ -146,7 +146,7 @@ export class AttributesView extends BaseView {
 
 		while (
 			rootContainer &&
-			!rootContainer.classList.contains('vtm-attributes-container')
+			!rootContainer.classList.contains('wod-attributes-container')
 		) {
 			rootContainer = rootContainer.parentElement!;
 		}

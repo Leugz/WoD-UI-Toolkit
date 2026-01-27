@@ -26,7 +26,7 @@ export class ExperienceTrackerView extends BaseView {
 		el.empty();
 		this.containerEl = el;
 
-		const container = el.createDiv({ cls: 'vtm-experience-container' });
+		const container = el.createDiv({ cls: 'wod-experience-container' });
 
 		// Get values
 		const totalKey = `${this.filePath}|experience.total`;
@@ -106,7 +106,7 @@ export class ExperienceTrackerView extends BaseView {
 		// -10 button
 		const minus10 = buttons.createEl('button', {
 			text: '-10',
-			cls: 'vtm-xp-btn',
+			cls: 'wod-xp-btn',
 		});
 		minus10.addEventListener('click', () => {
 			onChange(Math.max(0, value - 10));
@@ -115,7 +115,7 @@ export class ExperienceTrackerView extends BaseView {
 		// -1 button
 		const minus1 = buttons.createEl('button', {
 			text: '-1',
-			cls: 'vtm-xp-btn',
+			cls: 'wod-xp-btn',
 		});
 		minus1.addEventListener('click', () => {
 			if (value > 0) onChange(value - 1);
@@ -124,7 +124,7 @@ export class ExperienceTrackerView extends BaseView {
 		// +1 button
 		const plus1 = buttons.createEl('button', {
 			text: '+1',
-			cls: 'vtm-xp-btn',
+			cls: 'wod-xp-btn',
 		});
 		plus1.addEventListener('click', () => {
 			onChange(value + 1);
@@ -133,7 +133,7 @@ export class ExperienceTrackerView extends BaseView {
 		// +10 button
 		const plus10 = buttons.createEl('button', {
 			text: '+10',
-			cls: 'vtm-xp-btn',
+			cls: 'wod-xp-btn',
 		});
 		plus10.addEventListener('click', () => {
 			onChange(value + 10);
@@ -170,7 +170,7 @@ export class ExperienceTrackerView extends BaseView {
 		let rootContainer = container;
 		while (
 			rootContainer &&
-			!rootContainer.classList.contains('vtm-experience-container')
+			!rootContainer.classList.contains('wod-experience-container')
 		) {
 			rootContainer = rootContainer.parentElement!;
 		}
