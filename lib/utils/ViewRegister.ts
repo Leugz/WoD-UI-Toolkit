@@ -1,7 +1,7 @@
 import { MarkdownPostProcessorContext } from 'obsidian';
 import { GAME_CONFIGS, GameConfig } from 'lib/config/GameConfig';
 import { BaseView } from 'lib/views/BaseView';
-import { IWodPlugin } from 'lib/interfaces/IWoDPlugin';
+import { IWodPlugin } from 'lib/interfaces/IWodPlugin';
 
 type ViewFactory<T> = (
 	config: T,
@@ -18,7 +18,13 @@ export class ViewRegister {
 	) {
 		this.plugin.registerMarkdownCodeBlockProcessor(
 			`wod-${baseTag}`,
-			(source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
+			(
+				source: string,
+				el: HTMLElement,
+				ctx: MarkdownPostProcessorContext,
+			) => {
+				el.addClass(`wod-theme-${this.plugin.activeConfig.id}`);
+
 				const config = this.plugin.activeConfig[configKey] as T;
 				const view = factory(config, ctx);
 				view.register(source, el, ctx);
@@ -27,14 +33,19 @@ export class ViewRegister {
 
 		Object.values(GAME_CONFIGS).forEach((gameConfig) => {
 			const specificConfig = gameConfig[configKey] as T;
-
 			const tag =
 				(specificConfig as any).codeblock ||
 				`${gameConfig.id}-${baseTag}`;
 
 			this.plugin.registerMarkdownCodeBlockProcessor(
 				tag,
-				(source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
+				(
+					source: string,
+					el: HTMLElement,
+					ctx: MarkdownPostProcessorContext,
+				) => {
+					el.addClass(`wod-theme-${gameConfig.id}`);
+
 					const view = factory(specificConfig, ctx);
 					view.register(source, el, ctx);
 				},

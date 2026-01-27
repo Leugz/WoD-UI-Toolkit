@@ -1,5 +1,6 @@
-/* Main CSS entry point - imports all component styles */
+@import './themes.css';
 
+/* components */
 @import './components/skills.css';
 @import './components/attributes.css';
 @import './components/health.css';

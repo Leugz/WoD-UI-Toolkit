@@ -1,0 +1,15 @@
+.wod-theme-vtm {
+  --wod-accent: #b91c1c;
+  --wod-accent-dim: #7f1d1d;
+  --wod-dot-active: #a855f7;
+  --wod-dot-empty: #4b5563;
+  --wod-text-muted: #9ca3af;
+}
+
+.wod-theme-wta {
+  --wod-accent: #d97706;
+  --wod-accent-dim: #92400e;
+  --wod-dot-active: #f59e0b;
+  --wod-dot-empty: #57534e;
+  --wod-text-muted: #a8a29e;
+}
