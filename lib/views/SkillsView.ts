@@ -3,7 +3,6 @@ import { BaseView } from './BaseView';
 import { KeyValueStore } from '../services/KeyValueStore';
 
 export class SkillsView extends BaseView {
-	codeblock = 'vtm-skills';
 	private store: KeyValueStore;
 	private filePath: string;
 	private skillsData: Record<string, string[]>;

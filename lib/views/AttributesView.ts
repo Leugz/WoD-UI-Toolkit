@@ -4,7 +4,6 @@ import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
 
 export class AttributesView extends BaseView {
-	codeblock = 'vtm-attributes';
 	private store: KeyValueStore;
 	private filePath: string;
 	private eventBus: EventBus;

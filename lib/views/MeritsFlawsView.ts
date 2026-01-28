@@ -25,7 +25,6 @@ export class MeritsFlawsListView extends BaseView {
 	register(source: string, el: HTMLElement, ctx: any): void {
 		el.empty();
 
-		// Parse YAML list
 		let entries: any[] = [];
 		try {
 			entries = parseYaml(source) || [];
@@ -37,7 +36,6 @@ export class MeritsFlawsListView extends BaseView {
 			return;
 		}
 
-		// Separate merits and flaws
 		const merits = entries.filter(
 			(e) => (e.type || '').toLowerCase() === 'merit',
 		);
@@ -45,7 +43,6 @@ export class MeritsFlawsListView extends BaseView {
 			(e) => (e.type || '').toLowerCase() === 'flaw',
 		);
 
-		// If no entries at all
 		if (merits.length === 0 && flaws.length === 0) {
 			el.createDiv({
 				text: 'No merits or flaws defined.',
@@ -54,10 +51,8 @@ export class MeritsFlawsListView extends BaseView {
 			return;
 		}
 
-		// Create 2-column grid container
 		const gridContainer = el.createDiv({ cls: 'wod-mf-grid' });
 
-		// Left column: Merits
 		const meritsColumn = gridContainer.createDiv({ cls: 'wod-mf-column' });
 		const meritsTitle = meritsColumn.createDiv({
 			cls: 'wod-mf-section-title merit',
@@ -73,10 +68,10 @@ export class MeritsFlawsListView extends BaseView {
 					rating: e.rating,
 					maxRating: 5,
 					tags: ['Merit'],
-					icon: e.icon || '✔️',
 				})),
-				dotColor: 'green',
+				dotColor: 'var(--text-success)',
 				maxRatingDefault: 5,
+				extraClasses: 'wod-card-reversed',
 			});
 			meritsCard.register('', meritsColumn, ctx);
 		} else {
@@ -86,8 +81,7 @@ export class MeritsFlawsListView extends BaseView {
 			});
 		}
 
-		// Right column: Flaws
-		const flawsColumn = gridContainer.createDiv({ cls: 'vtm-mf-column' });
+		const flawsColumn = gridContainer.createDiv({ cls: 'wod-mf-column' });
 		const flawsTitle = flawsColumn.createDiv({
 			cls: 'wod-mf-section-title flaw',
 		});
@@ -102,10 +96,10 @@ export class MeritsFlawsListView extends BaseView {
 					rating: e.rating,
 					maxRating: 5,
 					tags: ['Flaw'],
-					icon: e.icon || '⚠️',
 				})),
-				dotColor: 'red',
+				dotColor: 'var(--text-error)',
 				maxRatingDefault: 5,
+				extraClasses: 'wod-card-reversed',
 			});
 			flawsCard.register('', flawsColumn, ctx);
 		} else {

@@ -1,6 +1,5 @@
 .wod-card-container {
   max-width: 1200px;
-  /* increased max width to fit multiple cards */
   padding: 15px;
   background: var(--background-secondary);
   border-radius: 8px;
@@ -11,8 +10,8 @@
 .wod-card-title {
   margin: 0 0 12px 0;
   padding: 6px 0;
-  border-bottom: 2px solid var(--interactive-accent);
-  color: var(--interactive-accent);
+  border-bottom: 2px solid var(--wod-accent);
+  color: var(--wod-accent);
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
@@ -40,8 +39,8 @@
 }
 
 .wod-card-entry:hover {
-  border-color: var(--interactive-accent);
-  box-shadow: 0 2px 8px rgba(100, 100, 255, 0.2);
+  border-color: var(--wod-accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2)
 }
 
 .wod-card-header {
@@ -49,6 +48,7 @@
   align-items: center;
   gap: 12px;
   margin-bottom: 6px;
+  min-height: 40px;
 }
 
 .wod-card-icon {
@@ -77,24 +77,41 @@
   font-weight: 600;
   color: var(--text-normal);
   flex-grow: 1;
+  text-align: left;
 }
 
 .wod-card-tags {
   display: flex;
   gap: 6px;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
 }
 
 .wod-card-tag {
-  background: rgba(147, 51, 234, 0.2);
-  border: 1px solid rgb(147, 51, 234);
-  color: rgb(147, 51, 234);
+  background: rgba(125, 125, 125, 0.1);
+  border: 1px solid var(--text-muted);
+  color: var(--text-muted);
   font-size: 10px;
-  font-weight: 600;
-  padding: 3px 8px;
+  font-weight: 700;
+  padding: 4px 10px;
   border-radius: 4px;
+  text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  user-select: none;
+  line-height: 1.2;
+}
+
+.wod-card-tag.merit {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: var(--text-success);
+  color: var(--text-success);
+}
+
+.wod-card-tag.flaw {
+  background: rgba(220, 38, 38, 0.1);
+  border-color: var(--text-error);
+  color: var(--text-error);
 }
 
 .wod-card-dots {
@@ -105,7 +122,7 @@
 
 .wod-card-dot {
   font-size: 18px;
-  color: var(--interactive-accent);
+  color: var(--wod-accent);
 }
 
 .wod-card-description {
@@ -113,27 +130,20 @@
   color: var(--text-muted);
   white-space: pre-wrap;
   line-height: 1.4;
+  margin-top: 4px;
 }
 
-.vtm-mf-section-title {
-  margin-top: 1.5em;
-  margin-bottom: 0.5em;
-  font-size: 16px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+.wod-card-reversed .wod-card-name {
+  text-align: left;
+  flex-grow: 1;
 }
 
-.vtm-mf-section-title.merit {
-  color: green;
+.wod-card-reversed .wod-card-tags {
+  order: -1;
+  align-items: flex-start;
 }
 
-.vtm-mf-section-title.flaw {
-  color: red;
-}
-
-/* Merits & Flaws 2-column grid */
-.vtm-mf-grid {
+.wod-mf-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
@@ -141,12 +151,7 @@
   max-width: 1200px;
 }
 
-.vtm-mf-column {
-  min-width: 0;
-  /* Prevent overflow */
-}
-
-.vtm-mf-section-title {
+.wod-mf-section-title {
   font-size: 16px;
   font-weight: 700;
   text-transform: uppercase;
@@ -156,25 +161,45 @@
   border-bottom: 2px solid;
 }
 
-.vtm-mf-section-title.merit {
+.wod-mf-section-title.merit {
+  color: var(--text-success);
+  border-color: var(--text-success);
+}
+
+.wod-mf-section-title.flaw {
+  color: var(--text-error);
+  border-color: var(--text-error);
+}
+
+.wod-mf-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid;
+}
+
+.wod-mf-section-title.merit {
   color: green;
   border-color: green;
 }
 
-.vtm-mf-section-title.flaw {
+.wod-mf-section-title.flaw {
   color: red;
   border-color: red;
 }
 
-.vtm-mf-empty {
+.wod-mf-empty {
   font-style: italic;
   color: var(--text-muted);
   padding: 10px;
 }
 
-/* Stack columns on mobile */
+/* mobile */
 @media (max-width: 768px) {
-  .vtm-mf-grid {
+  .wod-mf-grid {
     grid-template-columns: 1fr;
   }
 }

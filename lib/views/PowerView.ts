@@ -5,7 +5,6 @@ import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
 
 export class PowerListView extends BaseView {
-	codeblock = 'wod-powers-list';
 	private store: KeyValueStore;
 	private filePath: string;
 	private eventBus: EventBus;

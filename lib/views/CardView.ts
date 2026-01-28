@@ -15,6 +15,7 @@ interface CardViewOptions {
 	title: string;
 	dotColor?: string;
 	maxRatingDefault?: number;
+	extraClasses?: string;
 }
 
 export class CardView extends BaseView {
@@ -39,6 +40,10 @@ export class CardView extends BaseView {
 		}
 
 		const container = el.createDiv({ cls: 'wod-card-container' });
+
+		if (this.options.extraClasses) {
+			container.addClass(this.options.extraClasses);
+		}
 
 		if (this.options.title) {
 			container.createEl('h3', {

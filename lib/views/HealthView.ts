@@ -6,7 +6,6 @@ import { EventBus } from 'lib/services/EventBus';
 type DamageType = 'none' | 'superficial' | 'aggravated';
 
 export class HealthView extends BaseView {
-	codeblock = 'wod-health';
 	private store: KeyValueStore;
 	private filePath: string;
 	private eventBus: EventBus;
