@@ -37,11 +37,11 @@ export class ExperienceTrackerView extends BaseView {
 		let availableXP = totalXP - spentXP;
 
 		// Title
-		const title = container.createDiv({ cls: 'vtm-xp-title' });
+		const title = container.createDiv({ cls: 'wod-xp-title' });
 		title.setText('Experience');
 
 		// XP Cards Grid
-		const cardsGrid = container.createDiv({ cls: 'vtm-xp-cards' });
+		const cardsGrid = container.createDiv({ cls: 'wod-xp-cards' });
 
 		// Total XP Card
 		this.renderXPCard(cardsGrid, 'Total XP', totalXP, 'total');
@@ -64,11 +64,11 @@ export class ExperienceTrackerView extends BaseView {
 
 		// Reset Button
 		const resetContainer = container.createDiv({
-			cls: 'vtm-xp-reset-container',
+			cls: 'wod-xp-reset-container',
 		});
 		const resetBtn = resetContainer.createEl('button', {
 			text: 'Reset All',
-			cls: 'vtm-xp-reset-btn',
+			cls: 'wod-xp-reset-btn',
 		});
 		resetBtn.addEventListener('click', () => {
 			this.resetAll(container);
@@ -81,12 +81,12 @@ export class ExperienceTrackerView extends BaseView {
 		value: number,
 		type: 'total' | 'spent' | 'available',
 	): void {
-		const card = container.createDiv({ cls: `vtm-xp-card ${type}` });
+		const card = container.createDiv({ cls: `wod-xp-card ${type}` });
 
-		const labelEl = card.createDiv({ cls: 'vtm-xp-card-label' });
+		const labelEl = card.createDiv({ cls: 'wod-xp-card-label' });
 		labelEl.setText(label);
 
-		const valueEl = card.createDiv({ cls: 'vtm-xp-card-value' });
+		const valueEl = card.createDiv({ cls: 'wod-xp-card-value' });
 		valueEl.setText(value.toString());
 	}
 
@@ -96,12 +96,12 @@ export class ExperienceTrackerView extends BaseView {
 		value: number,
 		onChange: (val: number) => void,
 	): void {
-		const controls = container.createDiv({ cls: 'vtm-xp-controls' });
+		const controls = container.createDiv({ cls: 'wod-xp-controls' });
 
-		const labelEl = controls.createDiv({ cls: 'vtm-xp-controls-label' });
+		const labelEl = controls.createDiv({ cls: 'wod-xp-controls-label' });
 		labelEl.setText(label);
 
-		const buttons = controls.createDiv({ cls: 'vtm-xp-buttons' });
+		const buttons = controls.createDiv({ cls: 'wod-xp-buttons' });
 
 		// -10 button
 		const minus10 = buttons.createEl('button', {

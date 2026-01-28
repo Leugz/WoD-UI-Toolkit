@@ -12,8 +12,8 @@
 .wod-health-title {
   margin: 0 0 10px 0;
   padding: 4px 0 8px 0;
-  border-bottom: 2px solid var(--text-accent);
-  color: var(--text-accent);
+  border-bottom: 2px solid var(--wod-accent);
+  color: var(--wod-accent);
   font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
@@ -48,7 +48,7 @@
 }
 
 .wod-health-box:hover {
-  border-color: var(--text-accent);
+  border-color: var(--wod-accent);
   transform: scale(1.08);
 }
 

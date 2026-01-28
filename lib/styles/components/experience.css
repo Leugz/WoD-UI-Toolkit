@@ -9,11 +9,11 @@
 }
 
 /* Title */
-.vtm-xp-title {
+.wod-xp-title {
   margin: 0 0 12px 0;
   padding: 6px 0;
-  border-bottom: 2px solid var(--color-yellow);
-  color: var(--color-yellow);
+  border-bottom: 2px solid var(--wod-accent);
+  color: var(--wod-accent);
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
@@ -21,14 +21,14 @@
 }
 
 /* XP Cards Grid */
-.vtm-xp-cards {
+.wod-xp-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
   margin-bottom: 16px;
 }
 
-.vtm-xp-card {
+.wod-xp-card {
   background: var(--background-primary);
   border: 2px solid var(--background-modifier-border);
   border-radius: 6px;
@@ -37,20 +37,20 @@
   transition: all 0.15s ease;
 }
 
-.vtm-xp-card.total {
-  border-color: var(--interactive-accent);
+.wod-xp-card.total {
+  border-color: var(--wod-accent);
 }
 
-.vtm-xp-card.spent {
+.wod-xp-card.spent {
   border-color: var(--text-error);
 }
 
-.vtm-xp-card.available {
-  border-color: var(--color-green);
+.wod-xp-card.available {
+  border-color: var(--text-success);
   background: rgba(34, 197, 94, 0.1);
 }
 
-.vtm-xp-card-label {
+.wod-xp-card-label {
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -59,27 +59,27 @@
   margin-bottom: 8px;
 }
 
-.vtm-xp-card-value {
+.wod-xp-card-value {
   font-size: 32px;
   font-weight: 700;
   color: var(--text-normal);
   line-height: 1;
 }
 
-.vtm-xp-card.total .vtm-xp-card-value {
+.wod-xp-card.total .wod-xp-card-value {
   color: var(--interactive-accent);
 }
 
-.vtm-xp-card.spent .vtm-xp-card-value {
+.wod-xp-card.spent .wod-xp-card-value {
   color: var(--text-error);
 }
 
-.vtm-xp-card.available .vtm-xp-card-value {
+.wod-xp-card.available .wod-xp-card-value {
   color: var(--color-green);
 }
 
 /* Controls */
-.vtm-xp-controls {
+.wod-xp-controls {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -89,13 +89,13 @@
   border-radius: 6px;
 }
 
-.vtm-xp-controls-label {
+.wod-xp-controls-label {
   font-size: 13px;
   font-weight: 600;
   color: var(--text-normal);
 }
 
-.vtm-xp-buttons {
+.wod-xp-buttons {
   display: flex;
   gap: 6px;
 }
@@ -120,12 +120,12 @@
 }
 
 /* Reset Button */
-.vtm-xp-reset-container {
+.wod-xp-reset-container {
   text-align: center;
   margin-top: 12px;
 }
 
-.vtm-xp-reset-btn {
+.wod-xp-reset-btn {
   padding: 8px 20px;
   font-size: 12px;
   font-weight: 600;
@@ -138,7 +138,7 @@
   font-family: var(--font-interface);
 }
 
-.vtm-xp-reset-btn:hover {
+.wod-xp-reset-btn:hover {
   background: var(--background-modifier-error-hover);
 }
 
@@ -148,30 +148,30 @@
     padding: 12px;
   }
 
-  .vtm-xp-cards {
+  .wod-xp-cards {
     grid-template-columns: 1fr;
     gap: 10px;
   }
 
-  .vtm-xp-card {
+  .wod-xp-card {
     padding: 12px 10px;
   }
 
-  .vtm-xp-card-value {
+  .wod-xp-card-value {
     font-size: 28px;
   }
 
-  .vtm-xp-controls {
+  .wod-xp-controls {
     flex-direction: column;
     gap: 8px;
     align-items: stretch;
   }
 
-  .vtm-xp-controls-label {
+  .wod-xp-controls-label {
     text-align: center;
   }
 
-  .vtm-xp-buttons {
+  .wod-xp-buttons {
     justify-content: center;
   }
 }

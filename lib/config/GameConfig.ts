@@ -28,6 +28,11 @@ export interface PowerSystemConfig {
 	iconMap?: Record<string, string>;
 }
 
+export interface BaseTrackerConfig {
+	name: string;
+	codeblock: string;
+}
+
 export interface GameConfig {
 	id: string;
 	name: string;
@@ -36,6 +41,11 @@ export interface GameConfig {
 	powerSystem: PowerSystemConfig;
 	attributes: Record<string, string[]>;
 	skills: Record<string, string[]>;
+	health: BaseTrackerConfig;
+	willpower: BaseTrackerConfig;
+	experience: BaseTrackerConfig;
+	merits: BaseTrackerConfig;
+	powerList: BaseTrackerConfig;
 }
 
 export const VTM_CONFIG: GameConfig = {
@@ -163,6 +173,12 @@ export const VTM_CONFIG: GameConfig = {
 			'Technology',
 		],
 	},
+
+	health: { name: 'Health', codeblock: 'vtm-health' },
+	willpower: { name: 'Willpower', codeblock: 'vtm-willpower' },
+	experience: { name: 'Experience', codeblock: 'vtm-experience' },
+	merits: { name: 'Merits & Flaws', codeblock: 'vtm-merits' },
+	powerList: { name: 'Powers', codeblock: 'vtm-power-list' },
 };
 
 // WIP
@@ -266,6 +282,12 @@ export const WTA_CONFIG: GameConfig = {
 			'Technology',
 		],
 	},
+
+	health: { name: 'Health', codeblock: 'wta-health' },
+	willpower: { name: 'Willpower', codeblock: 'wta-willpower' },
+	experience: { name: 'Experience', codeblock: 'wta-experience' },
+	merits: { name: 'Merits & Flaws', codeblock: 'wta-merits' },
+	powerList: { name: 'Gifts', codeblock: 'wta-gift-list' },
 };
 
 // Config registry

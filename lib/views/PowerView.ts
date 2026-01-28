@@ -54,7 +54,7 @@ export class PowerListView extends BaseView {
 			title: 'Powers / Gifts',
 			entries,
 			maxRatingDefault: 5,
-			dotColor: 'rgb(147, 51, 234)',
+			dotColor: 'var(--wod-dot-active)',
 		});
 
 		cardView.register('', el, ctx);

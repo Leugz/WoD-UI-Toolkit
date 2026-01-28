@@ -15,12 +15,12 @@
   align-items: center;
   margin-bottom: 10px;
   padding-bottom: 8px;
-  border-bottom: 2px solid var(--text-accent);
+  border-bottom: 2px solid var(--wod-accent);
 }
 
 .wod-willpower-title {
   margin: 0;
-  color: var(--text-accent);
+  color: var(--wod-accent);
   font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
@@ -94,7 +94,7 @@
 }
 
 .wod-willpower-box.filled {
-  color: var(--interactive-accent);
+  color: var(--wod-dot-active);
 }
 
 /* Mobile */
