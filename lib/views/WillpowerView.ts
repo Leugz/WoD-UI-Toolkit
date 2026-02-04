@@ -35,11 +35,11 @@ export class WillpowerView extends BaseView {
 		});
 	}
 
-	register(source: string, el: HTMLElement, ctx: any): void {
-		el.empty();
-		this.containerEl = el;
+	register(source: string, element: HTMLElement, ctx: any): void {
+		element.empty();
+		this.containerEl = element;
 
-		const container = el.createDiv({ cls: 'wod-willpower-container' });
+		const container = element.createDiv({ cls: 'wod-willpower-container' });
 
 		// Calculate max willpower (Composure + Resolve)
 		const composureKey = `${this.filePath}|attribute.Composure`;

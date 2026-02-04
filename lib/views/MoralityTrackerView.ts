@@ -27,11 +27,11 @@ export class MoralityTrackerView extends BaseView {
 		this.codeblock = config.codeblock;
 	}
 
-	register(source: string, el: HTMLElement, ctx: any): void {
-		el.empty();
-		this.containerEl = el;
+	register(source: string, element: HTMLElement, ctx: any): void {
+		element.empty();
+		this.containerEl = element;
 
-		const container = el.createDiv({ cls: 'wod-morality-container' });
+		const container = element.createDiv({ cls: 'wod-morality-container' });
 
 		// Get current morality (0-10)
 		const moralityKey = `${this.filePath}|${this.config.codeblock}`;

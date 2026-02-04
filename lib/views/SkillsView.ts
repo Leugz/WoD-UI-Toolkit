@@ -19,9 +19,9 @@ export class SkillsView extends BaseView {
 		this.skillsData = skillsData;
 	}
 
-	register(source: string, el: HTMLElement, ctx: any): void {
-		el.empty();
-		const container = el.createDiv({ cls: 'wod-skills-container' });
+	register(source: string, element: HTMLElement, ctx: any): void {
+		element.empty();
+		const container = element.createDiv({ cls: 'wod-skills-container' });
 
 		Object.entries(this.skillsData).forEach(([category, skillList]) => {
 			this.renderCategory(container, category, skillList);

@@ -22,14 +22,14 @@ export class MeritsFlawsListView extends BaseView {
 		this.eventBus = eventBus;
 	}
 
-	register(source: string, el: HTMLElement, ctx: any): void {
-		el.empty();
+	register(source: string, element: HTMLElement, ctx: any): void {
+		element.empty();
 
 		let entries: any[] = [];
 		try {
 			entries = parseYaml(source) || [];
 		} catch {
-			el.createDiv({
+			element.createDiv({
 				text: '⚠️ Invalid YAML format',
 				cls: 'wod-mf-error',
 			});
@@ -44,14 +44,14 @@ export class MeritsFlawsListView extends BaseView {
 		);
 
 		if (merits.length === 0 && flaws.length === 0) {
-			el.createDiv({
+			element.createDiv({
 				text: 'No merits or flaws defined.',
 				cls: 'wod-mf-empty',
 			});
 			return;
 		}
 
-		const gridContainer = el.createDiv({ cls: 'wod-mf-grid' });
+		const gridContainer = element.createDiv({ cls: 'wod-mf-grid' });
 
 		const meritsColumn = gridContainer.createDiv({ cls: 'wod-mf-column' });
 		const meritsTitle = meritsColumn.createDiv({

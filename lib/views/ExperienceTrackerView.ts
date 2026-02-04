@@ -21,11 +21,11 @@ export class ExperienceTrackerView extends BaseView {
 		this.eventBus = eventBus;
 	}
 
-	register(source: string, el: HTMLElement, ctx: any): void {
-		el.empty();
-		this.containerEl = el;
+	register(source: string, element: HTMLElement, ctx: any): void {
+		element.empty();
+		this.containerEl = element;
 
-		const container = el.createDiv({ cls: 'wod-experience-container' });
+		const container = element.createDiv({ cls: 'wod-experience-container' });
 
 		// Get values
 		const totalKey = `${this.filePath}|experience.total`;

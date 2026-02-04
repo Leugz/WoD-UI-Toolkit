@@ -1,0 +1,77 @@
+.wod-renown-container {
+  padding: 15px;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  font-family: var(--font-interface);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.wod-renown-title {
+  margin: 0 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--wod-accent);
+  color: var(--wod-accent);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wod-renown-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  justify-content: center;
+}
+
+.wod-renown-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.wod-renown-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wod-renown-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.wod-renown-dot {
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--wod-dot-empty);
+  line-height: 1;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  user-select: none;
+}
+
+.wod-renown-dot:hover {
+  transform: scale(1.25);
+  color: var(--wod-dot-active);
+}
+
+.wod-renown-dot.filled {
+  color: var(--wod-dot-active);
+}
+
+@media (max-width: 500px) {
+  .wod-renown-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .wod-renown-column {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 10px;
+  }
+}

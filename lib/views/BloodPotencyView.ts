@@ -22,11 +22,11 @@ export class BloodPotencyView extends BaseView {
 		this.eventBus = eventBus;
 	}
 
-	register(source: string, el: HTMLElement, ctx: any): void {
-		el.empty();
-		this.containerEl = el;
+	register(source: string, element: HTMLElement, ctx: any): void {
+		element.empty();
+		this.containerEl = element;
 
-		const container = el.createDiv({ cls: 'vtm-blood-potency-container' });
+		const container = element.createDiv({ cls: 'vtm-blood-potency-container' });
 
 		// Get current Blood Potency (0-10)
 		const bpKey = `${this.filePath}|blood-potency`;

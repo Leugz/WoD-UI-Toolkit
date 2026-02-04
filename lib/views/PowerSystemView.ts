@@ -3,6 +3,7 @@ import { BaseView } from './BaseView';
 import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
 import { PowerSystemConfig } from '../config/GameConfig';
+import { IWodPlugin } from 'lib/interfaces/IWodPlugin';
 
 export class PowerSystemView extends BaseView {
 	codeblock: string;
@@ -11,11 +12,11 @@ export class PowerSystemView extends BaseView {
 	private eventBus: EventBus;
 	private config: PowerSystemConfig;
 	private containerEl: HTMLElement | null = null;
-	private plugin: Plugin;
+	private plugin: IWodPlugin;
 
 	constructor(
 		app: App,
-		plugin: Plugin,
+		plugin: IWodPlugin,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
@@ -30,9 +31,9 @@ export class PowerSystemView extends BaseView {
 		this.codeblock = config.codeblock;
 	}
 
-	register(source: string, el: HTMLElement, ctx: any): void {
-		el.empty();
-		this.containerEl = el;
+	register(source: string, element: HTMLElement, ctx: any): void {
+		element.empty();
+		this.containerEl = element;
 
 		let disciplines: any[] = [];
 		try {
@@ -41,7 +42,7 @@ export class PowerSystemView extends BaseView {
 				.map((line) => line.trim())
 				.filter((line) => line && line !== '-');
 		} catch {
-			el.createDiv({
+			element.createDiv({
 				text: '⚠️ Invalid format',
 				cls: 'wod-powers-error',
 			});
@@ -49,14 +50,14 @@ export class PowerSystemView extends BaseView {
 		}
 
 		if (disciplines.length === 0) {
-			el.createDiv({
+			element.createDiv({
 				text: `No ${this.config.name.toLowerCase()} defined.`,
 				cls: 'wod-powers-empty',
 			});
 			return;
 		}
 
-		const container = el.createDiv({ cls: 'wod-powers-container' });
+		const container = element.createDiv({ cls: 'wod-powers-container' });
 
 		const header = container.createDiv({ cls: 'wod-powers-header' });
 		header.createEl('h3', {
@@ -116,14 +117,18 @@ export class PowerSystemView extends BaseView {
 	): void {
 		let fileName = disciplineName;
 
-		if (disciplineName === 'Blood Sorcery') {
+		if (this.config.iconMap && this.config.iconMap[disciplineName]) {
+			fileName = this.config.iconMap[fileName];
+		} else if (disciplineName === 'Blood Sorcery') {
 			fileName = 'Thaumaturgy';
 		}
 
 		const disciplineSlug = fileName.replace(/ /g, '_');
-
 		const pluginId = this.plugin.manifest.id;
-		const relativePath = `${this.app.vault.configDir}/plugins/${pluginId}/assets/vtm/disciplines/${disciplineSlug}.png`;
+		const gameId = this.config.codeblock.startsWith('vtm') ? 'vtm' : 'wta';
+		const folderName = gameId === 'vtm' ? '/disciplines' : '';
+
+		const relativePath = `${this.app.vault.configDir}/plugins/${pluginId}/assets/${gameId}/${folderName}/${disciplineSlug}.png`;
 
 		const resourceUrl =
 			this.app.vault.adapter.getResourcePath(relativePath);

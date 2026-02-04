@@ -9,6 +9,7 @@ import {
 	MoralityConfig,
 	PowerSystemConfig,
 	BaseTrackerConfig,
+	AdvantageConfig,
 } from 'lib/config/GameConfig';
 import {
 	WodSettings,
@@ -29,6 +30,7 @@ import { BloodPotencyView } from 'lib/views/BloodPotencyView';
 import { ExperienceTrackerView } from 'lib/views/ExperienceTrackerView';
 import { MeritsFlawsListView } from 'lib/views/MeritsFlawsView';
 import { ViewRegister } from 'lib/utils/ViewRegister';
+import { RenownView } from 'lib/views/RenownView';
 
 export default class WodUIToolkitPlugin extends Plugin {
 	store: KeyValueStore;
@@ -83,7 +85,7 @@ export default class WodUIToolkitPlugin extends Plugin {
 				),
 		);
 
-		// disciplines / gifts
+		// disciplines
 		record.register<PowerSystemConfig>(
 			'powers',
 			'powerSystem',
@@ -180,19 +182,27 @@ export default class WodUIToolkitPlugin extends Plugin {
 				),
 		);
 
-		// LEGACY / SPECIFIC COMPONENTS (These might need refactoring)
-
-		// Blood Potency
-		this.registerMarkdownCodeBlockProcessor(
-			'vtm-blood-potency',
-			(source, el, ctx) => {
-				const view = new BloodPotencyView(
-					this.app,
-					this.store,
-					ctx.sourcePath,
-					this.eventBus,
-				);
-				view.register(source, el, ctx);
+		// blood potency & renown
+		record.register<AdvantageConfig>(
+			'advantage',
+			'advantage',
+			(config, ctx) => {
+				if (config.mode === 'renown') {
+					return new RenownView(
+						this.app,
+						this.store,
+						ctx.sourcePath,
+						this.eventBus,
+						config,
+					);
+				} else {
+					return new BloodPotencyView(
+						this.app,
+						this.store,
+						ctx.sourcePath,
+						this.eventBus,
+					);
+				}
 			},
 		);
 

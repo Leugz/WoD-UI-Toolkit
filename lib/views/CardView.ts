@@ -6,8 +6,9 @@ export interface CardEntry {
 	description?: string;
 	rating?: number;
 	maxRating?: number;
-	tags?: string[];
+	tags?: (string | Record<string, any>)[];
 	icon?: string;
+	pool?: string;
 }
 
 interface CardViewOptions {
@@ -27,19 +28,19 @@ export class CardView extends BaseView {
 		this.options = options;
 	}
 
-	register(source: string, el: HTMLElement, ctx: any): void {
-		el.empty();
+	register(source: string, element: HTMLElement, ctx: any): void {
+		element.empty();
 		const entries = this.options.entries;
 
 		if (!Array.isArray(entries) || entries.length === 0) {
-			el.createDiv({
+			element.createDiv({
 				text: 'No entries defined.',
 				cls: 'wod-empty',
 			});
 			return;
 		}
 
-		const container = el.createDiv({ cls: 'wod-card-container' });
+		const container = element.createDiv({ cls: 'wod-card-container' });
 
 		if (this.options.extraClasses) {
 			container.addClass(this.options.extraClasses);
@@ -54,7 +55,7 @@ export class CardView extends BaseView {
 
 		const list = container.createDiv({ cls: 'wod-card-list' });
 
-		entries.forEach((entry) => {
+		this.options.entries.forEach((entry) => {
 			this.renderEntry(list, entry);
 		});
 	}
@@ -93,9 +94,34 @@ export class CardView extends BaseView {
 			});
 
 			entry.tags.forEach((tag) => {
+				let tagText = '';
+				let tagClassSuffix = '';
+
+				if (typeof tag == 'string') {
+					if (tag.includes(':')) {
+						const [key, ...rest] = tag.split(':');
+						const value = rest.join(':').trim();
+
+						tagText = value;
+						tagClassSuffix = `${key}-${value}`;
+					} else {
+						tagText = tag;
+						tagClassSuffix = tag;
+					}
+				} else if (typeof tag == 'object' && tag !== null) {
+					const key = Object.keys(tag)[0];
+					const value = (tag as any)[key];
+
+					tagText = `${value}`;
+					tagClassSuffix = `${key}-${value}`;
+				} else {
+					tagText = String(tag);
+					tagClassSuffix = String(tag);
+				}
+
 				tagsContainer.createSpan({
-					text: tag.toUpperCase(),
-					cls: 'wod-card-tag',
+					text: tagText,
+					cls: `wod-card-tag ${tagClassSuffix.toLowerCase().replace(/[^a-z0-9]/g, '')}`,
 				});
 			});
 		}
@@ -106,11 +132,13 @@ export class CardView extends BaseView {
 			const dotsContainer = header.createDiv({
 				cls: 'wod-card-dots',
 			});
+
 			for (let i = 0; i < maxRating; i++) {
 				const dot = dotsContainer.createSpan({
 					cls: 'wod-card-dot',
 				});
 				dot.setText(i < entry.rating ? '●' : '○');
+
 				if (this.options.dotColor) {
 					dot.style.color = this.options.dotColor;
 				}
@@ -122,6 +150,11 @@ export class CardView extends BaseView {
 				cls: 'wod-card-description',
 			});
 			desc.setText(entry.description);
+		}
+
+		if (entry.pool) {
+			const poolEl = entryDiv.createDiv({ cls: 'wod-card-pool' });
+			poolEl.innerHTML = `${entry.pool}`;
 		}
 	}
 }

@@ -31,6 +31,10 @@
 }
 
 .wod-card-entry {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 15px;
   background: var(--background-primary);
   padding: 12px 16px;
   border-radius: 6px;
@@ -141,6 +145,23 @@
 .wod-card-reversed .wod-card-tags {
   order: -1;
   align-items: flex-start;
+}
+
+.wod-card-pool {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--background-modifier-border);
+  font-size: 13px;
+  color: var(--wod-accent);
+  font-family: var(--font-interface);
+  text-align: center;
+}
+
+.wod-card-pool strong {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-size: 11px;
+  margin-right: 4px;
 }
 
 .wod-mf-grid {

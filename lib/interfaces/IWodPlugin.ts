@@ -1,9 +1,10 @@
 import { GameConfig } from 'lib/config/GameConfig';
 import { WodSettings } from 'lib/settings/Settings';
-import { App } from 'obsidian';
+import { App, PluginManifest } from 'obsidian';
 
 export interface IWodPlugin {
 	app: App;
+	manifest: PluginManifest;
 	settings: WodSettings;
 	activeConfig: GameConfig;
 	saveSettings(): Promise<void>;

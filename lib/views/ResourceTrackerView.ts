@@ -30,11 +30,11 @@ export class ResourceTrackerView extends BaseView {
 		this.codeblock = config.codeblock;
 	}
 
-	register(source: string, el: HTMLElement, ctx: any): void {
-		el.empty();
-		this.containerEl = el;
+	register(source: string, element: HTMLElement, ctx: any): void {
+		element.empty();
+		this.containerEl = element;
 
-		const container = el.createDiv({ cls: 'wod-resource-container' });
+		const container = element.createDiv({ cls: 'wod-resource-container' });
 
 		const resourceKey = `${this.filePath}|${this.config.codeblock}`;
 		let currentValue = this.store.get(resourceKey) ?? 0;
