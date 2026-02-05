@@ -23,3 +23,6 @@ data.json
 
 # Ignore generated styles
 styles.css
+
+# Ignore generated asset file (generated on build)
+lib/data/EmbeddedAssets.ts
