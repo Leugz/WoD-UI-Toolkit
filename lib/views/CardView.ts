@@ -71,7 +71,8 @@ export class CardView extends BaseView {
 
 			if (
 				entry.icon.startsWith('app://') ||
-				entry.icon.startsWith('http')
+				entry.icon.startsWith('http') ||
+				entry.icon.startsWith('data:')
 			) {
 				iconContainer.createEl('img', {
 					attr: {
