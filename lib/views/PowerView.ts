@@ -5,6 +5,7 @@ import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
 import { IWodPlugin } from 'lib/interfaces/IWodPlugin';
 import { VTM_CONFIG, WTA_CONFIG } from 'lib/config/GameConfig';
+import { EMBEDDED_ASSETS } from '../data/EmbeddedAssets';
 
 export class PowerListView extends BaseView {
 	private store: KeyValueStore;
@@ -116,30 +117,78 @@ export class PowerListView extends BaseView {
 		const activeMap = this.plugin.activeConfig.powerSystem?.iconMap;
 		if (activeMap && activeMap[name]) fileName = activeMap[name];
 
-		const activeFolder = activeId === 'vtm' ? '/disciplines' : '';
 		const activeSlug = fileName.replace(/ /g, '_');
-		const activePath = `.obsidian/plugins/${pluginId}/assets/${activeId}${activeFolder}/${activeSlug}.png`;
+		const activeSubfolder = activeId === 'vtm' ? 'disciplines/' : '';
 
+		const activeEmbedded = this.findEmbeddedImage(activeId, activeSlug);
+		if (activeEmbedded) return activeEmbedded;
+
+		const activePath = `${configDir}/plugins/${pluginId}/assets/${activeId}/${activeSubfolder}${activeSlug}.png`;
 		if (await this.app.vault.adapter.exists(activePath)) {
 			return this.plugin.app.vault.adapter.getResourcePath(activePath);
 		}
 
 		const otherId = activeId === 'vtm' ? 'wta' : 'vtm';
-		const otherFolder = otherId === 'vtm' ? '/disciplines' : '';
+		const otherConfig = otherId === 'vtm' ? VTM_CONFIG : WTA_CONFIG;
 
 		let otherFileName = name;
-		const otherConfig = otherId === 'vtm' ? VTM_CONFIG : WTA_CONFIG;
 		const otherMap = otherConfig.powerSystem?.iconMap;
 
 		if (otherMap && otherMap[name]) {
 			otherFileName = otherMap[name];
+		} else if (otherId === 'vtm' && name === 'Blood Sorcery') {
+			otherFileName = 'Thaumaturgy';
+		} else if (otherId === 'vtm' && name === 'Thin-Blood Alchemy') {
+			otherFileName = 'Thinblood_Alchemy';
 		}
 
 		const otherSlug = otherFileName.replace(/ /g, '_');
-		const otherPath = `.obsidian/plugins/${pluginId}/assets/${otherId}${otherFolder}/${otherSlug}.png`;
+		const otherSubfolder = otherId === 'vtm' ? 'disciplines/' : '';
 
+		const otherPath = `${configDir}/plugins/${pluginId}/assets/${otherId}/${otherSubfolder}${otherSlug}.png`;
 		if (await this.app.vault.adapter.exists(otherPath)) {
 			return this.plugin.app.vault.adapter.getResourcePath(otherPath);
+		}
+
+		const otherEmbedded = this.findEmbeddedImage(otherId, otherSlug);
+		if (otherEmbedded) return otherEmbedded;
+
+		return undefined;
+	}
+
+	private findEmbeddedImage(
+		gameId: string,
+		slug: string,
+	): string | undefined {
+		const folderPrefix = gameId === 'vtm' ? 'disciplines/' : '';
+		const exactKey = `${gameId}/${folderPrefix}${slug}.png`.replace(
+			/\/+/g,
+			'/',
+		);
+
+		console.log(`[WoD] Searching for icon: ${slug}`);
+		console.log(`[WoD] Trying exact key: ${exactKey}`);
+
+		const totalKeys = Object.keys(EMBEDDED_ASSETS).length;
+		if (totalKeys === 0) {
+			console.error(
+				'[WoD] CRITICAL: EMBEDDED_ASSETS is empty! Import failed.',
+			);
+		}
+
+		if (EMBEDDED_ASSETS[exactKey]) {
+			console.log('[WoD] Found exact match!');
+			return EMBEDDED_ASSETS[exactKey];
+		}
+
+		const targetSuffix = `/${slug}.png`;
+		const fuzzyKey = Object.keys(EMBEDDED_ASSETS).find(
+			(key) => key.startsWith(`${gameId}/`) && key.endsWith(targetSuffix),
+		);
+
+		if (fuzzyKey) {
+			console.log(`[WoD] Found fuzzy match: ${fuzzyKey}`);
+			return EMBEDDED_ASSETS[fuzzyKey];
 		}
 
 		return undefined;

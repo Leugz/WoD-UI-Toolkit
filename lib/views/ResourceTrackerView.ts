@@ -3,6 +3,7 @@ import { BaseView } from './BaseView';
 import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
 import { ResourceConfig } from '../config/GameConfig';
+import { EMBEDDED_ASSETS } from '../data/EmbeddedAssets';
 
 export class ResourceTrackerView extends BaseView {
 	codeblock: string;
@@ -30,7 +31,11 @@ export class ResourceTrackerView extends BaseView {
 		this.codeblock = config.codeblock;
 	}
 
-	register(source: string, element: HTMLElement, ctx: any): void {
+	async register(
+		source: string,
+		element: HTMLElement,
+		ctx: any,
+	): Promise<void> {
 		element.empty();
 		this.containerEl = element;
 
@@ -41,18 +46,44 @@ export class ResourceTrackerView extends BaseView {
 
 		const header = container.createDiv({ cls: 'wod-resource-header' });
 		const titleDiv = header.createDiv({ cls: 'wod-resource-title-group' });
-
 		const iconSpan = titleDiv.createSpan({ cls: 'wod-resource-icon' });
 
+		let iconSrc = '';
+		const cleanKey = this.config.icon
+			.replace(/^assets\//, '')
+			.replace(/^\//, '');
+
+		if (this.config.icon.startsWith('data:')) {
+			iconSrc = this.config.icon;
+		} else if (EMBEDDED_ASSETS[cleanKey]) {
+			iconSrc = EMBEDDED_ASSETS[cleanKey];
+		} else {
+			const fileName = cleanKey.split('/').pop();
+
+			if (fileName) {
+				const fuzzyKey = Object.keys(EMBEDDED_ASSETS).find(
+					(key) => key.endsWith('/' + fileName) || key === fileName,
+				);
+
+				if (fuzzyKey) iconSrc = EMBEDDED_ASSETS[fuzzyKey];
+			}
+		}
+
 		if (
-			this.config.icon.endsWith('.png') ||
-			this.config.icon.includes('/')
+			!iconSrc &&
+			(this.config.icon.endsWith('.png') ||
+				this.config.icon.includes('/'))
 		) {
 			const iconPath = `${this.app.vault.configDir}/plugins/${this.plugin.manifest.id}/${this.config.icon}`;
-			const iconUrl = this.app.vault.adapter.getResourcePath(iconPath);
 
+			if (await this.app.vault.adapter.exists(iconPath)) {
+				iconSrc = this.app.vault.adapter.getResourcePath(iconPath);
+			}
+		}
+
+		if (iconSrc) {
 			iconSpan.createEl('img', {
-				attr: { src: iconUrl, alt: this.config.name },
+				attr: { src: iconSrc, alt: this.config.name },
 			});
 		} else {
 			iconSpan.setText(this.config.icon);

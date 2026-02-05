@@ -4,6 +4,7 @@ import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
 import { PowerSystemConfig } from '../config/GameConfig';
 import { IWodPlugin } from 'lib/interfaces/IWodPlugin';
+import { EMBEDDED_ASSETS } from 'lib/data/EmbeddedAssets';
 
 export class PowerSystemView extends BaseView {
 	codeblock: string;
@@ -126,10 +127,27 @@ export class PowerSystemView extends BaseView {
 		const disciplineSlug = fileName.replace(/ /g, '_');
 		const pluginId = this.plugin.manifest.id;
 		const gameId = this.config.codeblock.startsWith('vtm') ? 'vtm' : 'wta';
-		const folderName = gameId === 'vtm' ? '/disciplines' : '';
+		const folderName = gameId === 'vtm' ? 'disciplines/' : '';
+		const cleanFolder = folderName.replace(/\/$/, '');
+
+		const embedKey = `${gameId}/${folderName}${disciplineSlug}.png`.replace(
+			/\/+/g,
+			'/',
+		);
+
+		if (EMBEDDED_ASSETS[embedKey]) {
+			element.createEl('img', {
+				attr: {
+					src: EMBEDDED_ASSETS[embedKey],
+					alt: disciplineName,
+					title: disciplineName,
+				},
+				cls: 'wod-power-icon-img',
+			});
+			return;
+		}
 
 		const relativePath = `${this.app.vault.configDir}/plugins/${pluginId}/assets/${gameId}/${folderName}/${disciplineSlug}.png`;
-
 		const resourceUrl =
 			this.app.vault.adapter.getResourcePath(relativePath);
 
