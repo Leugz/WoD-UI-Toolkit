@@ -1,96 +1,176 @@
-# Obsidian Sample Plugin
+# World of Darkness UI Toolkit
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+<p align="center">
+<img src="docs/images/DarkPack_Logo_Color.png" alt="Dark Pack Logo" width="300" >
+</p>
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+> _Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit **[worldofdarkness.com](https://worldofdarkness.com)**._
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
+This is **an unofficial, fan-made plugin** for managing **World of Darkness** character sheets directly inside your Obsidian vault, created and shared under the [**Dark Pack Agreement**](https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement).
+It is a **non-commercial project** and is **not affiliated with, endorsed, or sponsored by Paradox Interactive AB**.
 
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+The toolkit allows storytellers and players to manage complete character sheets directly within Obsidian. It provides interactive, state-aware components for tracking vital statistics such as Health, Willpower, Hunger, and Rage, along with structured views for Attributes, Skills, and Powers.
 
-## First time developing plugins?
+Unlike static text templates, this plugin offers a functional interface that responds to user input and automatically adapts its visual style to reflect the identity and mechanics of each supported game line.
 
-Quick starting guide for new plugin devs:
+---
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+### Supported Games
 
-## Releasing new releases
+Currently supported:
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+- **Vampire: The Masquerade 5th edition**
+- **Werewolf: The Apocalypse 5th edition**
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+<br>
 
-## Adding your plugin to the community plugin list
+_Support for additional World of Darkness games may be added in the future._
 
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+## Documentation
 
-## How to use
+### Key Features
 
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
+- **`Interactive Resource Trackers`**
+  Manage dynamic stats like Health, Willpower, and Experience with clickable trackers that persist their state.
 
-## Manually installing the plugin
+- **`Game-Specific Mechanics`**
+  Dedicated support for unique systems such as Hunger and Humanity for Vampire, and Rage, Harmony, and Renown for Werewolf.
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+- **`Context-Aware Theming`**
+  The interface automatically switches color palettes and iconography based on the selected game system.
 
-## Improve code quality with eslint (optional)
+- **`Embedded Asset Library`**
+  Includes essential icons for Clans, Tribes, Disciplines, and Gifts, removing the need for manual image management.
 
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code.
-- To use eslint with this project, make sure to install eslint from terminal:
-    - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-    - `eslint main.ts`
-    - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-    - `eslint ./src/`
+- **`Structured Data Views`**
+  Clean, grid-based layouts for Attributes, Skills, and Merits that remain readable even on complex sheets.
 
-## Funding URL
+## Usage Guide
 
-You can include funding URLs where people who use your plugin can financially support it.
+The plugin uses **custom code blocks** to render character sheet elements.
+You can choose between **context-aware generic blocks** or **game-specific blocks**, depending on how much control you want.
 
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
+### Block Types Overview
 
-```json
-{
-	"fundingUrl": "https://buymeacoffee.com"
-}
+#### 1. Generic Blocks (`wod-*`)
+
+These blocks automatically adapt their **appearance and mechanics** based on your current plugin settings.
+
+Use these if you want your character sheet to **update automatically** when switching game systems.
+
+**Available Generic Blocks**
+
+* `wod-resource` — Hunger (VTM) or Rage (WTA)
+* `wod-morality` — Humanity (VTM) or Harmony (WTA)
+* `wod-advantage` — Blood Potency (VTM) or Renown (WTA)
+* `wod-powers` — Section header for Disciplines or Gifts
+* `wod-power-list` — Individual power cards
+* `wod-attributes` — Physical / Social / Mental grid
+* `wod-skills` — Complete skills list
+* `wod-health` — Health tracker (Superficial / Aggravated)
+* `wod-willpower` — Willpower tracker
+* `wod-xp` — Experience tracker
+* `wod-merits` — Merits & Flaws list
+
+#### 2. Game-Specific Blocks (`vtm-*`, `wta-*`)
+
+These blocks **force a specific game system**, regardless of your plugin settings.
+
+Use these when you want **explicit control** over mechanics or presentation.
+
+#### Vampire: The Masquerade (V5)
+
+* `vtm-hunger` — Hunger Dice tracker
+* `vtm-humanity` — Humanity tracker with Stains
+* `vtm-blood-potency` — Blood Potency tracker
+* `vtm-disciplines` — Disciplines section header
+* `vtm-power-list` — Discipline powers list
+* `vtm-attributes`
+* `vtm-skills`
+* `vtm-health`
+* `vtm-willpower`
+* `vtm-experience`
+* `vtm-merits`
+
+#### Werewolf: The Apocalypse (W5)
+
+* `wta-rage` — Rage Dice tracker
+* `wta-harmony` — Harmony tracker
+* `wta-renown` — Renown tracker (Glory, Honor, Wisdom)
+* `wta-gifts` — Gifts section header
+* `wta-gift-list` — Gifts / Rites list
+* `wta-attributes`
+* `wta-skills`
+* `wta-health`
+* `wta-willpower`
+* `wta-experience`
+* `wta-merits`
+
+## Example Usage
+
+### Vital Statistics
+
+Track health and willpower using standard trackers.
+
+````
+```wod-health
 ```
 
-If you have multiple URLs, you can also do:
+```wod-willpower
+```
+````
 
-```json
-{
-	"fundingUrl": {
-		"Buy Me a Coffee": "https://buymeacoffee.com",
-		"GitHub Sponsor": "https://github.com/sponsors",
-		"Patreon": "https://www.patreon.com/"
-	}
-}
+### Attributes and Skills
+
+These blocks automatically populate based on the active game system.
+
+````
+```wod-attributes
 ```
 
-## API Documentation
+```wod-skills
+```
+````
 
-See https://github.com/obsidianmd/obsidian-api
+### Disciplines
+
+Use the `wod-powers` or `vtm-disciplines` block to define **Discipline sections** for *Vampire: The Masquerade*.
+
+````
+```wod-powers
+Animalism
+Auspex
+Blood Sorcery
+```
+````
+
+> *Currently supported for Vampire: The Masquerade only.*
+
+### Powers and Abilities
+
+Use `wod-power-list`, `vtm-power-list`, or `wta-gift-list` to list individual **Discipline powers** or **Gifts**.
+
+When used in a Vampire context, entries are treated as **Discipline powers**, and icons are automatically resolved based on the specified Discipline.
+
+````
+```vtm-power-list
+- name: Soaring Leap
+  discipline: Potence
+  tags: [Cost: Free, Duration: Passive]
+  pool:
+  description: Leap higher and further than usual.
+```
+````
+
+When used in a Werewolf context, entries are rendered using **W5 mechanics and styling**.
+Icons are resolved automatically, but can be overridden using the `icon` field.
+
+````
+```wta-gift-list
+- name: Pack Instinct
+  icon:
+  tags: [Cost: Free, Duration: Passive]
+  pool:
+  description: You act in perfect concert with your pack, ignoring penalties for close quarters.
+```
+````
