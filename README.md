@@ -9,11 +9,11 @@
 This is **an unofficial, fan-made plugin** for managing **World of Darkness** character sheets directly inside your Obsidian vault, created and shared under the [**Dark Pack Agreement**](https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement).
 It is a **non-commercial project** and is **not affiliated with, endorsed, or sponsored by Paradox Interactive AB**.
 
+---
+
 The toolkit allows storytellers and players to manage complete character sheets directly within Obsidian. It provides interactive, state-aware components for tracking vital statistics such as Health, Willpower, Hunger, and Rage, along with structured views for Attributes, Skills, and Powers.
 
 Unlike static text templates, this plugin offers a functional interface that responds to user input and automatically adapts its visual style to reflect the identity and mechanics of each supported game line.
-
----
 
 ### Supported Games
 
@@ -30,19 +30,24 @@ _Support for additional World of Darkness games may be added in the future._
 
 ### Key Features
 
-- **`Interactive Resource Trackers`**
+- **Interactive Resource Trackers**
+  <br>
   Manage dynamic stats like Health, Willpower, and Experience with clickable trackers that persist their state.
 
-- **`Game-Specific Mechanics`**
+- **Game-Specific Mechanics**
+  <br>
   Dedicated support for unique systems such as Hunger and Humanity for Vampire, and Rage, Harmony, and Renown for Werewolf.
 
-- **`Context-Aware Theming`**
+- **Context-Aware Theming**
+  <br>
   The interface automatically switches color palettes and iconography based on the selected game system.
 
-- **`Embedded Asset Library`**
+- **Embedded Asset Library**
+  <br>
   Includes essential icons for Clans, Tribes, Disciplines, and Gifts, removing the need for manual image management.
 
-- **`Structured Data Views`**
+- **Structured Data Views**
+  <br>
   Clean, grid-based layouts for Attributes, Skills, and Merits that remain readable even on complex sheets.
 
 ## Usage Guide
