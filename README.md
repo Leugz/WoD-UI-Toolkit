@@ -24,7 +24,7 @@ Currently supported:
 
 <br>
 
-_Support for additional World of Darkness games may be added in the future._
+> _Support for additional World of Darkness games may be added in the future._
 
 ## Documentation
 
