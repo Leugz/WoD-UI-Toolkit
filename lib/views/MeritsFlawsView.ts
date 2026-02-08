@@ -62,13 +62,24 @@ export class MeritsFlawsListView extends BaseView {
 		if (merits.length > 0) {
 			const meritsCard = new CardView(this.app, {
 				title: '',
-				entries: merits.map((e) => ({
-					name: e.name || 'Unnamed',
-					description: e.description,
-					rating: e.rating,
-					maxRating: 5,
-					tags: ['Merit'],
-				})),
+				entries: merits.map((e) => {
+					const storeKey = `${this.filePath}|merit.${e.name}`;
+					const savedRating = this.store.get(storeKey);
+					const currentRating =
+						savedRating !== undefined ? savedRating : e.rating || 0;
+
+					return {
+						name: e.name || 'Unnamed',
+						description: e.description,
+						rating: currentRating,
+						maxRating: 5,
+						tags: ['Merit'],
+						onChange: async (newVal) => {
+							await this.store.set(storeKey, newVal);
+							this.register(source, element, ctx);
+						},
+					};
+				}),
 				dotColor: 'var(--text-success)',
 				maxRatingDefault: 5,
 				extraClasses: 'wod-card-reversed',
@@ -90,13 +101,24 @@ export class MeritsFlawsListView extends BaseView {
 		if (flaws.length > 0) {
 			const flawsCard = new CardView(this.app, {
 				title: '',
-				entries: flaws.map((e) => ({
-					name: e.name || 'Unnamed',
-					description: e.description,
-					rating: e.rating,
-					maxRating: 5,
-					tags: ['Flaw'],
-				})),
+				entries: flaws.map((e) => {
+					const storeKey = `${this.filePath}|flaw.${e.name}`;
+					const savedRating = this.store.get(storeKey);
+					const currentRating =
+						savedRating !== undefined ? savedRating : e.rating || 0;
+
+					return {
+						name: e.name || 'Unnamed',
+						description: e.description,
+						rating: currentRating,
+						maxRating: 5,
+						tags: ['Flaw'],
+						onChange: async (newVal) => {
+							await this.store.set(storeKey, newVal);
+							this.register(source, element, ctx);
+						},
+					};
+				}),
 				dotColor: 'var(--text-error)',
 				maxRatingDefault: 5,
 				extraClasses: 'wod-card-reversed',

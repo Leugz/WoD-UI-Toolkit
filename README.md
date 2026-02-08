@@ -60,17 +60,17 @@ Use these if you want your character sheet to **update automatically** when swit
 
 **Available Generic Blocks**
 
-* `wod-resource` — Hunger (VTM) or Rage (WTA)
-* `wod-morality` — Humanity (VTM) or Harmony (WTA)
-* `wod-advantage` — Blood Potency (VTM) or Renown (WTA)
-* `wod-powers` — Section header for Disciplines or Gifts
-* `wod-power-list` — Individual power cards
-* `wod-attributes` — Physical / Social / Mental grid
-* `wod-skills` — Complete skills list
-* `wod-health` — Health tracker (Superficial / Aggravated)
-* `wod-willpower` — Willpower tracker
-* `wod-xp` — Experience tracker
-* `wod-merits` — Merits & Flaws list
+- `wod-resource` — Hunger (VTM) or Rage (WTA)
+- `wod-morality` — Humanity (VTM) or Harmony (WTA)
+- `wod-advantage` — Blood Potency (VTM) or Renown (WTA)
+- `wod-powers` — Section header for Disciplines or Gifts
+- `wod-power-list` — Individual power cards
+- `wod-attributes` — Physical / Social / Mental grid
+- `wod-skills` — Complete skills list
+- `wod-health` — Health tracker (Superficial / Aggravated)
+- `wod-willpower` — Willpower tracker
+- `wod-xp` — Experience tracker
+- `wod-merits` — Merits & Flaws list
 
 #### 2. Game-Specific Blocks (`vtm-*`, `wta-*`)
 
@@ -80,31 +80,31 @@ Use these when you want **explicit control** over mechanics or presentation.
 
 #### Vampire: The Masquerade (V5)
 
-* `vtm-hunger` — Hunger Dice tracker
-* `vtm-humanity` — Humanity tracker with Stains
-* `vtm-blood-potency` — Blood Potency tracker
-* `vtm-disciplines` — Disciplines section header
-* `vtm-power-list` — Discipline powers list
-* `vtm-attributes`
-* `vtm-skills`
-* `vtm-health`
-* `vtm-willpower`
-* `vtm-experience`
-* `vtm-merits`
+- `vtm-hunger` — Hunger Dice tracker
+- `vtm-humanity` — Humanity tracker with Stains
+- `vtm-blood-potency` — Blood Potency tracker
+- `vtm-disciplines` — Disciplines section header
+- `vtm-power-list` — Discipline powers list
+- `vtm-attributes`
+- `vtm-skills`
+- `vtm-health`
+- `vtm-willpower`
+- `vtm-experience`
+- `vtm-merits`
 
 #### Werewolf: The Apocalypse (W5)
 
-* `wta-rage` — Rage Dice tracker
-* `wta-harmony` — Harmony tracker
-* `wta-renown` — Renown tracker (Glory, Honor, Wisdom)
-* `wta-gifts` — Gifts section header
-* `wta-gift-list` — Gifts / Rites list
-* `wta-attributes`
-* `wta-skills`
-* `wta-health`
-* `wta-willpower`
-* `wta-experience`
-* `wta-merits`
+- `wta-rage` — Rage Dice tracker
+- `wta-harmony` — Harmony tracker
+- `wta-renown` — Renown tracker (Glory, Honor, Wisdom)
+- `wta-gifts` — Gifts section header
+- `wta-gift-list` — Gifts / Rites list
+- `wta-attributes`
+- `wta-skills`
+- `wta-health`
+- `wta-willpower`
+- `wta-experience`
+- `wta-merits`
 
 ## Example Usage
 
@@ -134,7 +134,7 @@ These blocks automatically populate based on the active game system.
 
 ### Disciplines
 
-Use the `wod-powers` or `vtm-disciplines` block to define **Discipline sections** for *Vampire: The Masquerade*.
+Use the `wod-powers` or `vtm-disciplines` block to define **Discipline sections** for _Vampire: The Masquerade_.
 
 ````
 ```wod-powers
@@ -144,7 +144,7 @@ Blood Sorcery
 ```
 ````
 
-> *Currently supported for Vampire: The Masquerade only.*
+> _Currently supported for Vampire: The Masquerade only._
 
 ### Powers and Abilities
 

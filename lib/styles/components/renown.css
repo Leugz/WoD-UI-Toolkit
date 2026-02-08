@@ -42,25 +42,30 @@
 
 .wod-renown-dots {
   display: flex;
-  gap: 4px;
+  gap: 6px;
 }
 
 .wod-renown-dot {
-  font-size: 24px;
+  width: var(--wod-dot-size-small);
+  height: var(--wod-dot-size-small);
+
+  border-radius: 100%;
+  border: 1px solid var(--wod-text-muted);
+  background: transparent;
+
   cursor: pointer;
-  color: var(--wod-dot-empty);
-  line-height: 1;
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   user-select: none;
+  transition: all 0.15s ease;
 }
 
 .wod-renown-dot:hover {
-  transform: scale(1.25);
-  color: var(--wod-dot-active);
+  transform: scale(1.2);
+  filter: brightness(1.2);
 }
 
 .wod-renown-dot.filled {
-  color: var(--wod-dot-active);
+  background: var(--wod-dot-active);
+  border-color: var(--wod-dot-active);
 }
 
 @media (max-width: 500px) {
@@ -73,5 +78,10 @@
     flex-direction: row;
     justify-content: space-between;
     padding: 0 10px;
+  }
+
+  .wod-renown-dot {
+    width: var(--wod-dot-size-medium);
+    height: var(--wod-dot-size-medium);
   }
 }

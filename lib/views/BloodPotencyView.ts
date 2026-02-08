@@ -26,7 +26,9 @@ export class BloodPotencyView extends BaseView {
 		element.empty();
 		this.containerEl = element;
 
-		const container = element.createDiv({ cls: 'vtm-blood-potency-container' });
+		const container = element.createDiv({
+			cls: 'vtm-blood-potency-container',
+		});
 
 		// Get current Blood Potency (0-10)
 		const bpKey = `${this.filePath}|blood-potency`;
@@ -78,10 +80,7 @@ export class BloodPotencyView extends BaseView {
 		const dot = dotsContainer.createDiv({ cls: 'vtm-bp-dot' });
 
 		if (value <= currentBP) {
-			dot.setText('●');
 			dot.addClass('filled');
-		} else {
-			dot.setText('○');
 		}
 
 		// Click to set BP to this level

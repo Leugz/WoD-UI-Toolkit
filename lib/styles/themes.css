@@ -1,3 +1,10 @@
+:root {
+  --wod-dot-size-small: 10px;
+  --wod-dot-size-medium: 14px;
+  --wod-dot-size-large: 16px;
+  --wod-dot-size-huge: 20px;
+}
+
 .wod-theme-vtm {
   --wod-accent: #b91c1c;
   --wod-accent-dim: #7f1d1d;

@@ -66,7 +66,7 @@
 /* Dots */
 .vtm-bp-dots {
   display: flex;
-  gap: 4px;
+  gap: 10px;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
@@ -74,12 +74,16 @@
 }
 
 .vtm-bp-dot {
-  font-size: 24px;
+  width: var(--wod-dot-size-medium);
+  height: var(--wod-dot-size-medium);
+
+  border-radius: 100%;
+  border: 1px solid var(--wod-text-muted);
+  background: transparent;
+
   cursor: pointer;
-  transition: all 0.15s ease;
   user-select: none;
-  color: var(--text-muted);
-  line-height: 1;
+  transition: all 0.15s ease;
 }
 
 .vtm-bp-dot:hover {
@@ -88,7 +92,8 @@
 }
 
 .vtm-bp-dot.filled {
-  color: #dc2626;
+  background: #dc2626;
+  border-color: #dc2626;
 }
 
 /* Derived Stats */
@@ -126,15 +131,16 @@
   .vtm-blood-potency-container {
     padding: 10px;
   }
-  
+
   .vtm-bp-dot {
-    font-size: 20px;
+    width: var(--wod-dot-size-large);
+    height: var(--wod-dot-size-large);
   }
-  
+
   .vtm-bp-stats {
     padding: 8px 10px;
   }
-  
+
   .vtm-bp-stat-row {
     font-size: 11px;
   }

@@ -101,10 +101,7 @@ export class WillpowerView extends BaseView {
 		const box = container.createDiv({ cls: 'wod-willpower-box' });
 
 		if (index < currentWillpower) {
-			box.setText('●');
 			box.addClass('filled');
-		} else {
-			box.setText('○');
 		}
 
 		// Click to set willpower to this level

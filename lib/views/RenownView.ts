@@ -61,10 +61,7 @@ export class RenownView extends BaseView {
 			});
 
 			if (i <= value) {
-				dot.setText('●');
 				dot.addClass('filled');
-			} else {
-				dot.setText('○');
 			}
 
 			dot.addEventListener('click', async () => {

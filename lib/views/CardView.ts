@@ -9,6 +9,7 @@ export interface CardEntry {
 	tags?: (string | Record<string, any>)[];
 	icon?: string;
 	pool?: string;
+	onChange?: (value: number) => void;
 }
 
 interface CardViewOptions {
@@ -136,12 +137,36 @@ export class CardView extends BaseView {
 
 			for (let i = 0; i < maxRating; i++) {
 				const dot = dotsContainer.createSpan({
-					cls: 'wod-card-dot',
+					cls: 'wod-card-dot wod-dot',
 				});
-				dot.setText(i < entry.rating ? '●' : '○');
+
+				if (i < entry.rating) {
+					dot.addClass('filled');
+				}
 
 				if (this.options.dotColor) {
-					dot.style.color = this.options.dotColor;
+					dot.style.setProperty(
+						'--wod-dot-active',
+						this.options.dotColor,
+					);
+					dot.style.borderColor = this.options.dotColor;
+
+					if (i < entry.rating) {
+						dot.style.backgroundColor = this.options.dotColor;
+					}
+				}
+
+				if (entry.onChange) {
+					dot.addClass('interactive');
+					dot.addEventListener('click', (e) => {
+						e.stopPropagation();
+
+						if (entry.rating === 1 && i === 0) {
+							entry.onChange!(0);
+						} else {
+							entry.onChange!(i + 1);
+						}
+					});
 				}
 			}
 		}

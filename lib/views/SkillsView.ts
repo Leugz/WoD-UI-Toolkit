@@ -55,10 +55,7 @@ export class SkillsView extends BaseView {
 			const dot = dotsContainer.createSpan({ cls: 'wod-dot' });
 
 			if (i < currentValue) {
-				dot.textContent = '●';
 				dot.addClass('filled');
-			} else {
-				dot.textContent = '○';
 			}
 
 			const dotIndex = i + 1;

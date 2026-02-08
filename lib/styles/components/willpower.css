@@ -66,26 +66,23 @@
 /* Willpower Boxes */
 .wod-willpower-boxes {
   display: flex;
-  gap: 4px;
+  gap: 10px;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
 }
 
 .wod-willpower-box {
-  width: auto;
-  height: auto;
-  border: none;
-  background: none;
-  padding: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
+  width: var(--wod-dot-size-medium);
+  height: var(--wod-dot-size-medium);
+
+  border-radius: 100%;
+  border: 1px solid var(--wod-text-muted);
+  background: transparent;
+
   cursor: pointer;
-  transition: all 0.15s ease;
   user-select: none;
-  color: var(--text-muted);
+  transition: all 0.15s ease;
 }
 
 .wod-willpower-box:hover {
@@ -94,7 +91,8 @@
 }
 
 .wod-willpower-box.filled {
-  color: var(--wod-dot-active);
+  background: var(--wod-dot-active);
+  border-color: var(--wod-dot-active);
 }
 
 /* Mobile */
@@ -104,7 +102,8 @@
   }
 
   .wod-willpower-box {
-    font-size: 20px;
+    width: var(--wod-dot-size-large);
+    height: var(--wod-dot-size-large);
   }
 
   .wod-willpower-counter {

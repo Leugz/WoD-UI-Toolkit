@@ -93,8 +93,7 @@ export class PowerSystemView extends BaseView {
 		const dotsContainer = card.createDiv({ cls: 'wod-power-dots' });
 
 		for (let i = 1; i <= 5; i++) {
-			const dot = dotsContainer.createDiv({ cls: 'wod-power-dot' });
-			dot.setText(i <= rating ? '●' : '○');
+			const dot = dotsContainer.createDiv({ cls: 'wod-power-dot wod-dot' });
 
 			if (i <= rating) {
 				dot.addClass('filled');
