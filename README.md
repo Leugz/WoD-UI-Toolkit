@@ -6,7 +6,7 @@
 
 > _Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit **[worldofdarkness.com](https://worldofdarkness.com)**._
 
-This is **an unofficial, fan-made plugin** for managing **World of Darkness** character sheets directly inside your Obsidian vault, created and shared under the [**Dark Pack Agreement**](https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement).
+This is **an unofficial, fan-made plugin** for managing World of Darkness character sheets directly inside your Obsidian vault, created and shared under the [**Dark Pack Agreement**](https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement).
 It is a **non-commercial project** and is **not affiliated with, endorsed, or sponsored by Paradox Interactive AB**.
 
 ---
@@ -125,6 +125,10 @@ Track health and willpower using standard trackers.
 ```
 ````
 
+<p align="center">
+<img src="docs/images/prints/print1.png" alt="Health and Willpower" width="700" >
+</p>
+
 ### Attributes and Skills
 
 These blocks automatically populate based on the active game system.
@@ -137,6 +141,10 @@ These blocks automatically populate based on the active game system.
 ```
 ````
 
+<p align="center">
+<img src="docs/images/prints/print2.png" alt="Attributes and Skills" width="700" >
+</p>
+
 ### Disciplines
 
 Use the `wod-powers` or `vtm-disciplines` block to define **Discipline sections** for _Vampire: The Masquerade_.
@@ -148,6 +156,10 @@ Auspex
 Blood Sorcery
 ```
 ````
+
+<p align="center">
+<img src="docs/images/prints/print3.png" alt="Disciplines" width="700" >
+</p>
 
 > _Currently supported for Vampire: The Masquerade only._
 
@@ -167,15 +179,23 @@ When used in a Vampire context, entries are treated as **Discipline powers**, an
 ```
 ````
 
+<p align="center">
+<img src="docs/images/prints/print4.png" alt="Discipline Powers" width="700" >
+</p>
+
 When used in a Werewolf context, entries are rendered using **W5 mechanics and styling**.
 Icons are resolved automatically, but can be overridden using the `icon` field.
 
 ````
 ```wta-gift-list
-- name: Pack Instinct
-  icon:
-  tags: [Cost: Free, Duration: Passive]
-  pool:
-  description: You act in perfect concert with your pack, ignoring penalties for close quarters.
+- name: Halt the Coward's Flight
+  icon: Black Furies
+  tags: [Cost: 1 Rage Check, Duration: 1 Scene]
+  pool: Resolve + Honor
+  description: Those attempting to flee have their movement reduced to walking speed and airborne targets brought down to the ground. This is granted by a bog-spirit.
 ```
 ````
+
+<p align="center">
+<img src="docs/images/prints/print5.png" alt="Gifts List" width="700" >
+</p>
