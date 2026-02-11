@@ -120,68 +120,6 @@ export default class WodUIToolkitPlugin extends Plugin {
 				new SkillsView(this.app, this.store, ctx.sourcePath, config),
 		);
 
-		record.register<BaseTrackerConfig>(
-			'health',
-			'health',
-			(config, ctx) =>
-				new HealthView(
-					this.app,
-					this.store,
-					ctx.sourcePath,
-					this.eventBus,
-				),
-		);
-
-		record.register<BaseTrackerConfig>(
-			'willpower',
-			'willpower',
-			(config, ctx) =>
-				new WillpowerView(
-					this.app,
-					this.store,
-					ctx.sourcePath,
-					this.eventBus,
-				),
-		);
-
-		record.register<BaseTrackerConfig>(
-			'xp',
-			'experience',
-			(config, ctx) =>
-				new ExperienceTrackerView(
-					this.app,
-					this.store,
-					ctx.sourcePath,
-					this.eventBus,
-				),
-		);
-
-		// merits & flaws
-		record.register<BaseTrackerConfig>(
-			'merits',
-			'merits',
-			(config, ctx) =>
-				new MeritsFlawsListView(
-					this.app,
-					this.store,
-					ctx.sourcePath,
-					this.eventBus,
-				),
-		);
-
-		record.register<BaseTrackerConfig>(
-			'power-list',
-			'powerList',
-			(config, ctx) =>
-				new PowerListView(
-					this.app,
-					this,
-					this.store,
-					ctx.sourcePath,
-					this.eventBus,
-				),
-		);
-
 		// blood potency & renown
 		record.register<AdvantageConfig>(
 			'advantage',
@@ -205,6 +143,61 @@ export default class WodUIToolkitPlugin extends Plugin {
 				}
 			},
 		);
+
+		const simpleTrackers = [
+			'health',
+			'willpower',
+			'experience',
+			'merits',
+			'powerList',
+		] as const;
+
+		simpleTrackers.forEach((key) => {
+			if (this.activeConfig[key]) {
+				record.register<BaseTrackerConfig>(key, key, (config, ctx) => {
+					switch (key) {
+						case 'health':
+							return new HealthView(
+								this.app,
+								this.store,
+								ctx.sourcePath,
+								this.eventBus,
+							);
+						case 'willpower':
+							return new WillpowerView(
+								this.app,
+								this.store,
+								ctx.sourcePath,
+								this.eventBus,
+							);
+						case 'experience':
+							return new ExperienceTrackerView(
+								this.app,
+								this.store,
+								ctx.sourcePath,
+								this.eventBus,
+							);
+						case 'merits':
+							return new MeritsFlawsListView(
+								this.app,
+								this.store,
+								ctx.sourcePath,
+								this.eventBus,
+							);
+						case 'powerList':
+							return new PowerListView(
+								this.app,
+								this,
+								this.store,
+								ctx.sourcePath,
+								this.eventBus,
+							);
+						default:
+							throw new Error(`Unknown tracker: ${key}`);
+					}
+				});
+			}
+		});
 
 		console.log('WoD UI Toolkit loaded!');
 	}

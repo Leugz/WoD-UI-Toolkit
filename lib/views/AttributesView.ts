@@ -1,4 +1,4 @@
-import { App } from 'obsidian';
+import { App, MarkdownPostProcessorContext } from 'obsidian';
 import { BaseView } from './BaseView';
 import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
@@ -23,7 +23,11 @@ export class AttributesView extends BaseView {
 		this.attributesData = attributesData;
 	}
 
-	register(source: string, element: HTMLElement, ctx: any): void {
+	register(
+		source: string,
+		element: HTMLElement,
+		ctx: MarkdownPostProcessorContext,
+	): void {
 		element.empty();
 		const container = element.createDiv({
 			cls: 'wod-attributes-container',
@@ -64,93 +68,57 @@ export class AttributesView extends BaseView {
 		});
 
 		const storeKey = `${this.filePath}|attribute.${attributeName}`;
-		// Default to 1 for attributes
 		const currentValue = this.store.get(storeKey) ?? 1;
+		const dots: HTMLElement[] = [];
 
 		for (let i = 0; i < 5; i++) {
 			const dot = dotsContainer.createSpan({ cls: 'wod-dot' });
+			dots.push(dot);
 
 			if (i < currentValue) {
 				dot.addClass('filled');
 			}
 
-			const dotIndex = i + 1;
-
 			// Left click - set value
 			dot.addEventListener('click', () => {
-				this.setAttributeValue(attributeName, dotIndex, container);
+				this.updateAttributeValue(attributeName, i + 1, dots);
 			});
 
 			// Right click - reset to 1
 			dot.addEventListener('contextmenu', (e) => {
 				e.preventDefault();
-				this.resetAttribute(attributeName, container);
+				this.updateAttributeValue(attributeName, 1, dots);
 			});
 		}
 	}
 
-	private async setAttributeValue(
+	private async updateAttributeValue(
 		attributeName: string,
-		value: number,
-		container: HTMLElement,
+		newValue: number,
+		dots: HTMLElement[],
 	): Promise<void> {
 		const storeKey = `${this.filePath}|attribute.${attributeName}`;
-		const currentValue = this.store.get(storeKey) ?? 1;
+		const currentStoredValue = this.store.get(storeKey) ?? 1;
 
-		if (currentValue === value) {
-			await this.store.set(storeKey, value - 1);
-		} else {
-			await this.store.set(storeKey, value);
+		let finalValue = newValue;
+		if (currentStoredValue === newValue && newValue > 0) {
+			finalValue = newValue - 1;
 		}
 
-		if (attributeName === 'Stamina') {
-			this.eventBus.emit(`${this.filePath}:stamina-changed`);
-		}
-		if (attributeName === 'Composure') {
-			this.eventBus.emit(`${this.filePath}:composure-changed`);
-		}
-		if (attributeName === 'Resolve') {
-			this.eventBus.emit(`${this.filePath}:resolve-changed`);
-		}
+		await this.store.set(storeKey, finalValue);
 
-		let rootContainer = container;
+		dots.forEach((dot, index) => {
+			if (index < finalValue) {
+				dot.addClass('filled');
+			} else {
+				dot.removeClass('filled');
+			}
+		});
 
-		while (
-			rootContainer &&
-			!rootContainer.classList.contains('wod-attributes-container')
-		) {
-			rootContainer = rootContainer.parentElement!;
-		}
-
-		const parentElement = rootContainer.parentElement!;
-		parentElement.empty();
-		this.register('', parentElement, {});
-	}
-
-	private async resetAttribute(
-		attributeName: string,
-		container: HTMLElement,
-	): Promise<void> {
-		const storeKey = `${this.filePath}|attribute.${attributeName}`;
-		await this.store.set(storeKey, 1); // Reset to 1
-
-		if (attributeName === 'Stamina') {
-			this.eventBus.emit(`${this.filePath}:stamina-changed`);
-		}
-
-		let rootContainer = container;
-
-		while (
-			rootContainer &&
-			!rootContainer.classList.contains('wod-attributes-container')
-		) {
-			rootContainer = rootContainer.parentElement!;
-		}
-
-		const parentElement = rootContainer.parentElement!;
-		parentElement.empty();
-		this.register('', parentElement, {});
-
-		console.log(`${attributeName} reset to 1`);
+		this.eventBus.emit('attribute-changed', {
+			file: this.filePath,
+			attribute: attributeName,
+			value: finalValue,
+		});
 	}
 }

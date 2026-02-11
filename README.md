@@ -126,7 +126,7 @@ Track health and willpower using standard trackers.
 ````
 
 <p align="center">
-<img src="docs/images/prints/print1.png" alt="Health and Willpower" width="700" >
+<img src="docs/images/prints/print1.png" alt="Health and Willpower" width="900" >
 </p>
 
 ### Attributes and Skills
@@ -142,7 +142,7 @@ These blocks automatically populate based on the active game system.
 ````
 
 <p align="center">
-<img src="docs/images/prints/print2.png" alt="Attributes and Skills" width="700" >
+<img src="docs/images/prints/print2.png" alt="Attributes and Skills" width="900" >
 </p>
 
 ### Disciplines
@@ -158,7 +158,7 @@ Blood Sorcery
 ````
 
 <p align="center">
-<img src="docs/images/prints/print3.png" alt="Disciplines" width="700" >
+<img src="docs/images/prints/print3.png" alt="Disciplines" width="900" >
 </p>
 
 > _Currently supported for Vampire: The Masquerade only._
@@ -180,7 +180,7 @@ When used in a Vampire context, entries are treated as **Discipline powers**, an
 ````
 
 <p align="center">
-<img src="docs/images/prints/print4.png" alt="Discipline Powers" width="700" >
+<img src="docs/images/prints/print4.png" alt="Discipline Powers" width="900" >
 </p>
 
 When used in a Werewolf context, entries are rendered using **W5 mechanics and styling**.
@@ -197,5 +197,5 @@ Icons are resolved automatically, but can be overridden using the `icon` field.
 ````
 
 <p align="center">
-<img src="docs/images/prints/print5.png" alt="Gifts List" width="700" >
+<img src="docs/images/prints/print5.png" alt="Gifts List" width="900" >
 </p>

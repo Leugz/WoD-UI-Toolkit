@@ -20,17 +20,17 @@ export class WillpowerView extends BaseView {
 		this.filePath = filePath;
 		this.eventBus = eventBus;
 
-		// Listen for Composure or Resolve changes
-		this.eventBus.on(`${this.filePath}:composure-changed`, () => {
-			if (this.containerEl) {
-				this.containerEl.empty();
-				this.register('', this.containerEl, {});
-			}
-		});
-		this.eventBus.on(`${this.filePath}:resolve-changed`, () => {
-			if (this.containerEl) {
-				this.containerEl.empty();
-				this.register('', this.containerEl, {});
+		this.eventBus.on('attribute-changed', (data) => {
+			if (data.file === this.filePath) {
+				if (
+					data.attribute === 'Composure' ||
+					data.attribute === 'Resolve'
+				) {
+					if (this.containerEl) {
+						this.containerEl.empty();
+						this.register('', this.containerEl, {} as any);
+					}
+				}
 			}
 		});
 	}
@@ -41,24 +41,20 @@ export class WillpowerView extends BaseView {
 
 		const container = element.createDiv({ cls: 'wod-willpower-container' });
 
-		// Calculate max willpower (Composure + Resolve)
 		const composureKey = `${this.filePath}|attribute.Composure`;
 		const resolveKey = `${this.filePath}|attribute.Resolve`;
 		const composure = this.store.get(composureKey) ?? 1;
 		const resolve = this.store.get(resolveKey) ?? 1;
 		const maxWillpower = composure + resolve;
 
-		// Get current willpower
 		const currentKey = `${this.filePath}|willpower.current`;
 		let currentWillpower = this.store.get(currentKey);
 
-		// If never set, default to max
 		if (currentWillpower === undefined) {
 			currentWillpower = maxWillpower;
 			this.store.set(currentKey, maxWillpower);
 		}
 
-		// Header with inline reset button
 		const header = container.createDiv({ cls: 'wod-willpower-header' });
 		header.createEl('h3', {
 			text: 'Willpower',
@@ -69,7 +65,6 @@ export class WillpowerView extends BaseView {
 			cls: 'wod-willpower-header-right',
 		});
 
-		// Reset button first
 		const resetBtn = rightSide.createEl('button', {
 			text: '↻',
 			cls: 'wod-willpower-reset-btn',
@@ -79,11 +74,9 @@ export class WillpowerView extends BaseView {
 			this.setWillpower(maxWillpower, container);
 		});
 
-		// Counter second
 		const counter = rightSide.createDiv({ cls: 'wod-willpower-counter' });
 		counter.setText(`${currentWillpower} / ${maxWillpower}`);
 
-		// Willpower boxes
 		const boxesContainer = container.createDiv({
 			cls: 'wod-willpower-boxes',
 		});
@@ -104,8 +97,6 @@ export class WillpowerView extends BaseView {
 			box.addClass('filled');
 		}
 
-		// Click to set willpower to this level
-		// Special case: clicking the first filled box when willpower=1 sets to 0
 		box.addEventListener('click', () => {
 			if (currentWillpower === 1 && index === 0) {
 				this.setWillpower(0, container);
@@ -122,7 +113,6 @@ export class WillpowerView extends BaseView {
 		const currentKey = `${this.filePath}|willpower.current`;
 		await this.store.set(currentKey, value);
 
-		// Re-render using the same pattern as other views
 		let rootContainer = container;
 		while (
 			rootContainer &&

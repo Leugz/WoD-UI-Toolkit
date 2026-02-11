@@ -22,10 +22,12 @@ export class HealthView extends BaseView {
 		this.filePath = filePath;
 		this.eventBus = eventBus;
 
-		this.eventBus.on(`${this.filePath}:stamina-changed`, () => {
-			if (this.containerElement) {
-				this.containerElement.empty();
-				this.register('', this.containerElement, {});
+		this.eventBus.on('attribute-changed', (data) => {
+			if (data.file === this.filePath && data.attribute === 'Stamina') {
+				if (this.containerElement) {
+					this.containerElement.empty();
+					this.register('', this.containerElement, {} as any);
+				}
 			}
 		});
 	}
@@ -61,10 +63,8 @@ export class HealthView extends BaseView {
 	private renderHealthBox(container: HTMLElement, index: number): void {
 		const box = container.createDiv({ cls: 'wod-health-box' });
 
-		// Get ALL health damage to determine this box's state
 		const damageType = this.getDamageAtIndex(index);
 
-		// Set visual based on damage type
 		if (damageType === 'superficial') {
 			box.setText('/');
 			box.addClass('superficial');
@@ -75,12 +75,10 @@ export class HealthView extends BaseView {
 			box.setText('');
 		}
 
-		// Left click - cycle through states at this position
 		box.addEventListener('click', () => {
 			this.cycleDamageAtIndex(index);
 		});
 
-		// Right click - clear all damage from this point onwards
 		box.addEventListener('contextmenu', (e) => {
 			e.preventDefault();
 			this.clearDamageFromIndex(index);
@@ -96,26 +94,20 @@ export class HealthView extends BaseView {
 		const currentDamage = this.getDamageAtIndex(index);
 
 		if (currentDamage === 'none') {
-			// Empty → Superficial: Fill this box and all before it
-			// BUT don't downgrade aggravated to superficial
 			for (let i = 0; i <= index; i++) {
 				const key = `${this.filePath}|health.${i}`;
 				const existingDamage = this.getDamageAtIndex(i);
 
-				// Only set to superficial if it's currently none
 				if (existingDamage === 'none') {
 					await this.store.set(key, 'superficial');
 				}
-				// If it's already aggravated, leave it as aggravated
 			}
 		} else if (currentDamage === 'superficial') {
-			// Superficial → Aggravated: Upgrade this box and all before it to aggravated
 			for (let i = 0; i <= index; i++) {
 				const key = `${this.filePath}|health.${i}`;
 				await this.store.set(key, 'aggravated');
 			}
 		} else {
-			// Aggravated → None: Clear this box and all after it
 			const staminaKey = `${this.filePath}|attribute.Stamina`;
 			const stamina = this.store.get(staminaKey) ?? 1;
 			const maxHealth = 3 + stamina;
@@ -134,7 +126,6 @@ export class HealthView extends BaseView {
 		const stamina = this.store.get(staminaKey) ?? 1;
 		const maxHealth = 3 + stamina;
 
-		// Clear this box and all boxes after it
 		for (let i = index; i < maxHealth; i++) {
 			const key = `${this.filePath}|health.${i}`;
 			await this.store.set(key, 'none');

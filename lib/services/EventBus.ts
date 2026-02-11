@@ -1,23 +1,41 @@
-type EventCallback = () => void;
+export interface EventMap {
+	'attribute-changed': {
+		file: string;
+		attribute: string;
+		value: number;
+	};
+	[key: string]: any;
+}
+
+type EventCallback<K extends keyof EventMap> = (payload: EventMap[K]) => void;
 
 export class EventBus {
-	private listeners: Map<string, EventCallback[]> = new Map();
+	private listeners: Map<string, any[]> = new Map();
 
-	on(event: string, callback: EventCallback): void {
+	on<K extends string & keyof EventMap>(
+		event: K,
+		callback: EventCallback<K>,
+	): void {
 		if (!this.listeners.has(event)) {
 			this.listeners.set(event, []);
 		}
 		this.listeners.get(event)!.push(callback);
 	}
 
-	emit(event: string): void {
+	emit<K extends string & keyof EventMap>(
+		event: K,
+		payload: EventMap[K],
+	): void {
 		const callbacks = this.listeners.get(event);
 		if (callbacks) {
-			callbacks.forEach((callback) => callback());
+			callbacks.forEach((callback) => callback(payload));
 		}
 	}
 
-	off(event: string, callback: EventCallback): void {
+	off<K extends string & keyof EventMap>(
+		event: K,
+		callback: EventCallback<K>,
+	): void {
 		const callbacks = this.listeners.get(event);
 
 		if (callbacks) {
