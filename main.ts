@@ -147,7 +147,7 @@ export default class WodUIToolkitPlugin extends Plugin {
 		const simpleTrackers = [
 			'health',
 			'willpower',
-			'experience',
+			'exp',
 			'merits',
 			'powerList',
 		] as const;
@@ -170,7 +170,7 @@ export default class WodUIToolkitPlugin extends Plugin {
 								ctx.sourcePath,
 								this.eventBus,
 							);
-						case 'experience':
+						case 'exp':
 							return new ExperienceTrackerView(
 								this.app,
 								this.store,

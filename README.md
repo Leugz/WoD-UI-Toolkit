@@ -26,29 +26,33 @@ Currently supported:
 
 > _Support for additional World of Darkness games may be added in the future._
 
-## Documentation
+## Installation
 
-### Key Features
+### Manual Installation
 
-- **Interactive Resource Trackers**
-  <br>
-  Manage dynamic stats like Health, Willpower, and Experience with clickable trackers that persist their state.
+1. Download the latest release from the [**Releases**](#) page.
+2. Extract the files into your vault's plugin folder:
 
-- **Game-Specific Mechanics**
-  <br>
-  Dedicated support for unique systems such as Hunger and Humanity for Vampire, and Rage, Harmony, and Renown for Werewolf.
+```
+<VaultFolder>/.obsidian/plugins/wod-ui-toolkit/
+```
 
-- **Context-Aware Theming**
-  <br>
-  The interface automatically switches color palettes and iconography based on the selected game system.
+3. Reload Obsidian.
+4. Enable **WoD UI Toolkit** under **Settings > Community Plugins**.
 
-- **Embedded Asset Library**
-  <br>
-  Includes essential icons for Clans, Tribes, Disciplines, and Gifts, removing the need for manual image management.
+## Configuration
 
-- **Structured Data Views**
-  <br>
-  Clean, grid-based layouts for Attributes, Skills, and Merits that remain readable even on complex sheets.
+Open:<br>
+**`Settings > WoD UI Toolkit`**.
+
+- **Active Game System:**<br>
+  Controls how generic (`wod-*`) blocks behave and render between:
+    - _Vampire: The Masquerade (V5)_
+    - _Werewolf: The Apocalypse (W5)_
+
+<br>
+
+> **Note:** You must reload Obsidian after changing the game system for changes to take effect <br> (Cmd/Ctrl+P > Reload app without saving).
 
 ## Usage Guide
 
@@ -64,18 +68,19 @@ These blocks automatically adapt their **appearance and mechanics** based on you
 Use these if you want your character sheet to **update automatically** when switching game systems.
 
 **Available Generic Blocks**
-
-- `wod-resource` — Hunger (VTM) or Rage (WTA)
-- `wod-morality` — Humanity (VTM) or Harmony (WTA)
-- `wod-advantage` — Blood Potency (VTM) or Renown (WTA)
-- `wod-powers` — Section header for Disciplines or Gifts
-- `wod-power-list` — Individual power cards
-- `wod-attributes` — Physical / Social / Mental grid
-- `wod-skills` — Complete skills list
-- `wod-health` — Health tracker (Superficial / Aggravated)
-- `wod-willpower` — Willpower tracker
-- `wod-xp` — Experience tracker
-- `wod-merits` — Merits & Flaws list
+| Block | Description |
+| ----- | ----------- |
+| `wod-resource` | Hunger (VTM) or Rage (WTA) |
+| `wod-morality` | Humanity (VTM) or Harmony (WTA) |
+| `wod-advantage` | Blood Potency (VTM) or Renown (WTA) |
+| `wod-powers` | Section header for Disciplines or Gifts |
+| `wod-power-list` | Individual power cards |
+| `wod-attributes` | Physical / Social / Mental grid |
+| `wod-skills` | Complete skills list |
+| `wod-health` | Health tracker (Superficial / Aggravated) |
+| `wod-willpower` | Willpower tracker |
+| `wod-exp` | Experience tracker |
+| `wod-merits` | Merits & Flaws list |
 
 #### 2. Game-Specific Blocks (`vtm-*`, `wta-*`)
 
@@ -85,37 +90,41 @@ Use these when you want **explicit control** over mechanics or presentation.
 
 #### Vampire: The Masquerade (V5)
 
-- `vtm-hunger` — Hunger Dice tracker
-- `vtm-humanity` — Humanity tracker with Stains
-- `vtm-blood-potency` — Blood Potency tracker
-- `vtm-disciplines` — Disciplines section header
-- `vtm-power-list` — Discipline powers list
-- `vtm-attributes`
-- `vtm-skills`
-- `vtm-health`
-- `vtm-willpower`
-- `vtm-experience`
-- `vtm-merits`
+| Block | Description |
+| ----- | ----------- |
+| `vtm-hunger`| Hunger Dice tracker |
+| `vtm-humanity` | Humanity tracker with Stains |
+| `vtm-blood-potency` | Blood Potency tracker |
+| `vtm-disciplines` | Disciplines section header |
+| `vtm-power-list` | Discipline powers list |
+| `vtm-attributes` |
+| `vtm-skills` |
+| `vtm-health` |
+| `vtm-willpower` |
+| `vtm-exp` |
+| `vtm-merits` |
 
 #### Werewolf: The Apocalypse (W5)
 
-- `wta-rage` — Rage Dice tracker
-- `wta-harmony` — Harmony tracker
-- `wta-renown` — Renown tracker (Glory, Honor, Wisdom)
-- `wta-gifts` — Gifts section header
-- `wta-gift-list` — Gifts / Rites list
-- `wta-attributes`
-- `wta-skills`
-- `wta-health`
-- `wta-willpower`
-- `wta-experience`
-- `wta-merits`
+| Block | Description |
+| ----- | ----------- |
+| `wta-rage` | Rage Dice tracker |
+| `wta-harmony` | Harmony tracker |
+| `wta-renown` | Renown tracker (Glory, Honor, Wisdom) |
+| `wta-gifts` | Gifts section header |
+| `wta-gift-list` | Gifts / Rites list |
+| `wta-attributes` |
+| `wta-skills` |
+| `wta-health` |
+| `wta-willpower` |
+| `wta-exp` |
+| `wta-merits` |
 
 ## Example Usage
 
 ### Vital Statistics
 
-Track health and willpower using standard trackers.
+Track health, willpower, and your primary supernatural resource using standard trackers.
 
 ````
 ```wod-health
@@ -123,10 +132,13 @@ Track health and willpower using standard trackers.
 
 ```wod-willpower
 ```
+
+```wod-resource
+```
 ````
 
 <p align="center">
-<img src="docs/images/prints/print1.png" alt="Health and Willpower" width="900" >
+<img src="docs/images/prints/vital_trackers.png" alt="Health, Willpower and Resources" width="900" >
 </p>
 
 ### Attributes and Skills
@@ -142,7 +154,7 @@ These blocks automatically populate based on the active game system.
 ````
 
 <p align="center">
-<img src="docs/images/prints/print2.png" alt="Attributes and Skills" width="900" >
+<img src="docs/images/prints/atts_n_skills.png" alt="Attributes and Skills" width="900" >
 </p>
 
 ### Disciplines
@@ -158,7 +170,7 @@ Blood Sorcery
 ````
 
 <p align="center">
-<img src="docs/images/prints/print3.png" alt="Disciplines" width="900" >
+<img src="docs/images/prints/disciplines.png" alt="Disciplines" width="900" >
 </p>
 
 > _Currently supported for Vampire: The Masquerade only._
@@ -180,7 +192,7 @@ When used in a Vampire context, entries are treated as **Discipline powers**, an
 ````
 
 <p align="center">
-<img src="docs/images/prints/print4.png" alt="Discipline Powers" width="900" >
+<img src="docs/images/prints/power_list.png" alt="Discipline Powers" width="900" >
 </p>
 
 When used in a Werewolf context, entries are rendered using **W5 mechanics and styling**.
@@ -197,5 +209,19 @@ Icons are resolved automatically, but can be overridden using the `icon` field.
 ````
 
 <p align="center">
-<img src="docs/images/prints/print5.png" alt="Gifts List" width="900" >
+<img src="docs/images/prints/gift_list.png" alt="Gifts List" width="900" >
 </p>
+
+### Power & Gift Lists Syntax
+
+The `*-power-list` and `*-gift-list` blocks accept a YAML list.
+
+| Property | Description | Example |
+| :------- | :---------- | :------ |
+| `name` | **Required.** The name of the power/gift. | `name: Soaring Leap` |
+| `discipline` | (VTM Only) Determines the icon used. | `discipline: Potence` |
+| `icon` | (WTA/Override) Specific icon name (Tribe/Auspice). | `icon: Black Furies` |
+| `cost` | Resource cost. | `cost: 1 Rage Check` |
+| `pool` | Dice pool to roll. | `pool: Strength + Athletics` |
+| `tags` | List of quick reference tags. | `tags: [Passive, Amalgam]` |
+| `description` | Full text description. | `description: Leap high...` |

@@ -49,7 +49,7 @@ export interface GameConfig {
 	skills: Record<string, string[]>;
 	health: BaseTrackerConfig;
 	willpower: BaseTrackerConfig;
-	experience: BaseTrackerConfig;
+	exp: BaseTrackerConfig;
 	merits: BaseTrackerConfig;
 	powerList: BaseTrackerConfig;
 	advantage: AdvantageConfig;
@@ -193,7 +193,7 @@ export const VTM_CONFIG: GameConfig = {
 
 	health: { name: 'Health', codeblock: 'vtm-health' },
 	willpower: { name: 'Willpower', codeblock: 'vtm-willpower' },
-	experience: { name: 'Experience', codeblock: 'vtm-experience' },
+	exp: { name: 'Experience', codeblock: 'vtm-exp' },
 	merits: { name: 'Merits & Flaws', codeblock: 'vtm-merits' },
 	powerList: { name: 'Powers', codeblock: 'vtm-power-list' },
 };
@@ -503,7 +503,7 @@ export const WTA_CONFIG: GameConfig = {
 
 	health: { name: 'Health', codeblock: 'wta-health' },
 	willpower: { name: 'Willpower', codeblock: 'wta-willpower' },
-	experience: { name: 'Experience', codeblock: 'wta-experience' },
+	exp: { name: 'Experience', codeblock: 'wta-exp' },
 	merits: { name: 'Merits & Flaws', codeblock: 'wta-merits' },
 	powerList: { name: 'Gifts', codeblock: 'wta-gift-list' },
 };
