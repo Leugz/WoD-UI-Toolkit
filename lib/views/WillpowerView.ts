@@ -7,7 +7,6 @@ export class WillpowerView extends BaseView {
 	private store: KeyValueStore;
 	private filePath: string;
 	private eventBus: EventBus;
-	private containerEl: HTMLElement | null = null;
 
 	constructor(
 		app: App,
@@ -21,23 +20,21 @@ export class WillpowerView extends BaseView {
 		this.eventBus = eventBus;
 
 		this.eventBus.on('attribute-changed', (data) => {
-			if (data.file === this.filePath) {
-				if (
-					data.attribute === 'Composure' ||
-					data.attribute === 'Resolve'
-				) {
-					if (this.containerEl) {
-						this.containerEl.empty();
-						this.register('', this.containerEl, {} as any);
-					}
-				}
+			if (
+				data.file === this.filePath &&
+				(data.attribute === 'Composure' ||
+					data.attribute === 'resolve') &&
+				this.rootElement?.isConnected
+			) {
+				this.refresh();
 			}
 		});
 	}
 
 	register(source: string, element: HTMLElement, ctx: any): void {
 		element.empty();
-		this.containerEl = element;
+		this.source = source;
+		this.rootElement = element;
 
 		const container = element.createDiv({ cls: 'wod-willpower-container' });
 
@@ -113,16 +110,6 @@ export class WillpowerView extends BaseView {
 		const currentKey = `${this.filePath}|willpower.current`;
 		await this.store.set(currentKey, value);
 
-		let rootContainer = container;
-		while (
-			rootContainer &&
-			!rootContainer.classList.contains('wod-willpower-container')
-		) {
-			rootContainer = rootContainer.parentElement!;
-		}
-
-		const parentEl = rootContainer.parentElement!;
-		parentEl.empty();
-		this.register('', parentEl, {});
+		this.refresh();
 	}
 }

@@ -34,7 +34,7 @@ export class ViewRegister {
 		Object.values(GAME_CONFIGS).forEach((gameConfig) => {
 			const specificConfig = gameConfig[configKey] as T;
 			const tag =
-				(specificConfig as any).codeblock ||
+				(specificConfig as { codeblock?: string }).codeblock ??
 				`${gameConfig.id}-${baseTag}`;
 
 			this.plugin.registerMarkdownCodeBlockProcessor(

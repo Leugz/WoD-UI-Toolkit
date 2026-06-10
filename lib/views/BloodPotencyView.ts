@@ -4,11 +4,9 @@ import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
 
 export class BloodPotencyView extends BaseView {
-	codeblock = 'vtm-blood-potency';
 	private store: KeyValueStore;
 	private filePath: string;
 	private eventBus: EventBus;
-	private containerEl: HTMLElement | null = null;
 
 	constructor(
 		app: App,
@@ -24,7 +22,8 @@ export class BloodPotencyView extends BaseView {
 
 	register(source: string, element: HTMLElement, ctx: any): void {
 		element.empty();
-		this.containerEl = element;
+		this.source = source;
+		this.rootElement = element;
 
 		const container = element.createDiv({
 			cls: 'vtm-blood-potency-container',
@@ -141,18 +140,7 @@ export class BloodPotencyView extends BaseView {
 		const bpKey = `${this.filePath}|blood-potency`;
 		await this.store.set(bpKey, value);
 
-		// Re-render
-		let rootContainer = container;
-		while (
-			rootContainer &&
-			!rootContainer.classList.contains('vtm-blood-potency-container')
-		) {
-			rootContainer = rootContainer.parentElement!;
-		}
-
-		const parentEl = rootContainer.parentElement!;
-		parentEl.empty();
-		this.register('', parentEl, {});
+		this.refresh();
 	}
 
 	// Derived stat calculations based on VtM V5 rules

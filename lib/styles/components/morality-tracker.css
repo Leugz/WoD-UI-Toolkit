@@ -248,7 +248,7 @@
 }
 
 /* Impairment Warning */
-.vtm-impairment-warning {
+.wod-impairment-warning {
   margin-top: 16px;
   padding: 12px;
   background: rgba(220, 38, 38, 0.15);
@@ -256,7 +256,7 @@
   border-radius: 6px;
 }
 
-.vtm-impairment-title {
+.wod-impairment-title {
   font-size: 14px;
   font-weight: 700;
   color: var(--text-error);
@@ -265,7 +265,7 @@
   letter-spacing: 0.5px;
 }
 
-.vtm-impairment-penalties {
+.wod-impairment-penalties {
   margin: 8px 0;
   padding-left: 20px;
   font-size: 12px;
@@ -293,7 +293,7 @@
   border-color: darkred;
 }
 
-.vtm-impairment-note {
+.wod-impairment-note {
   font-size: 11px;
   font-style: italic;
   color: var(--text-muted);
@@ -306,7 +306,7 @@
     font-size: 24px;
   }
 
-  .vtm-impairment-penalties {
+  .wod-impairment-penalties {
     font-size: 11px;
   }
 }

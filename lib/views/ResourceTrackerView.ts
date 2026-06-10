@@ -11,7 +11,6 @@ export class ResourceTrackerView extends BaseView {
 	private filePath: string;
 	private eventBus: EventBus;
 	private config: ResourceConfig;
-	private containerEl: HTMLElement | null = null;
 	private plugin: Plugin;
 
 	constructor(
@@ -37,7 +36,8 @@ export class ResourceTrackerView extends BaseView {
 		ctx: any,
 	): Promise<void> {
 		element.empty();
-		this.containerEl = element;
+		this.source = source;
+    this.rootElement = element;
 
 		const container = element.createDiv({ cls: 'wod-resource-container' });
 
@@ -167,34 +167,6 @@ export class ResourceTrackerView extends BaseView {
 	): Promise<void> {
 		const resourceKey = `${this.filePath}|${this.config.codeblock}`;
 		await this.store.set(resourceKey, value);
-		this.refresh(container);
-	}
-
-	private refresh(container: HTMLElement): void {
-		let rootContainer = container;
-		while (
-			rootContainer &&
-			!rootContainer.classList.contains('wod-resource-container')
-		) {
-			rootContainer = rootContainer.parentElement!;
-		}
-
-		const parentEl = rootContainer.parentElement!;
-		parentEl.empty();
-		this.register('', parentEl, {});
-	}
-}
-
-// VTM-specific wrapper
-export class HungerView extends ResourceTrackerView {
-	constructor(
-		app: App,
-		plugin: Plugin,
-		store: KeyValueStore,
-		filePath: string,
-		eventBus: EventBus,
-		config: ResourceConfig,
-	) {
-		super(app, plugin, store, filePath, eventBus, config);
+		this.refresh();
 	}
 }

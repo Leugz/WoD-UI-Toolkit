@@ -23,7 +23,6 @@ export class KeyValueStore {
 	}
 
 	private async save() {
-		console.log('Saving WoD data to disk...');
 		await this.plugin.saveData(this.data);
 	}
 }

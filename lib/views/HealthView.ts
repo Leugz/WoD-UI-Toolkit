@@ -9,7 +9,6 @@ export class HealthView extends BaseView {
 	private store: KeyValueStore;
 	private filePath: string;
 	private eventBus: EventBus;
-	private containerElement: HTMLElement | null = null;
 
 	constructor(
 		app: App,
@@ -23,18 +22,20 @@ export class HealthView extends BaseView {
 		this.eventBus = eventBus;
 
 		this.eventBus.on('attribute-changed', (data) => {
-			if (data.file === this.filePath && data.attribute === 'Stamina') {
-				if (this.containerElement) {
-					this.containerElement.empty();
-					this.register('', this.containerElement, {} as any);
-				}
+			if (
+				data.file === this.filePath &&
+				data.attribute === 'Stamina' &&
+				this.rootElement?.isConnected
+			) {
+				this.refresh();
 			}
 		});
 	}
 
 	register(source: string, element: HTMLElement, ctx: any): void {
 		element.empty();
-		this.containerElement = element;
+		this.source = source;
+		this.rootElement = element;
 
 		const container = element.createDiv({ cls: 'wod-health-container' });
 
@@ -132,12 +133,5 @@ export class HealthView extends BaseView {
 		}
 
 		this.refresh();
-	}
-
-	private refresh(): void {
-		if (this.containerElement) {
-			this.containerElement.empty();
-			this.register('', this.containerElement, {});
-		}
 	}
 }

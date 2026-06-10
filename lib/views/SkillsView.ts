@@ -21,6 +21,8 @@ export class SkillsView extends BaseView {
 
 	register(source: string, element: HTMLElement, ctx: any): void {
 		element.empty();
+		this.source = source;
+		this.rootElement = element;
 		const container = element.createDiv({ cls: 'wod-skills-container' });
 
 		Object.entries(this.skillsData).forEach(([category, skillList]) => {
@@ -87,17 +89,7 @@ export class SkillsView extends BaseView {
 			await this.store.set(storeKey, value);
 		}
 
-		let rootContainer = container;
-		while (
-			rootContainer &&
-			!rootContainer.classList.contains('wod-skills-container')
-		) {
-			rootContainer = rootContainer.parentElement!;
-		}
-
-		const parentEl = rootContainer.parentElement!;
-		parentEl.empty();
-		this.register('', parentEl, {});
+		this.refresh();
 	}
 
 	private async resetSkill(
@@ -107,18 +99,6 @@ export class SkillsView extends BaseView {
 		const storeKey = `${this.filePath}|skill.${skillName}`;
 		await this.store.set(storeKey, 0);
 
-		let rootContainer = container;
-		while (
-			rootContainer &&
-			!rootContainer.classList.contains('wod-skills-container')
-		) {
-			rootContainer = rootContainer.parentElement!;
-		}
-
-		const parentElement = rootContainer.parentElement!;
-		parentElement.empty();
-		this.register('', parentElement, {});
-
-		console.log(`${skillName} reset to 0`);
+		this.refresh();
 	}
 }

@@ -1,10 +1,10 @@
-import { App, Plugin } from 'obsidian';
+import { App } from 'obsidian';
 import { BaseView } from './BaseView';
 import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
-import { PowerSystemConfig } from '../config/GameConfig';
+import { GAME_CONFIGS, PowerSystemConfig } from '../config/GameConfig';
 import { IWodPlugin } from 'lib/interfaces/IWodPlugin';
-import { EMBEDDED_ASSETS } from 'lib/data/EmbeddedAssets';
+import { IconResolver } from 'lib/services/IconResolver';
 
 export class PowerSystemView extends BaseView {
 	codeblock: string;
@@ -12,8 +12,8 @@ export class PowerSystemView extends BaseView {
 	private filePath: string;
 	private eventBus: EventBus;
 	private config: PowerSystemConfig;
-	private containerEl: HTMLElement | null = null;
 	private plugin: IWodPlugin;
+	private iconResolver: IconResolver;
 
 	constructor(
 		app: App,
@@ -30,11 +30,17 @@ export class PowerSystemView extends BaseView {
 		this.eventBus = eventBus;
 		this.config = config;
 		this.codeblock = config.codeblock;
+		this.iconResolver = new IconResolver(app, plugin);
 	}
 
-	register(source: string, element: HTMLElement, ctx: any): void {
+	async register(
+		source: string,
+		element: HTMLElement,
+		ctx: any,
+	): Promise<void> {
 		element.empty();
-		this.containerEl = element;
+		this.source = source;
+		this.rootElement = element;
 
 		let disciplines: any[] = [];
 		try {
@@ -44,7 +50,7 @@ export class PowerSystemView extends BaseView {
 				.filter((line) => line && line !== '-');
 		} catch {
 			element.createDiv({
-				text: '⚠️ Invalid format',
+				text: 'Invalid format',
 				cls: 'wod-powers-error',
 			});
 			return;
@@ -68,16 +74,18 @@ export class PowerSystemView extends BaseView {
 
 		const grid = container.createDiv({ cls: 'wod-powers-grid' });
 
-		disciplines.forEach((disciplineName) => {
-			this.renderDisciplineCard(grid, disciplineName, source);
-		});
+		await Promise.all(
+			disciplines.map((name) =>
+				this.renderDisciplineCard(grid, name, source),
+			),
+		);
 	}
 
-	private renderDisciplineCard(
+	private async renderDisciplineCard(
 		container: HTMLElement,
 		disciplineName: string,
 		originalSource: string,
-	): void {
+	): Promise<void> {
 		const card = container.createDiv({ cls: 'wod-power-card' });
 
 		const ratingKey = `${this.filePath}|${this.config.codeblock}.${disciplineName}`;
@@ -85,90 +93,37 @@ export class PowerSystemView extends BaseView {
 
 		const iconEl = card.createDiv({ cls: 'wod-power-icon' });
 
-		this.loadDisciplineIcon(iconEl, disciplineName);
+		const gameId = this.config.codeblock.startsWith('vtm') ? 'vtm' : 'wta';
+		const gameConfig = GAME_CONFIGS[gameId];
+		const src = await this.iconResolver.resolve(disciplineName, gameConfig);
 
-		const nameEl = card.createDiv({ cls: 'wod-power-name' });
-		nameEl.setText(disciplineName);
+		if (src) {
+			iconEl.createEl('img', {
+				attr: { src, alt: disciplineName, title: disciplineName },
+				cls: 'wod-power-icon-img',
+			});
+		} else {
+			iconEl.setText('◆');
+		}
+
+		card.createDiv({ cls: 'wod-power-name' }).setText(disciplineName);
 
 		const dotsContainer = card.createDiv({ cls: 'wod-power-dots' });
 
 		for (let i = 1; i <= 5; i++) {
-			const dot = dotsContainer.createDiv({ cls: 'wod-power-dot wod-dot' });
+			const dot = dotsContainer.createDiv({
+				cls: 'wod-power-dot wod-dot',
+			});
 
-			if (i <= rating) {
-				dot.addClass('filled');
-			}
+			if (i <= rating) dot.addClass('filled');
 
 			dot.addEventListener('click', async () => {
-				if (rating === 1 && i === 1) {
-					await this.store.set(ratingKey, 0);
-				} else {
-					await this.store.set(ratingKey, i);
-				}
-
-				this.refresh(originalSource);
+				await this.store.set(
+					ratingKey,
+					rating === 1 && i === 1 ? 0 : i,
+				);
+				this.refresh();
 			});
-		}
-	}
-
-	private loadDisciplineIcon(
-		element: HTMLElement,
-		disciplineName: string,
-	): void {
-		let fileName = disciplineName;
-
-		if (this.config.iconMap && this.config.iconMap[disciplineName]) {
-			fileName = this.config.iconMap[fileName];
-		} else if (disciplineName === 'Blood Sorcery') {
-			fileName = 'Thaumaturgy';
-		}
-
-		const disciplineSlug = fileName.replace(/ /g, '_');
-		const pluginId = this.plugin.manifest.id;
-		const gameId = this.config.codeblock.startsWith('vtm') ? 'vtm' : 'wta';
-		const folderName = gameId === 'vtm' ? 'disciplines/' : '';
-		const cleanFolder = folderName.replace(/\/$/, '');
-
-		const embedKey = `${gameId}/${folderName}${disciplineSlug}.png`.replace(
-			/\/+/g,
-			'/',
-		);
-
-		if (EMBEDDED_ASSETS[embedKey]) {
-			element.createEl('img', {
-				attr: {
-					src: EMBEDDED_ASSETS[embedKey],
-					alt: disciplineName,
-					title: disciplineName,
-				},
-				cls: 'wod-power-icon-img',
-			});
-			return;
-		}
-
-		const relativePath = `${this.app.vault.configDir}/plugins/${pluginId}/assets/${gameId}/${folderName}/${disciplineSlug}.png`;
-		const resourceUrl =
-			this.app.vault.adapter.getResourcePath(relativePath);
-
-		const img = element.createEl('img', {
-			attr: {
-				src: resourceUrl,
-				alt: disciplineName,
-				title: disciplineName,
-			},
-			cls: 'wod-power-icon-img',
-		});
-
-		img.onerror = () => {
-			img.remove();
-			element.setText('◆');
-		};
-	}
-
-	private refresh(source: string): void {
-		if (this.containerEl) {
-			this.containerEl.empty();
-			this.register(source, this.containerEl, {});
 		}
 	}
 }

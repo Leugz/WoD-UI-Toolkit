@@ -180,7 +180,7 @@ export class CardView extends BaseView {
 
 		if (entry.pool) {
 			const poolEl = entryDiv.createDiv({ cls: 'wod-card-pool' });
-			poolEl.innerHTML = `${entry.pool}`;
+			poolEl.setText(entry.pool);
 		}
 	}
 }

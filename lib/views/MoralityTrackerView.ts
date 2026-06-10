@@ -10,7 +10,6 @@ export class MoralityTrackerView extends BaseView {
 	private filePath: string;
 	private eventBus: EventBus;
 	private config: MoralityConfig;
-	private containerEl: HTMLElement | null = null;
 
 	constructor(
 		app: App,
@@ -29,7 +28,8 @@ export class MoralityTrackerView extends BaseView {
 
 	register(source: string, element: HTMLElement, ctx: any): void {
 		element.empty();
-		this.containerEl = element;
+		this.source = source;
+    this.rootElement = element;
 
 		const container = element.createDiv({ cls: 'wod-morality-container' });
 
@@ -281,7 +281,7 @@ export class MoralityTrackerView extends BaseView {
 	): Promise<void> {
 		const moralityKey = `${this.filePath}|${this.config.codeblock}`;
 		await this.store.set(moralityKey, value);
-		this.refresh(container);
+		this.refresh();
 	}
 
 	private async setStains(
@@ -290,7 +290,7 @@ export class MoralityTrackerView extends BaseView {
 	): Promise<void> {
 		const stainsKey = `${this.filePath}|${this.config.codeblock}.stains`;
 		await this.store.set(stainsKey, value);
-		this.refresh(container);
+		this.refresh();
 	}
 
 	private async snapOut(container: HTMLElement): Promise<void> {
@@ -307,21 +307,7 @@ export class MoralityTrackerView extends BaseView {
 
 		// Clear all stains
 		await this.store.set(stainsKey, 0);
-		this.refresh(container);
-	}
-
-	private refresh(container: HTMLElement): void {
-		let rootContainer = container;
-		while (
-			rootContainer &&
-			!rootContainer.classList.contains('wod-morality-container')
-		) {
-			rootContainer = rootContainer.parentElement!;
-		}
-
-		const parentEl = rootContainer.parentElement!;
-		parentEl.empty();
-		this.register('', parentEl, {});
+		this.refresh();
 	}
 
 	private getMoralityLabel(value: number): string {
@@ -330,18 +316,5 @@ export class MoralityTrackerView extends BaseView {
 
 	private getMoralityDescription(value: number): string {
 		return this.config.descriptions[value];
-	}
-}
-
-// VTM-specific wrapper
-export class HumanityView extends MoralityTrackerView {
-	constructor(
-		app: App,
-		store: KeyValueStore,
-		filePath: string,
-		eventBus: EventBus,
-		config: MoralityConfig,
-	) {
-		super(app, store, filePath, eventBus, config);
 	}
 }

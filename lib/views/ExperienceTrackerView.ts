@@ -7,7 +7,6 @@ export class ExperienceTrackerView extends BaseView {
 	private store: KeyValueStore;
 	private filePath: string;
 	private eventBus: EventBus;
-	private containerEl: HTMLElement | null = null;
 
 	constructor(
 		app: App,
@@ -23,7 +22,8 @@ export class ExperienceTrackerView extends BaseView {
 
 	register(source: string, element: HTMLElement, ctx: any): void {
 		element.empty();
-		this.containerEl = element;
+		this.source = source;
+    this.rootElement = element;
 
 		const container = element.createDiv({ cls: 'wod-experience-container' });
 
@@ -145,7 +145,7 @@ export class ExperienceTrackerView extends BaseView {
 	): Promise<void> {
 		const totalKey = `${this.filePath}|experience.total`;
 		await this.store.set(totalKey, value);
-		this.refresh(container);
+		this.refresh();
 	}
 
 	private async updateSpent(
@@ -154,7 +154,7 @@ export class ExperienceTrackerView extends BaseView {
 	): Promise<void> {
 		const spentKey = `${this.filePath}|experience.spent`;
 		await this.store.set(spentKey, value);
-		this.refresh(container);
+		this.refresh();
 	}
 
 	private async resetAll(container: HTMLElement): Promise<void> {
@@ -162,20 +162,6 @@ export class ExperienceTrackerView extends BaseView {
 		const spentKey = `${this.filePath}|experience.spent`;
 		await this.store.set(totalKey, 0);
 		await this.store.set(spentKey, 0);
-		this.refresh(container);
-	}
-
-	private refresh(container: HTMLElement): void {
-		let rootContainer = container;
-		while (
-			rootContainer &&
-			!rootContainer.classList.contains('wod-experience-container')
-		) {
-			rootContainer = rootContainer.parentElement!;
-		}
-
-		const parentEl = rootContainer.parentElement!;
-		parentEl.empty();
-		this.register('', parentEl, {});
+		this.refresh();
 	}
 }

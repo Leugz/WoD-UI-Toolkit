@@ -9,7 +9,6 @@ export class RenownView extends BaseView {
 	private filePath: string;
 	private eventBus: EventBus;
 	private config: AdvantageConfig;
-	private containerEl: HTMLElement | null = null;
 
 	constructor(
 		app: App,
@@ -26,7 +25,6 @@ export class RenownView extends BaseView {
 	}
 
 	register(source: string, element: HTMLElement, ctx: any): void {
-		this.containerEl = element;
 		element.empty();
 
 		const container = element.createDiv({ cls: 'wod-renown-container' });
@@ -69,12 +67,6 @@ export class RenownView extends BaseView {
 				await this.store.set(key, newValue);
 				this.refresh();
 			});
-		}
-	}
-
-	private refresh(): void {
-		if (this.containerEl) {
-			this.register('', this.containerEl, {});
 		}
 	}
 }
