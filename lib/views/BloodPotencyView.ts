@@ -10,22 +10,22 @@ export class BloodPotencyView extends BaseView {
 
 	constructor(
 		app: App,
+		containerEl: HTMLElement,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
 	) {
-		super(app);
+		super(app, containerEl);
 		this.store = store;
 		this.filePath = filePath;
 		this.eventBus = eventBus;
 	}
 
-	register(source: string, element: HTMLElement, ctx: any): void {
-		element.empty();
+	render(source: string): void {
 		this.source = source;
-		this.rootElement = element;
+		this.containerEl.empty();
 
-		const container = element.createDiv({
+		const container = this.containerEl.createDiv({
 			cls: 'vtm-blood-potency-container',
 		});
 

@@ -12,25 +12,27 @@ export class MeritsFlawsListView extends BaseView {
 
 	constructor(
 		app: App,
+		containerEl: HTMLElement,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
 	) {
-		super(app);
+		super(app, containerEl);
 		this.store = store;
 		this.filePath = filePath;
 		this.eventBus = eventBus;
 	}
 
-	register(source: string, element: HTMLElement, ctx: any): void {
-		element.empty();
+	render(source: string): void {
+		this.source = source;
+		this.containerEl.empty();
 
 		let entries: any[] = [];
 		try {
 			entries = parseYaml(source) || [];
 		} catch {
-			element.createDiv({
-				text: '⚠️ Invalid YAML format',
+			this.containerEl.createDiv({
+				text: 'Invalid YAML format',
 				cls: 'wod-mf-error',
 			});
 			return;
@@ -44,14 +46,16 @@ export class MeritsFlawsListView extends BaseView {
 		);
 
 		if (merits.length === 0 && flaws.length === 0) {
-			element.createDiv({
+			this.containerEl.createDiv({
 				text: 'No merits or flaws defined.',
 				cls: 'wod-mf-empty',
 			});
 			return;
 		}
 
-		const gridContainer = element.createDiv({ cls: 'wod-mf-grid' });
+		const gridContainer = this.containerEl.createDiv({
+			cls: 'wod-mf-grid',
+		});
 
 		const meritsColumn = gridContainer.createDiv({ cls: 'wod-mf-column' });
 		const meritsTitle = meritsColumn.createDiv({
@@ -76,7 +80,7 @@ export class MeritsFlawsListView extends BaseView {
 						tags: ['Merit'],
 						onChange: async (newVal) => {
 							await this.store.set(storeKey, newVal);
-							this.register(source, element, ctx);
+							this.render(source);
 						},
 					};
 				}),
@@ -84,7 +88,7 @@ export class MeritsFlawsListView extends BaseView {
 				maxRatingDefault: 5,
 				extraClasses: 'wod-card-reversed',
 			});
-			meritsCard.register('', meritsColumn, ctx);
+			meritsCard.render(this.containerEl);
 		} else {
 			meritsColumn.createDiv({
 				text: 'No merits defined.',
@@ -115,7 +119,7 @@ export class MeritsFlawsListView extends BaseView {
 						tags: ['Flaw'],
 						onChange: async (newVal) => {
 							await this.store.set(storeKey, newVal);
-							this.register(source, element, ctx);
+							this.render(source);
 						},
 					};
 				}),
@@ -123,7 +127,7 @@ export class MeritsFlawsListView extends BaseView {
 				maxRatingDefault: 5,
 				extraClasses: 'wod-card-reversed',
 			});
-			flawsCard.register('', flawsColumn, ctx);
+			flawsCard.render(flawsColumn);
 		} else {
 			flawsColumn.createDiv({
 				text: 'No flaws defined.',

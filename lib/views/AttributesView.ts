@@ -11,25 +11,24 @@ export class AttributesView extends BaseView {
 
 	constructor(
 		app: App,
+		containerEl: HTMLElement,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
 		attributesData: Record<string, string[]>,
 	) {
-		super(app);
+		super(app, containerEl);
 		this.store = store;
 		this.filePath = filePath;
 		this.eventBus = eventBus;
 		this.attributesData = attributesData;
 	}
 
-	register(
-		source: string,
-		element: HTMLElement,
-		ctx: MarkdownPostProcessorContext,
-	): void {
-		element.empty();
-		const container = element.createDiv({
+	render(source: string): void {
+		this.source = source;
+		this.containerEl.empty();
+
+		const container = this.containerEl.createDiv({
 			cls: 'wod-attributes-container',
 		});
 

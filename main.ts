@@ -51,6 +51,19 @@ export default class WodUIToolkitPlugin extends Plugin {
 		this.store = new KeyValueStore(this);
 		this.eventBus = new EventBus();
 		await this.store.load();
+		await this.purgeOrphanedData();
+
+		this.registerEvent(
+			this.app.vault.on('delete', (file) => {
+				this.store.deleteByPrefix(file.path);
+			}),
+		);
+
+		this.registerEvent(
+			this.app.vault.on('rename', (file, oldPath) => {
+				this.store.renamePrefix(oldPath, file.path);
+			}),
+		);
 
 		this.addSettingTab(new WodSettingsTab(this.app, this));
 
@@ -60,9 +73,10 @@ export default class WodUIToolkitPlugin extends Plugin {
 		record.register<ResourceConfig>(
 			'resource',
 			'resource',
-			(config, ctx) =>
+			(config, el, ctx) =>
 				new ResourceTrackerView(
 					this.app,
+					el,
 					this,
 					this.store,
 					ctx.sourcePath,
@@ -75,9 +89,10 @@ export default class WodUIToolkitPlugin extends Plugin {
 		record.register<MoralityConfig>(
 			'morality',
 			'morality',
-			(config, ctx) =>
+			(config, el, ctx) =>
 				new MoralityTrackerView(
 					this.app,
+					el,
 					this.store,
 					ctx.sourcePath,
 					this.eventBus,
@@ -89,9 +104,10 @@ export default class WodUIToolkitPlugin extends Plugin {
 		record.register<PowerSystemConfig>(
 			'powers',
 			'powerSystem',
-			(config, ctx) =>
+			(config, el, ctx) =>
 				new PowerSystemView(
 					this.app,
+					el,
 					this,
 					this.store,
 					ctx.sourcePath,
@@ -103,9 +119,10 @@ export default class WodUIToolkitPlugin extends Plugin {
 		record.register<Record<string, string[]>>(
 			'attributes',
 			'attributes',
-			(config, ctx) =>
+			(config, el, ctx) =>
 				new AttributesView(
 					this.app,
+					el,
 					this.store,
 					ctx.sourcePath,
 					this.eventBus,
@@ -116,18 +133,25 @@ export default class WodUIToolkitPlugin extends Plugin {
 		record.register<Record<string, string[]>>(
 			'skills',
 			'skills',
-			(config, ctx) =>
-				new SkillsView(this.app, this.store, ctx.sourcePath, config),
+			(config, el, ctx) =>
+				new SkillsView(
+					this.app,
+					el,
+					this.store,
+					ctx.sourcePath,
+					config,
+				),
 		);
 
 		// blood potency & renown
 		record.register<AdvantageConfig>(
 			'advantage',
 			'advantage',
-			(config, ctx) => {
+			(config, el, ctx) => {
 				if (config.mode === 'renown') {
 					return new RenownView(
 						this.app,
+						el,
 						this.store,
 						ctx.sourcePath,
 						this.eventBus,
@@ -136,6 +160,7 @@ export default class WodUIToolkitPlugin extends Plugin {
 				} else {
 					return new BloodPotencyView(
 						this.app,
+						el,
 						this.store,
 						ctx.sourcePath,
 						this.eventBus,
@@ -147,9 +172,10 @@ export default class WodUIToolkitPlugin extends Plugin {
 		record.register<BaseTrackerConfig>(
 			'health',
 			'health',
-			(_, ctx) =>
+			(_, el, ctx) =>
 				new HealthView(
 					this.app,
+					el,
 					this.store,
 					ctx.sourcePath,
 					this.eventBus,
@@ -159,9 +185,10 @@ export default class WodUIToolkitPlugin extends Plugin {
 		record.register<BaseTrackerConfig>(
 			'willpower',
 			'willpower',
-			(_, ctx) =>
+			(_, el, ctx) =>
 				new WillpowerView(
 					this.app,
+					el,
 					this.store,
 					ctx.sourcePath,
 					this.eventBus,
@@ -171,9 +198,10 @@ export default class WodUIToolkitPlugin extends Plugin {
 		record.register<BaseTrackerConfig>(
 			'exp',
 			'exp',
-			(_, ctx) =>
+			(_, el, ctx) =>
 				new ExperienceTrackerView(
 					this.app,
+					el,
 					this.store,
 					ctx.sourcePath,
 					this.eventBus,
@@ -183,9 +211,10 @@ export default class WodUIToolkitPlugin extends Plugin {
 		record.register<BaseTrackerConfig>(
 			'merits',
 			'merits',
-			(_, ctx) =>
+			(_, el, ctx) =>
 				new MeritsFlawsListView(
 					this.app,
+					el,
 					this.store,
 					ctx.sourcePath,
 					this.eventBus,
@@ -195,9 +224,10 @@ export default class WodUIToolkitPlugin extends Plugin {
 		record.register<BaseTrackerConfig>(
 			'powerList',
 			'powerList',
-			(_, ctx) =>
+			(_, el, ctx) =>
 				new PowerListView(
 					this.app,
+					el,
 					this,
 					this.store,
 					ctx.sourcePath,
@@ -222,5 +252,19 @@ export default class WodUIToolkitPlugin extends Plugin {
 
 	async saveSettings() {
 		await this.saveData(this.settings);
+	}
+
+	private async purgeOrphanedData(): Promise<void> {
+		const paths = new Set(
+			this.store.getKeys().map((key) => key.split('|')[0]),
+		);
+
+		for (const path of paths) {
+			const exists = await this.app.vault.adapter.exists(path);
+
+			if (!exists) {
+				this.store.deleteByPrefix(path);
+			}
+		}
 	}
 }

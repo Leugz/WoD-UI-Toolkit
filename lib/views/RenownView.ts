@@ -12,22 +12,24 @@ export class RenownView extends BaseView {
 
 	constructor(
 		app: App,
+		containerEl: HTMLElement,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
 		config: AdvantageConfig,
 	) {
-		super(app);
+		super(app, containerEl);
 		this.store = store;
 		this.filePath = filePath;
 		this.eventBus = eventBus;
 		this.config = config;
 	}
 
-	register(source: string, element: HTMLElement, ctx: any): void {
-		element.empty();
+	render(source: string): void {
+		this.source = source;
+		this.containerEl.empty();
 
-		const container = element.createDiv({ cls: 'wod-renown-container' });
+		const container = this.containerEl.createDiv({ cls: 'wod-renown-container' });
 
 		const header = container.createDiv({ cls: 'wod-renown-header' });
 		header.createEl('h3', {

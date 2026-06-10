@@ -17,13 +17,14 @@ export class PowerSystemView extends BaseView {
 
 	constructor(
 		app: App,
+		containerEl: HTMLElement,
 		plugin: IWodPlugin,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
 		config: PowerSystemConfig,
 	) {
-		super(app);
+		super(app, containerEl);
 		this.plugin = plugin;
 		this.store = store;
 		this.filePath = filePath;
@@ -33,14 +34,9 @@ export class PowerSystemView extends BaseView {
 		this.iconResolver = new IconResolver(app, plugin);
 	}
 
-	async register(
-		source: string,
-		element: HTMLElement,
-		ctx: any,
-	): Promise<void> {
-		element.empty();
+	async render(source: string): Promise<void> {
 		this.source = source;
-		this.rootElement = element;
+		this.containerEl.empty();
 
 		let disciplines: any[] = [];
 		try {
@@ -49,7 +45,7 @@ export class PowerSystemView extends BaseView {
 				.map((line) => line.trim())
 				.filter((line) => line && line !== '-');
 		} catch {
-			element.createDiv({
+			this.containerEl.createDiv({
 				text: 'Invalid format',
 				cls: 'wod-powers-error',
 			});
@@ -57,14 +53,16 @@ export class PowerSystemView extends BaseView {
 		}
 
 		if (disciplines.length === 0) {
-			element.createDiv({
+			this.containerEl.createDiv({
 				text: `No ${this.config.name.toLowerCase()} defined.`,
 				cls: 'wod-powers-empty',
 			});
 			return;
 		}
 
-		const container = element.createDiv({ cls: 'wod-powers-container' });
+		const container = this.containerEl.createDiv({
+			cls: 'wod-powers-container',
+		});
 
 		const header = container.createDiv({ cls: 'wod-powers-header' });
 		header.createEl('h3', {

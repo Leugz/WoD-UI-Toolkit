@@ -15,13 +15,14 @@ export class ResourceTrackerView extends BaseView {
 
 	constructor(
 		app: App,
+		containerEl: HTMLElement,
 		plugin: Plugin,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
 		config: ResourceConfig,
 	) {
-		super(app);
+		super(app, containerEl);
 		this.plugin = plugin;
 		this.store = store;
 		this.filePath = filePath;
@@ -30,16 +31,13 @@ export class ResourceTrackerView extends BaseView {
 		this.codeblock = config.codeblock;
 	}
 
-	async register(
-		source: string,
-		element: HTMLElement,
-		ctx: any,
-	): Promise<void> {
-		element.empty();
+	async render(source: string): Promise<void> {
 		this.source = source;
-    this.rootElement = element;
+		this.containerEl.empty();
 
-		const container = element.createDiv({ cls: 'wod-resource-container' });
+		const container = this.containerEl.createDiv({
+			cls: 'wod-resource-container',
+		});
 
 		const resourceKey = `${this.filePath}|${this.config.codeblock}`;
 		let currentValue = this.store.get(resourceKey) ?? 0;

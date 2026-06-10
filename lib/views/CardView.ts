@@ -20,16 +20,15 @@ interface CardViewOptions {
 	extraClasses?: string;
 }
 
-export class CardView extends BaseView {
+export class CardView {
 	codeblock = 'wod-generic-card';
-	private options: CardViewOptions;
 
-	constructor(app: App, options: CardViewOptions) {
-		super(app);
-		this.options = options;
-	}
+	constructor(
+		private app: App,
+		private options: CardViewOptions,
+	) {}
 
-	register(source: string, element: HTMLElement, ctx: any): void {
+	render(element: HTMLElement): void {
 		element.empty();
 		const entries = this.options.entries;
 

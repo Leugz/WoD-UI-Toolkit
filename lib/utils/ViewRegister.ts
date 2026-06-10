@@ -5,6 +5,7 @@ import { IWodPlugin } from 'lib/interfaces/IWodPlugin';
 
 type ViewFactory<T> = (
 	config: T,
+	el: HTMLElement,
 	context: MarkdownPostProcessorContext,
 ) => BaseView;
 
@@ -26,8 +27,10 @@ export class ViewRegister {
 				el.addClass(`wod-theme-${this.plugin.activeConfig.id}`);
 
 				const config = this.plugin.activeConfig[configKey] as T;
-				const view = factory(config, ctx);
-				view.register(source, el, ctx);
+				const view = factory(config, el, ctx);
+
+				ctx.addChild(view);
+				view.render(source);
 			},
 		);
 
@@ -46,8 +49,10 @@ export class ViewRegister {
 				) => {
 					el.addClass(`wod-theme-${gameConfig.id}`);
 
-					const view = factory(specificConfig, ctx);
-					view.register(source, el, ctx);
+					const view = factory(specificConfig, el, ctx);
+
+					ctx.addChild(view);
+					view.render(source);
 				},
 			);
 		});

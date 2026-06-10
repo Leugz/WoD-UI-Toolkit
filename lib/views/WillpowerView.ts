@@ -1,42 +1,63 @@
 import { App } from 'obsidian';
 import { BaseView } from './BaseView';
 import { KeyValueStore } from '../services/KeyValueStore';
-import { EventBus } from '../services/EventBus';
+import { EventBus, EventMap } from '../services/EventBus';
 
 export class WillpowerView extends BaseView {
 	private store: KeyValueStore;
 	private filePath: string;
 	private eventBus: EventBus;
 
+	private onAttributeChanged = (
+		data: EventMap['attribute-changed'],
+	): void => {
+		if (
+			data.file === this.filePath &&
+			(data.attribute === 'Composure' || data.attribute === 'Resolve')
+		) {
+			this.refresh();
+		}
+	};
+
+	onload(): void {
+		this.eventBus.on('attribute-changed', this.onAttributeChanged);
+	}
+
+	onunload(): void {
+		this.eventBus.off('attribute-changed', this.onAttributeChanged);
+	}
+
 	constructor(
 		app: App,
+		containerEL: HTMLElement,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
 	) {
-		super(app);
+		super(app, containerEL);
 		this.store = store;
 		this.filePath = filePath;
 		this.eventBus = eventBus;
 
-		this.eventBus.on('attribute-changed', (data) => {
-			if (
-				data.file === this.filePath &&
-				(data.attribute === 'Composure' ||
-					data.attribute === 'resolve') &&
-				this.rootElement?.isConnected
-			) {
-				this.refresh();
-			}
-		});
+		// this.eventBus.on('attribute-changed', (data) => {
+		// 	if (
+		// 		data.file === this.filePath &&
+		// 		(data.attribute === 'Composure' ||
+		// 			data.attribute === 'resolve') &&
+		// 		this.rootElement?.isConnected
+		// 	) {
+		// 		this.refresh();
+		// 	}
+		// });
 	}
 
-	register(source: string, element: HTMLElement, ctx: any): void {
-		element.empty();
+	render(source: string): void {
 		this.source = source;
-		this.rootElement = element;
+		this.containerEl.empty();
 
-		const container = element.createDiv({ cls: 'wod-willpower-container' });
+		const container = this.containerEl.createDiv({
+			cls: 'wod-willpower-container',
+		});
 
 		const composureKey = `${this.filePath}|attribute.Composure`;
 		const resolveKey = `${this.filePath}|attribute.Resolve`;

@@ -9,21 +9,24 @@ export class SkillsView extends BaseView {
 
 	constructor(
 		app: App,
+		containerEl: HTMLElement,
 		store: KeyValueStore,
 		filePath: string,
 		skillsData: Record<string, string[]>,
 	) {
-		super(app);
+		super(app, containerEl);
 		this.store = store;
 		this.filePath = filePath;
 		this.skillsData = skillsData;
 	}
 
-	register(source: string, element: HTMLElement, ctx: any): void {
-		element.empty();
+	render(source: string): void {
 		this.source = source;
-		this.rootElement = element;
-		const container = element.createDiv({ cls: 'wod-skills-container' });
+		this.containerEl.empty();
+
+		const container = this.containerEl.createDiv({
+			cls: 'wod-skills-container',
+		});
 
 		Object.entries(this.skillsData).forEach(([category, skillList]) => {
 			this.renderCategory(container, category, skillList);

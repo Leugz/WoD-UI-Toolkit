@@ -17,12 +17,13 @@ export class PowerListView extends BaseView {
 
 	constructor(
 		app: App,
+		containerEl: HTMLElement,
 		plugin: IWodPlugin,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
 	) {
-		super(app);
+		super(app, containerEl);
 		this.plugin = plugin;
 		this.store = store;
 		this.filePath = filePath;
@@ -30,12 +31,9 @@ export class PowerListView extends BaseView {
 		this.iconResolver = new IconResolver(app, plugin);
 	}
 
-	async register(
-		source: string,
-		element: HTMLElement,
-		ctx: any,
-	): Promise<void> {
-		element.empty();
+	async render(source: string): Promise<void> {
+		this.source = source;
+		this.containerEl.empty();
 
 		let entries: CardEntry[] = [];
 		let isYaml = false;
@@ -101,7 +99,10 @@ export class PowerListView extends BaseView {
 		}
 
 		if (entries.length === 0) {
-			element.createDiv({ text: 'No entries defined', cls: 'wod-empty' });
+			this.containerEl.createDiv({
+				text: 'No entries defined',
+				cls: 'wod-empty',
+			});
 			return;
 		}
 
@@ -111,6 +112,6 @@ export class PowerListView extends BaseView {
 			dotColor: 'var(--wod-dot-active)',
 		});
 
-		cardView.register('', element, ctx);
+		cardView.render(this.containerEl);
 	}
 }

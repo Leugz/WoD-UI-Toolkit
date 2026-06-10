@@ -1,7 +1,7 @@
 import { KeyValueStore } from 'lib/services/KeyValueStore';
 import { BaseView } from './BaseView';
 import { App } from 'obsidian';
-import { EventBus } from 'lib/services/EventBus';
+import { EventBus, EventMap } from 'lib/services/EventBus';
 
 type DamageType = 'none' | 'superficial' | 'aggravated';
 
@@ -10,34 +10,52 @@ export class HealthView extends BaseView {
 	private filePath: string;
 	private eventBus: EventBus;
 
+	private onAttributeChanged = (
+		data: EventMap['attribute-changed'],
+	): void => {
+		if (data.file === this.filePath && data.attribute === 'Stamina') {
+			this.refresh();
+		}
+	};
+
+	onload(): void {
+		this.eventBus.on('attribute-changed', this.onAttributeChanged);
+	}
+
+	onunload(): void {
+		this.eventBus.off('attribute-changed', this.onAttributeChanged);
+	}
+
 	constructor(
 		app: App,
+		containerEL: HTMLElement,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
 	) {
-		super(app);
+		super(app, containerEL);
 		this.store = store;
 		this.filePath = filePath;
 		this.eventBus = eventBus;
 
-		this.eventBus.on('attribute-changed', (data) => {
-			if (
-				data.file === this.filePath &&
-				data.attribute === 'Stamina' &&
-				this.rootElement?.isConnected
-			) {
-				this.refresh();
-			}
-		});
+		// this.eventBus.on('attribute-changed', (data) => {
+		// 	if (
+		// 		data.file === this.filePath &&
+		// 		data.attribute === 'Stamina' &&
+		// 		this.rootElement?.isConnected
+		// 	) {
+		// 		this.refresh();
+		// 	}
+		// });
 	}
 
-	register(source: string, element: HTMLElement, ctx: any): void {
-		element.empty();
+	render(source: string): void {
 		this.source = source;
-		this.rootElement = element;
+		this.containerEl.empty();
 
-		const container = element.createDiv({ cls: 'wod-health-container' });
+		const container = this.containerEl.createDiv({
+			cls: 'wod-health-container',
+		});
 
 		const staminaKey = `${this.filePath}|attribute.Stamina`;
 		const stamina = this.store.get(staminaKey) ?? 1;

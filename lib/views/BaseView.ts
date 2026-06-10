@@ -1,24 +1,19 @@
-import { App, MarkdownPostProcessorContext } from 'obsidian';
+import { App, MarkdownRenderChild } from 'obsidian';
 
-export abstract class BaseView {
-	app: App;
+export abstract class BaseView extends MarkdownRenderChild {
+	protected app: App;
 	protected source: string = '';
-	protected rootElement: HTMLElement | null = null;
 
-	constructor(app: App) {
+	constructor(app: App, containerEl: HTMLElement) {
+		super(containerEl);
 		this.app = app;
 	}
 
-	abstract register(
-		source: string,
-		element: HTMLElement,
-		ctx: MarkdownPostProcessorContext,
-	): void | Promise<void>;
+	abstract render(source: string): void | Promise<void>;
 
 	protected refresh(): void {
-		if (!this.rootElement) return;
-
-		this.rootElement.empty();
-		this.register(this.source, this.rootElement, {} as any);
+		if (!this.containerEl.isConnected) return;
+		this.containerEl.empty();
+		this.render(this.source);
 	}
 }

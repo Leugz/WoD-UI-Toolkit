@@ -13,12 +13,13 @@ export class MoralityTrackerView extends BaseView {
 
 	constructor(
 		app: App,
+		containerEl: HTMLElement,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
 		config: MoralityConfig,
 	) {
-		super(app);
+		super(app, containerEl);
 		this.store = store;
 		this.filePath = filePath;
 		this.eventBus = eventBus;
@@ -26,12 +27,13 @@ export class MoralityTrackerView extends BaseView {
 		this.codeblock = config.codeblock;
 	}
 
-	register(source: string, element: HTMLElement, ctx: any): void {
-		element.empty();
+	render(source: string): void {
 		this.source = source;
-    this.rootElement = element;
+		this.containerEl.empty();
 
-		const container = element.createDiv({ cls: 'wod-morality-container' });
+		const container = this.containerEl.createDiv({
+			cls: 'wod-morality-container',
+		});
 
 		// Get current morality (0-10)
 		const moralityKey = `${this.filePath}|${this.config.codeblock}`;
