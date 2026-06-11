@@ -3,13 +3,13 @@ import { KeyValueStore } from './lib/services/KeyValueStore';
 import { EventBus } from 'lib/services/EventBus';
 import {
 	VTM_CONFIG,
-	WTA_CONFIG,
 	GameConfig,
 	ResourceConfig,
 	MoralityConfig,
 	PowerSystemConfig,
 	BaseTrackerConfig,
 	AdvantageConfig,
+	GAME_CONFIGS,
 } from 'lib/config/GameConfig';
 import {
 	WodSettings,
@@ -42,11 +42,8 @@ export default class WodUIToolkitPlugin extends Plugin {
 		console.log('WoD UI Toolkit loading...');
 		await this.loadSettings();
 
-		if (this.settings.gameSystem == 'wta') {
-			this.activeConfig = WTA_CONFIG;
-		} else {
-			this.activeConfig = VTM_CONFIG;
-		}
+		this.activeConfig =
+			GAME_CONFIGS[this.settings.gameSystem] ?? VTM_CONFIG;
 
 		this.store = new KeyValueStore(this);
 		this.eventBus = new EventBus();

@@ -34,17 +34,15 @@ export class WodSettingsTab extends PluginSettingTab {
 				Object.entries(GAME_CONFIGS).forEach(([id, config]) => {
 					dropdown.addOption(id, config.name);
 				});
-				// 	dropdown
-				// 		.addOption('vtm', 'Vampire: the Masquerade (V5)')
-				// 		.addOption('wta', 'Werewolf: The Apocalypse (V5)')
-				// 		.setValue(this.plugin.settings.gameSystem)
-				// 		.onChange(async (value) => {
-				// 			this.plugin.settings.gameSystem = value as any;
-				// 			await this.plugin.saveSettings();
-				// 			new Notice(
-				// 				'Game system changed. Please reload Obsidian/Plugin.',
-				// 			);
-				// 		});
+				dropdown
+					.setValue(this.plugin.settings.gameSystem)
+					.onChange(async (value) => {
+						this.plugin.settings.gameSystem = value as any;
+						await this.plugin.saveSettings();
+						new Notice(
+							'Game system changed. Please reload Obsidian/Plugin.',
+						);
+					});
 			});
 	}
 }

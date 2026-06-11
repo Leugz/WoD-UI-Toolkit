@@ -1,5 +1,4 @@
 import { App } from 'obsidian';
-import { BaseView } from './BaseView';
 
 export interface CardEntry {
 	name: string;

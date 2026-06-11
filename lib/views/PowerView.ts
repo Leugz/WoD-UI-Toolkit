@@ -66,9 +66,7 @@ export class PowerListView extends BaseView {
 					}),
 				);
 			}
-		} catch (error) {
-			console.log(error);
-		}
+		} catch (error) {}
 
 		if (!isYaml) {
 			const lines = source
