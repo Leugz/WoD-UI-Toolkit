@@ -38,17 +38,6 @@ export class WillpowerView extends BaseView {
 		this.store = store;
 		this.filePath = filePath;
 		this.eventBus = eventBus;
-
-		// this.eventBus.on('attribute-changed', (data) => {
-		// 	if (
-		// 		data.file === this.filePath &&
-		// 		(data.attribute === 'Composure' ||
-		// 			data.attribute === 'resolve') &&
-		// 		this.rootElement?.isConnected
-		// 	) {
-		// 		this.refresh();
-		// 	}
-		// });
 	}
 
 	render(source: string): void {
@@ -89,7 +78,7 @@ export class WillpowerView extends BaseView {
 			attr: { 'aria-label': 'Reset to max' },
 		});
 		resetBtn.addEventListener('click', () => {
-			this.setWillpower(maxWillpower, container);
+			this.setWillpower(maxWillpower);
 		});
 
 		const counter = rightSide.createDiv({ cls: 'wod-willpower-counter' });
@@ -117,16 +106,15 @@ export class WillpowerView extends BaseView {
 
 		box.addEventListener('click', () => {
 			if (currentWillpower === 1 && index === 0) {
-				this.setWillpower(0, container);
+				this.setWillpower(0);
 			} else {
-				this.setWillpower(index + 1, container);
+				this.setWillpower(index + 1);
 			}
 		});
 	}
 
 	private async setWillpower(
 		value: number,
-		container: HTMLElement,
 	): Promise<void> {
 		const currentKey = `${this.filePath}|willpower.current`;
 		await this.store.set(currentKey, value);

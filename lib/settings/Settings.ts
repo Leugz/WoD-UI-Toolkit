@@ -1,8 +1,10 @@
+import { GAME_CONFIGS } from 'lib/config/GameConfig';
 import { IWodPlugin } from 'lib/interfaces/IWodPlugin';
 import { App, Notice, PluginSettingTab, Setting } from 'obsidian';
 
 export interface WodSettings {
-	gameSystem: 'vtm' | 'wta';
+	// gameSystem: 'vtm' | 'wta';
+	gameSystem: string;
 }
 
 export const DEFAULT_SETTINGS: WodSettings = {
@@ -29,17 +31,20 @@ export class WodSettingsTab extends PluginSettingTab {
 				'Select which game rules to load. (Changing requires a reload)',
 			)
 			.addDropdown((dropdown) => {
-				dropdown
-					.addOption('vtm', 'Vampire: the Masquerade (V5)')
-					.addOption('wta', 'Werewolf: The Apocalypse (V5)')
-					.setValue(this.plugin.settings.gameSystem)
-					.onChange(async (value) => {
-						this.plugin.settings.gameSystem = value as any;
-						await this.plugin.saveSettings();
-						new Notice(
-							'Game system changed. Please reload Obsidian/Plugin.',
-						);
-					});
+				Object.entries(GAME_CONFIGS).forEach(([id, config]) => {
+					dropdown.addOption(id, config.name);
+				});
+				// 	dropdown
+				// 		.addOption('vtm', 'Vampire: the Masquerade (V5)')
+				// 		.addOption('wta', 'Werewolf: The Apocalypse (V5)')
+				// 		.setValue(this.plugin.settings.gameSystem)
+				// 		.onChange(async (value) => {
+				// 			this.plugin.settings.gameSystem = value as any;
+				// 			await this.plugin.saveSettings();
+				// 			new Notice(
+				// 				'Game system changed. Please reload Obsidian/Plugin.',
+				// 			);
+				// 		});
 			});
 	}
 }

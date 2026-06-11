@@ -1,11 +1,9 @@
-import { App, Plugin, parseYaml } from 'obsidian';
+import { App, parseYaml } from 'obsidian';
 import { BaseView } from './BaseView';
 import { CardView, CardEntry } from './CardView';
 import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
 import { IWodPlugin } from 'lib/interfaces/IWodPlugin';
-import { VTM_CONFIG, WTA_CONFIG } from 'lib/config/GameConfig';
-import { EMBEDDED_ASSETS } from '../data/EmbeddedAssets';
 import { IconResolver } from 'lib/services/IconResolver';
 
 export class PowerListView extends BaseView {

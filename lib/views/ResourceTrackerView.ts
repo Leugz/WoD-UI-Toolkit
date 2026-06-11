@@ -102,7 +102,7 @@ export class ResourceTrackerView extends BaseView {
 			attr: { 'aria-label': 'Reset to 1' },
 		});
 		resetBtn.addEventListener('click', () => {
-			this.setValue(1, container);
+			this.setValue(1);
 		});
 
 		const level = this.config.levels.find((l) => l.value === currentValue);
@@ -120,7 +120,7 @@ export class ResourceTrackerView extends BaseView {
 		});
 
 		for (let i = 0; i < this.config.max; i++) {
-			this.renderIcon(iconsContainer, i, currentValue, container);
+			this.renderIcon(iconsContainer, i, currentValue);
 		}
 
 		// Description
@@ -139,7 +139,6 @@ export class ResourceTrackerView extends BaseView {
 		container: HTMLElement,
 		index: number,
 		currentValue: number,
-		rootContainer: HTMLElement,
 	): void {
 		const icon = container.createDiv({ cls: 'wod-resource-icon-dot' });
 
@@ -152,16 +151,15 @@ export class ResourceTrackerView extends BaseView {
 
 		icon.addEventListener('click', () => {
 			if (currentValue === 1 && index === 0) {
-				this.setValue(0, rootContainer);
+				this.setValue(0);
 			} else {
-				this.setValue(index + 1, rootContainer);
+				this.setValue(index + 1);
 			}
 		});
 	}
 
 	private async setValue(
 		value: number,
-		container: HTMLElement,
 	): Promise<void> {
 		const resourceKey = `${this.filePath}|${this.config.codeblock}`;
 		await this.store.set(resourceKey, value);

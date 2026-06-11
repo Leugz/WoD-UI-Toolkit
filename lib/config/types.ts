@@ -1,3 +1,7 @@
+import { GAME_CONFIGS } from './GameConfig';
+
+export type GameSystemId = keyof typeof GAME_CONFIGS;
+
 export interface ResourceConfig {
 	name: string;
 	codeblock: string;

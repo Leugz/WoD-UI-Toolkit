@@ -52,7 +52,7 @@ export class BloodPotencyView extends BaseView {
 			attr: { 'aria-label': 'Reset to 1' },
 		});
 		resetBtn.addEventListener('click', () => {
-			this.setBloodPotency(1, container);
+			this.setBloodPotency(1);
 		});
 
 		// BP level display
@@ -63,7 +63,7 @@ export class BloodPotencyView extends BaseView {
 		const dotsContainer = container.createDiv({ cls: 'vtm-bp-dots' });
 
 		for (let i = 1; i <= 10; i++) {
-			this.renderBPDot(dotsContainer, i, currentBP, container);
+			this.renderBPDot(dotsContainer, i, currentBP);
 		}
 
 		// Derived Stats
@@ -74,7 +74,6 @@ export class BloodPotencyView extends BaseView {
 		dotsContainer: HTMLElement,
 		value: number,
 		currentBP: number,
-		container: HTMLElement,
 	): void {
 		const dot = dotsContainer.createDiv({ cls: 'vtm-bp-dot' });
 
@@ -86,9 +85,9 @@ export class BloodPotencyView extends BaseView {
 		// Special case: clicking the first filled dot when BP=1 sets to 0
 		dot.addEventListener('click', () => {
 			if (currentBP === 1 && value === 1) {
-				this.setBloodPotency(0, container);
+				this.setBloodPotency(0);
 			} else {
-				this.setBloodPotency(value, container);
+				this.setBloodPotency(value);
 			}
 		});
 	}
@@ -135,7 +134,6 @@ export class BloodPotencyView extends BaseView {
 
 	private async setBloodPotency(
 		value: number,
-		container: HTMLElement,
 	): Promise<void> {
 		const bpKey = `${this.filePath}|blood-potency`;
 		await this.store.set(bpKey, value);

@@ -7,7 +7,6 @@ import { IWodPlugin } from 'lib/interfaces/IWodPlugin';
 import { IconResolver } from 'lib/services/IconResolver';
 
 export class PowerSystemView extends BaseView {
-	codeblock: string;
 	private store: KeyValueStore;
 	private filePath: string;
 	private eventBus: EventBus;
@@ -30,7 +29,6 @@ export class PowerSystemView extends BaseView {
 		this.filePath = filePath;
 		this.eventBus = eventBus;
 		this.config = config;
-		this.codeblock = config.codeblock;
 		this.iconResolver = new IconResolver(app, plugin);
 	}
 

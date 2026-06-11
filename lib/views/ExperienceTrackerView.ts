@@ -55,12 +55,12 @@ export class ExperienceTrackerView extends BaseView {
 
 		// Controls for Total XP
 		this.renderControls(container, 'Total XP', totalXP, (val) =>
-			this.updateTotal(val, container),
+			this.updateTotal(val),
 		);
 
 		// Controls for Spent XP
 		this.renderControls(container, 'Spent XP', spentXP, (val) =>
-			this.updateSpent(val, container),
+			this.updateSpent(val),
 		);
 
 		// Reset Button
@@ -72,7 +72,7 @@ export class ExperienceTrackerView extends BaseView {
 			cls: 'wod-xp-reset-btn',
 		});
 		resetBtn.addEventListener('click', () => {
-			this.resetAll(container);
+			this.resetAll();
 		});
 	}
 
@@ -143,7 +143,6 @@ export class ExperienceTrackerView extends BaseView {
 
 	private async updateTotal(
 		value: number,
-		container: HTMLElement,
 	): Promise<void> {
 		const totalKey = `${this.filePath}|experience.total`;
 		await this.store.set(totalKey, value);
@@ -152,14 +151,13 @@ export class ExperienceTrackerView extends BaseView {
 
 	private async updateSpent(
 		value: number,
-		container: HTMLElement,
 	): Promise<void> {
 		const spentKey = `${this.filePath}|experience.spent`;
 		await this.store.set(spentKey, value);
 		this.refresh();
 	}
 
-	private async resetAll(container: HTMLElement): Promise<void> {
+	private async resetAll(): Promise<void> {
 		const totalKey = `${this.filePath}|experience.total`;
 		const spentKey = `${this.filePath}|experience.spent`;
 		await this.store.set(totalKey, 0);

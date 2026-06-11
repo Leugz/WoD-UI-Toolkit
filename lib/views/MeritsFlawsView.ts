@@ -88,7 +88,7 @@ export class MeritsFlawsListView extends BaseView {
 				maxRatingDefault: 5,
 				extraClasses: 'wod-card-reversed',
 			});
-			meritsCard.render(this.containerEl);
+			meritsCard.render(meritsColumn);
 		} else {
 			meritsColumn.createDiv({
 				text: 'No merits defined.',

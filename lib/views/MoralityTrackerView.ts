@@ -77,9 +77,9 @@ export class MoralityTrackerView extends BaseView {
 			attr: { 'aria-label': `Reset to ${this.config.defaultValue}` },
 		});
 		resetBtn.addEventListener('click', () => {
-			this.setMorality(this.config.defaultValue, container);
+			this.setMorality(this.config.defaultValue);
 			if (this.config.hasStains) {
-				this.setStains(0, container);
+				this.setStains(0);
 			}
 		});
 
@@ -105,7 +105,6 @@ export class MoralityTrackerView extends BaseView {
 				iconsContainer,
 				i,
 				currentMorality,
-				container,
 			);
 		}
 
@@ -129,7 +128,6 @@ export class MoralityTrackerView extends BaseView {
 		container: HTMLElement,
 		value: number,
 		currentMorality: number,
-		rootContainer: HTMLElement,
 	): void {
 		const icon = container.createDiv({ cls: 'wod-morality-icon' });
 
@@ -143,9 +141,9 @@ export class MoralityTrackerView extends BaseView {
 		// Click to set morality to this level
 		icon.addEventListener('click', () => {
 			if (currentMorality === 1 && value === 1) {
-				this.setMorality(0, rootContainer);
+				this.setMorality(0);
 			} else {
-				this.setMorality(value, rootContainer);
+				this.setMorality(value);
 			}
 		});
 	}
@@ -189,7 +187,7 @@ export class MoralityTrackerView extends BaseView {
 			attr: { 'aria-label': 'Clear all stains' },
 		});
 		clearBtn.addEventListener('click', () => {
-			this.setStains(0, container);
+			this.setStains(0);
 		});
 
 		// Stain boxes (show max capacity)
@@ -198,7 +196,7 @@ export class MoralityTrackerView extends BaseView {
 		});
 
 		for (let i = 0; i < maxStains; i++) {
-			this.renderStainBox(stainsContainer, i, currentStains, container);
+			this.renderStainBox(stainsContainer, i, currentStains);
 		}
 
 		// Impairment warning
@@ -211,7 +209,6 @@ export class MoralityTrackerView extends BaseView {
 		container: HTMLElement,
 		index: number,
 		currentStains: number,
-		rootContainer: HTMLElement,
 	): void {
 		const box = container.createDiv({ cls: 'wod-stain-box' });
 
@@ -225,9 +222,9 @@ export class MoralityTrackerView extends BaseView {
 		// Click to set stains to this level
 		box.addEventListener('click', async () => {
 			if (index < currentStains) {
-				await this.setStains(index, rootContainer);
+				await this.setStains(index);
 			} else {
-				await this.setStains(index + 1, rootContainer);
+				await this.setStains(index + 1);
 			}
 		});
 	}
@@ -244,7 +241,7 @@ export class MoralityTrackerView extends BaseView {
 			cls: 'wod-impairment-title',
 		});
 		warningTitle.setText(
-			`⚠️ IMPAIRED (${overflowStains} overflow stain${overflowStains > 1 ? 's' : ''})`,
+			`IMPAIRED (${overflowStains} overflow stain${overflowStains > 1 ? 's' : ''})`,
 		);
 
 		const penaltiesList = impairmentWarning.createEl('ul', {
@@ -266,7 +263,7 @@ export class MoralityTrackerView extends BaseView {
 			cls: 'vtm-snap-out-btn',
 		});
 		snapOutBtn.addEventListener('click', () => {
-			this.snapOut(container);
+			this.snapOut();
 		});
 
 		const note = impairmentWarning.createEl('div', {
@@ -279,7 +276,6 @@ export class MoralityTrackerView extends BaseView {
 
 	private async setMorality(
 		value: number,
-		container: HTMLElement,
 	): Promise<void> {
 		const moralityKey = `${this.filePath}|${this.config.codeblock}`;
 		await this.store.set(moralityKey, value);
@@ -288,14 +284,13 @@ export class MoralityTrackerView extends BaseView {
 
 	private async setStains(
 		value: number,
-		container: HTMLElement,
 	): Promise<void> {
 		const stainsKey = `${this.filePath}|${this.config.codeblock}.stains`;
 		await this.store.set(stainsKey, value);
 		this.refresh();
 	}
 
-	private async snapOut(container: HTMLElement): Promise<void> {
+	private async snapOut(): Promise<void> {
 		const moralityKey = `${this.filePath}|${this.config.codeblock}`;
 		const stainsKey = `${this.filePath}|${this.config.codeblock}.stains`;
 

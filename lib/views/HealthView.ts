@@ -37,16 +37,6 @@ export class HealthView extends BaseView {
 		this.store = store;
 		this.filePath = filePath;
 		this.eventBus = eventBus;
-
-		// this.eventBus.on('attribute-changed', (data) => {
-		// 	if (
-		// 		data.file === this.filePath &&
-		// 		data.attribute === 'Stamina' &&
-		// 		this.rootElement?.isConnected
-		// 	) {
-		// 		this.refresh();
-		// 	}
-		// });
 	}
 
 	render(source: string): void {
