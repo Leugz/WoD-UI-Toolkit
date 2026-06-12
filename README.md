@@ -1,19 +1,21 @@
 # World of Darkness UI Toolkit
 
 <p align="center">
-<img src="docs/images/DarkPack_Logo_Color.png" alt="Dark Pack Logo" width="300">
+<img src="docs/images/DarkPack_Logo_Color.png" alt="Dark Pack Logo" width="320">
 </p>
 
-> _Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit **[worldofdarkness.com](https://worldofdarkness.com)**._
+> _Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved._ 
+_For more information please visit **[worldofdarkness.com](https://worldofdarkness.com)**._
 
-This is an **unofficial, fan-made** plugin for managing World of Darkness character sheets directly inside your Obsidian vault, created under the [Dark Pack Agreement](https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement). Non-commercial and not affiliated with Paradox Interactive AB.
+This is an **unofficial, fan-made** plugin for managing World of Darkness character sheets directly inside your Obsidian vault, created under the [Dark Pack Agreement](https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement). 
+**Non-commercial and not affiliated with Paradox Interactive AB.**
 
 The toolkit renders interactive, state-aware character sheet blocks inside your notes. Unlike static templates, every block responds to user input, saves state automatically across sessions, and adapts its appearance to the active game system.
 
 **Key behaviors:**
-- State is saved per note and survives reloads and Obsidian restarts
-- Health reads from the Stamina attribute; Willpower reads from Composure + Resolve
-- Deleting or renaming a note automatically cleans up its stored data
+- State is saved per note, survives reloads and Obsidian restarts.
+- Health reads from the Stamina attribute; Willpower reads from Composure + Resolve.
+- Deleting or renaming a note automatically cleans up its stored data.
 
 ---
 
@@ -36,7 +38,8 @@ The toolkit renders interactive, state-aware character sheet blocks inside your 
 
 Open **Settings → WoD UI Toolkit**.
 
-**Active Game System** — controls how generic `wod-*` blocks behave and which theme colours are applied. Changing this requires a reload (`Ctrl/Cmd+P → Reload app without saving`).
+**Active Game System** — Controls how generic `wod-*` blocks behave and which theme colours are applied. 
+Changing this requires a reload (`Ctrl/Cmd+P → Reload app without saving`).
 
 ---
 
@@ -55,6 +58,7 @@ Every block comes in two flavours:
 ### Trackers
 
 All tracker blocks take no content — just an empty code block.
+All the Attributes below can be found on the block, located on the same note.
 
 ---
 
@@ -65,7 +69,8 @@ All tracker blocks take no content — just an empty code block.
 ```
 ````
 
-Renders a row of damage boxes. Box count is **3 + Stamina** (read from the Attributes block on the same note). Defaults to 4 boxes if no Attributes block is present.
+Renders a row of damage boxes. Box count is **3 + Stamina**.
+Defaults to 4 boxes if no Attributes block is present.
 
 Automatically updates when Stamina changes.
 
@@ -87,7 +92,8 @@ Automatically updates when Stamina changes.
 ```
 ````
 
-Renders filled/empty dots equal to **Composure + Resolve** (read from the Attributes block on the same note). Defaults to 2 dots if no Attributes block is present.
+Renders filled/empty dots equal to **Composure + Resolve**. 
+Defaults to 2 dots if no Attributes block is present.
 
 Automatically updates when Composure or Resolve changes.
 
@@ -108,7 +114,8 @@ Automatically updates when Composure or Resolve changes.
 ```
 ````
 
-Renders up to 5 hexagonal icons representing the current resource level. Each level shows a label and flavour description.
+Renders up to 5 hexagonal icons representing the current resource level. 
+Each level shows a label and flavour description.
 
 | Interaction | Effect |
 | :---------- | :----- |
@@ -127,7 +134,8 @@ Renders up to 5 hexagonal icons representing the current resource level. Each le
 ```
 ````
 
-Renders 10 diamond icons. Current level shows a label and description. For VTM, a Stains section is shown below.
+Renders 10 diamond icons. Current level shows a label and description. 
+For VTM, a Stains section is shown below.
 
 | Interaction | Effect |
 | :---------- | :----- |
@@ -135,7 +143,9 @@ Renders 10 diamond icons. Current level shows a label and description. For VTM, 
 | Click the only active diamond | Set to 0 |
 | ↻ button | Reset to 7 and clear all Stains |
 
-**Stains (VTM — Humanity only):** Shown as small squares below the diamonds. Available stain slots equal `11 − Humanity`. When all slots are filled, an impairment warning appears listing the mechanical penalties. The **Snap Out** button costs 1 Humanity and clears all Stains.
+**Stains (VTM — Humanity only):** Shown as small squares below the diamonds. Available stain slots equal `11 − Humanity`. 
+When all slots are filled, an impairment warning appears listing the mechanical penalties. 
+The **Snap Out** button costs 1 Humanity and clears all Stains.
 
 *Game-specific: `vtm-humanity`, `wta-harmony`*
 
@@ -148,7 +158,8 @@ Renders 10 diamond icons. Current level shows a label and description. For VTM, 
 ```
 ````
 
-**For VTM:** Renders 10 dots (0–10) and a derived stats panel showing Blood Surge, Mend Amount, Power Bonus, Feeding restriction, and Bane Severity — all recalculated from V5 rules as you adjust the rating.
+**For VTM:** Renders 10 dots (0–10) and a derived stats panel showing Blood Surge, Mend Amount, Power Bonus, Feeding restriction, and Bane Severity.
+ _all recalculated from V5 rules as you adjust the rating._
 
 **For WTA:** Renders three columns — Glory, Honor, and Wisdom — each with 5 dots.
 
@@ -169,7 +180,8 @@ Renders 10 diamond icons. Current level shows a label and description. For VTM, 
 ```
 ````
 
-Shows three cards: Total XP, Spent XP, and Available XP (calculated). Controls allow adding or subtracting in increments of 1 and 10.
+Shows three cards: Total XP, Spent XP, and Available XP (calculated). 
+Controls allow adding or subtracting in increments of 1 and 10.
 
 *Game-specific: `vtm-exp`, `wta-exp`*
 
@@ -184,7 +196,8 @@ Shows three cards: Total XP, Spent XP, and Available XP (calculated). Controls a
 ```
 ````
 
-Renders a three-column grid (Physical / Social / Mental) with 5-dot ratings for each attribute. Attributes default to a minimum of 1.
+Renders a three-column grid (Physical / Social / Mental) with 5-dot ratings for each attribute. 
+_Attributes default to a minimum of 1._
 
 | Interaction | Effect |
 | :---------- | :----- |
@@ -203,7 +216,8 @@ Renders a three-column grid (Physical / Social / Mental) with 5-dot ratings for 
 ```
 ````
 
-Renders a three-column grid (Physical / Social / Mental) with 5-dot ratings for each skill. Skills start at 0.
+Renders a three-column grid (Physical / Social / Mental) with 5-dot ratings for each skill. 
+_Skills start at 0._
 
 | Interaction | Effect |
 | :---------- | :----- |
@@ -229,7 +243,8 @@ Blood Sorcery
 
 One power/discipline/gift name per line. Each entry renders as a card with an automatically resolved icon and a 5-dot rating that is tracked and saved.
 
-Icons are resolved from the name using the game's icon map and embedded assets. Unrecognised names fall back to a placeholder symbol.
+Icons are resolved from the name using the game's icon map and embedded assets. 
+_Unrecognised names fall back to a placeholder symbol._
 
 | Interaction | Effect |
 | :---------- | :----- |
@@ -262,7 +277,8 @@ Icons are resolved from the name using the game's icon map and embedded assets. 
 ```
 ````
 
-Renders detailed cards for individual powers or gifts. Accepts a YAML list.
+Renders detailed cards for individual powers or gifts. 
+**Accepts a YAML list.**
 
 | Property | Required | Description |
 | :------- | :------: | :---------- |
@@ -293,7 +309,8 @@ Renders detailed cards for individual powers or gifts. Accepts a YAML list.
 ```
 ````
 
-Renders a two-column layout with Merits on the left and Flaws on the right. Accepts a YAML list. Each entry must declare its `type`.
+Renders a two-column layout with Merits on the left and Flaws on the right. 
+**Accepts a YAML list. Each entry must declare its `type`.**
 
 | Property | Required | Description |
 | :------- | :------: | :---------- |
@@ -383,6 +400,7 @@ Blood Sorcery
 ## Notes
 
 - **State is per-note.** Moving a block to a different note will show a fresh state; the data stays on the original note until that note is deleted.
-- **Attribute links are per-note.** Health and Willpower read from the Attributes block on the **same note**. They default to minimum values if no Attributes block is present.
+- **Attribute links are per-note.** Health and Willpower read from the Attributes block on the **same note**. 
+_They default to minimum values if no Attributes block is present._
 - **Reload after changing game system.** Use `Ctrl/Cmd+P → Reload app without saving`.
 - **Data cleanup is automatic.** Deleting a note removes its stored character data. Renaming or moving a note preserves it.
