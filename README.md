@@ -1,165 +1,223 @@
 # World of Darkness UI Toolkit
 
 <p align="center">
-<img src="docs/images/DarkPack_Logo_Color.png" alt="Dark Pack Logo" width="300" >
+<img src="docs/images/DarkPack_Logo_Color.png" alt="Dark Pack Logo" width="300">
 </p>
 
 > _Portions of the materials are the copyrights and trademarks of Paradox Interactive AB, and are used with permission. All rights reserved. For more information please visit **[worldofdarkness.com](https://worldofdarkness.com)**._
 
-This is **an unofficial, fan-made plugin** for managing World of Darkness character sheets directly inside your Obsidian vault, created and shared under the [**Dark Pack Agreement**](https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement).
-It is a **non-commercial project** and is **not affiliated with, endorsed, or sponsored by Paradox Interactive AB**.
+This is an **unofficial, fan-made** plugin for managing World of Darkness character sheets directly inside your Obsidian vault, created under the [Dark Pack Agreement](https://www.paradoxinteractive.com/games/world-of-darkness/community/dark-pack-agreement). Non-commercial and not affiliated with Paradox Interactive AB.
+
+The toolkit renders interactive, state-aware character sheet blocks inside your notes. Unlike static templates, every block responds to user input, saves state automatically across sessions, and adapts its appearance to the active game system.
+
+**Key behaviors:**
+- State is saved per note and survives reloads and Obsidian restarts
+- Health reads from the Stamina attribute; Willpower reads from Composure + Resolve
+- Deleting or renaming a note automatically cleans up its stored data
 
 ---
 
-The toolkit allows storytellers and players to manage complete character sheets directly within Obsidian. It provides interactive, state-aware components for tracking vital statistics such as Health, Willpower, Hunger, and Rage, along with structured views for Attributes, Skills, and Powers.
+## Supported Games
 
-Unlike static text templates, this plugin offers a functional interface that responds to user input and automatically adapts its visual style to reflect the identity and mechanics of each supported game line.
+| Game | Prefix |
+| :--- | :----- |
+| Vampire: The Masquerade V5 | `vtm-` |
+| Werewolf: The Apocalypse W5 | `wta-` |
 
-### Supported Games
-
-Currently supported:
-
-- **Vampire: The Masquerade 5th edition**
-- **Werewolf: The Apocalypse 5th edition**
-
-<br>
-
-> _Support for additional World of Darkness games may be added in the future._
+---
 
 ## Installation
 
-### Manual Installation
+> _Work in Progress_
 
-1. Download the latest release from the [**Releases**](#) page.
-2. Extract the files into your vault's plugin folder:
-
-```
-<VaultFolder>/.obsidian/plugins/wod-ui-toolkit/
-```
-
-3. Reload Obsidian.
-4. Enable **WoD UI Toolkit** under **Settings > Community Plugins**.
+---
 
 ## Configuration
 
-Open:<br>
-**`Settings > WoD UI Toolkit`**.
+Open **Settings → WoD UI Toolkit**.
 
-- **Active Game System:**<br>
-  Controls how generic (`wod-*`) blocks behave and render between:
-    - _Vampire: The Masquerade (V5)_
-    - _Werewolf: The Apocalypse (W5)_
+**Active Game System** — controls how generic `wod-*` blocks behave and which theme colours are applied. Changing this requires a reload (`Ctrl/Cmd+P → Reload app without saving`).
 
-<br>
+---
 
-> **Note:** You must reload Obsidian after changing the game system for changes to take effect <br> (Cmd/Ctrl+P > Reload app without saving).
+## How blocks work
 
-## Usage Guide
+Every block comes in two flavours:
 
-The plugin uses **custom code blocks** to render character sheet elements.
-You can choose between **context-aware generic blocks** or **game-specific blocks**, depending on how much control you want.
+**Generic (`wod-*`)** adapts to whatever game is active in settings. Use these if you want a single character sheet that works across games.
 
-### Block Types Overview
+**Game-specific (`vtm-*`, `wta-*`)** always render using that game's rules, regardless of the active setting. Use these when you want explicit, permanent control.
 
-#### 1. Generic Blocks (`wod-*`)
+---
 
-These blocks automatically adapt their **appearance and mechanics** based on your current plugin settings.
+## Block Reference
 
-Use these if you want your character sheet to **update automatically** when switching game systems.
+### Trackers
 
-**Available Generic Blocks**
-| Block | Description |
-| ----- | ----------- |
-| `wod-resource` | Hunger (VTM) or Rage (WTA) |
-| `wod-morality` | Humanity (VTM) or Harmony (WTA) |
-| `wod-advantage` | Blood Potency (VTM) or Renown (WTA) |
-| `wod-powers` | Section header for Disciplines or Gifts |
-| `wod-power-list` | Individual power cards |
-| `wod-attributes` | Physical / Social / Mental grid |
-| `wod-skills` | Complete skills list |
-| `wod-health` | Health tracker (Superficial / Aggravated) |
-| `wod-willpower` | Willpower tracker |
-| `wod-exp` | Experience tracker |
-| `wod-merits` | Merits & Flaws list |
+All tracker blocks take no content — just an empty code block.
 
-#### 2. Game-Specific Blocks (`vtm-*`, `wta-*`)
+---
 
-These blocks **force a specific game system**, regardless of your plugin settings.
-
-Use these when you want **explicit control** over mechanics or presentation.
-
-#### Vampire: The Masquerade (V5)
-
-| Block | Description |
-| ----- | ----------- |
-| `vtm-hunger`| Hunger Dice tracker |
-| `vtm-humanity` | Humanity tracker with Stains |
-| `vtm-blood-potency` | Blood Potency tracker |
-| `vtm-disciplines` | Disciplines section header |
-| `vtm-power-list` | Discipline powers list |
-| `vtm-attributes` |
-| `vtm-skills` |
-| `vtm-health` |
-| `vtm-willpower` |
-| `vtm-exp` |
-| `vtm-merits` |
-
-#### Werewolf: The Apocalypse (W5)
-
-| Block | Description |
-| ----- | ----------- |
-| `wta-rage` | Rage Dice tracker |
-| `wta-harmony` | Harmony tracker |
-| `wta-renown` | Renown tracker (Glory, Honor, Wisdom) |
-| `wta-gifts` | Gifts section header |
-| `wta-gift-list` | Gifts / Rites list |
-| `wta-attributes` |
-| `wta-skills` |
-| `wta-health` |
-| `wta-willpower` |
-| `wta-exp` |
-| `wta-merits` |
-
-## Example Usage
-
-### Vital Statistics
-
-Track health, willpower, and your primary supernatural resource using standard trackers.
+#### Health
 
 ````
 ```wod-health
 ```
+````
 
+Renders a row of damage boxes. Box count is **3 + Stamina** (read from the Attributes block on the same note). Defaults to 4 boxes if no Attributes block is present.
+
+Automatically updates when Stamina changes.
+
+| Interaction | Effect |
+| :---------- | :----- |
+| Click an empty box | Fill all boxes up to this one with Superficial (/) damage |
+| Click a Superficial box | Upgrade all boxes up to this one to Aggravated (X) |
+| Click an Aggravated box | Clear this box and all boxes to the right |
+| Right-click any box | Clear this box and all boxes to the right |
+
+*Game-specific: `vtm-health`, `wta-health`*
+
+---
+
+#### Willpower
+
+````
 ```wod-willpower
 ```
+````
 
+Renders filled/empty dots equal to **Composure + Resolve** (read from the Attributes block on the same note). Defaults to 2 dots if no Attributes block is present.
+
+Automatically updates when Composure or Resolve changes.
+
+| Interaction | Effect |
+| :---------- | :----- |
+| Click a dot | Set current Willpower to that value |
+| Click the last remaining filled dot | Set Willpower to 0 |
+| ↻ button | Restore Willpower to its maximum |
+
+*Game-specific: `vtm-willpower`, `wta-willpower`*
+
+---
+
+#### Resource (Hunger / Rage)
+
+````
 ```wod-resource
 ```
 ````
 
-<p align="center">
-<img src="docs/images/prints/vital_trackers.png" alt="Health, Willpower and Resources" width="900" >
-</p>
+Renders up to 5 hexagonal icons representing the current resource level. Each level shows a label and flavour description.
 
-### Attributes and Skills
+| Interaction | Effect |
+| :---------- | :----- |
+| Click an icon | Set resource to that level |
+| Click the only filled icon when at 1 | Set resource to 0 |
+| ↻ button | Reset to 1 |
 
-These blocks automatically populate based on the active game system.
+*Game-specific: `vtm-hunger`, `wta-rage`*
+
+---
+
+#### Morality (Humanity / Harmony)
+
+````
+```wod-morality
+```
+````
+
+Renders 10 diamond icons. Current level shows a label and description. For VTM, a Stains section is shown below.
+
+| Interaction | Effect |
+| :---------- | :----- |
+| Click a diamond | Set Morality to that value |
+| Click the only active diamond | Set to 0 |
+| ↻ button | Reset to 7 and clear all Stains |
+
+**Stains (VTM — Humanity only):** Shown as small squares below the diamonds. Available stain slots equal `11 − Humanity`. When all slots are filled, an impairment warning appears listing the mechanical penalties. The **Snap Out** button costs 1 Humanity and clears all Stains.
+
+*Game-specific: `vtm-humanity`, `wta-harmony`*
+
+---
+
+#### Advantage (Blood Potency / Renown)
+
+````
+```wod-advantage
+```
+````
+
+**For VTM:** Renders 10 dots (0–10) and a derived stats panel showing Blood Surge, Mend Amount, Power Bonus, Feeding restriction, and Bane Severity — all recalculated from V5 rules as you adjust the rating.
+
+**For WTA:** Renders three columns — Glory, Honor, and Wisdom — each with 5 dots.
+
+| Interaction | Effect |
+| :---------- | :----- |
+| Click a dot | Set to that value |
+| Click the only active dot when at 1 | Set to 0 |
+| ↻ button | Reset to 1 |
+
+*Game-specific: `vtm-blood-potency`, `wta-renown`*
+
+---
+
+#### Experience
+
+````
+```wod-exp
+```
+````
+
+Shows three cards: Total XP, Spent XP, and Available XP (calculated). Controls allow adding or subtracting in increments of 1 and 10.
+
+*Game-specific: `vtm-exp`, `wta-exp`*
+
+---
+
+### Grids
+
+#### Attributes
 
 ````
 ```wod-attributes
 ```
+````
 
+Renders a three-column grid (Physical / Social / Mental) with 5-dot ratings for each attribute. Attributes default to a minimum of 1.
+
+| Interaction | Effect |
+| :---------- | :----- |
+| Click a dot | Set that attribute to that value |
+| Click the only active dot | Reduce by 1 (minimum 0) |
+| Right-click any dot | Reset to 1 |
+
+*Game-specific: `vtm-attributes`, `wta-attributes`*
+
+---
+
+#### Skills
+
+````
 ```wod-skills
 ```
 ````
 
-<p align="center">
-<img src="docs/images/prints/atts_n_skills.png" alt="Attributes and Skills" width="900" >
-</p>
+Renders a three-column grid (Physical / Social / Mental) with 5-dot ratings for each skill. Skills start at 0.
 
-### Disciplines
+| Interaction | Effect |
+| :---------- | :----- |
+| Click a dot | Set that skill to that value |
+| Click the only active dot | Set to 0 |
+| Right-click any dot | Reset to 0 |
 
-Use the `wod-powers` or `vtm-disciplines` block to define **Discipline sections** for _Vampire: The Masquerade_.
+*Game-specific: `vtm-skills`, `wta-skills`*
+
+---
+
+### Power Blocks
+
+#### Disciplines / Gifts header
 
 ````
 ```wod-powers
@@ -169,34 +227,30 @@ Blood Sorcery
 ```
 ````
 
-<p align="center">
-<img src="docs/images/prints/disciplines.png" alt="Disciplines" width="900" >
-</p>
+One power/discipline/gift name per line. Each entry renders as a card with an automatically resolved icon and a 5-dot rating that is tracked and saved.
 
-> _Currently supported for Vampire: The Masquerade only._
+Icons are resolved from the name using the game's icon map and embedded assets. Unrecognised names fall back to a placeholder symbol.
 
-### Powers and Abilities
+| Interaction | Effect |
+| :---------- | :----- |
+| Click a dot | Set rating to that value |
+| Click the only active dot when at 1 | Set to 0 |
 
-Use `wod-power-list`, `vtm-power-list`, or `wta-gift-list` to list individual **Discipline powers** or **Gifts**.
+*Game-specific: `vtm-disciplines`, `wta-gifts`*
 
-When used in a Vampire context, entries are treated as **Discipline powers**, and icons are automatically resolved based on the specified Discipline.
+---
+
+#### Power / Gift list
 
 ````
 ```vtm-power-list
 - name: Soaring Leap
   discipline: Potence
   tags: [Cost: Free, Duration: Passive]
-  pool:
-  description: Leap higher and further than usual.
+  pool: Strength + Athletics
+  description: Leap higher and further than humanly possible.
 ```
 ````
-
-<p align="center">
-<img src="docs/images/prints/power_list.png" alt="Discipline Powers" width="900" >
-</p>
-
-When used in a Werewolf context, entries are rendered using **W5 mechanics and styling**.
-Icons are resolved automatically, but can be overridden using the `icon` field.
 
 ````
 ```wta-gift-list
@@ -204,24 +258,131 @@ Icons are resolved automatically, but can be overridden using the `icon` field.
   icon: Black Furies
   tags: [Cost: 1 Rage Check, Duration: 1 Scene]
   pool: Resolve + Honor
-  description: Those attempting to flee have their movement reduced to walking speed and airborne targets brought down to the ground. This is granted by a bog-spirit.
+  description: Reduce a fleeing target's movement to walking speed.
 ```
 ````
 
-<p align="center">
-<img src="docs/images/prints/gift_list.png" alt="Gifts List" width="900" >
-</p>
+Renders detailed cards for individual powers or gifts. Accepts a YAML list.
 
-### Power & Gift Lists Syntax
+| Property | Required | Description |
+| :------- | :------: | :---------- |
+| `name` | ✓ | Name of the power or gift |
+| `discipline` | VTM | Determines the card icon based on the Discipline |
+| `icon` | WTA / override | Tribe or Auspice name for icon resolution |
+| `tags` | — | List of short reference labels. Use `Key: Value` format for styled tags (e.g. `Cost: 1 Rage`) |
+| `pool` | — | Dice pool shown at the bottom of the card |
+| `description` | — | Full description text |
 
-The `*-power-list` and `*-gift-list` blocks accept a YAML list.
+*Generic: `wod-power-list` — Game-specific: `vtm-power-list`, `wta-gift-list`*
 
-| Property | Description | Example |
-| :------- | :---------- | :------ |
-| `name` | **Required.** The name of the power/gift. | `name: Soaring Leap` |
-| `discipline` | (VTM Only) Determines the icon used. | `discipline: Potence` |
-| `icon` | (WTA/Override) Specific icon name (Tribe/Auspice). | `icon: Black Furies` |
-| `cost` | Resource cost. | `cost: 1 Rage Check` |
-| `pool` | Dice pool to roll. | `pool: Strength + Athletics` |
-| `tags` | List of quick reference tags. | `tags: [Passive, Amalgam]` |
-| `description` | Full text description. | `description: Leap high...` |
+---
+
+#### Merits & Flaws
+
+````
+```wod-merits
+- name: Iron Gullet
+  type: merit
+  rating: 2
+  description: Can feed on spoiled blood or from animals without penalty.
+
+- name: Obvious Predator
+  type: flaw
+  rating: 2
+  description: Mortals feel deeply unsettled in your presence.
+```
+````
+
+Renders a two-column layout with Merits on the left and Flaws on the right. Accepts a YAML list. Each entry must declare its `type`.
+
+| Property | Required | Description |
+| :------- | :------: | :---------- |
+| `name` | ✓ | Name of the Merit or Flaw |
+| `type` | ✓ | `merit` or `flaw` |
+| `rating` | — | Dot rating (1–5). Interactive — click dots to adjust |
+| `description` | — | Description text |
+
+*Game-specific: `vtm-merits`, `wta-merits`*
+
+---
+
+## Full Example
+
+A complete VTM character sheet:
+
+````
+## Character Name
+
+### Attributes & Skills
+
+```wod-attributes
+```
+
+```wod-skills
+```
+
+### Vital Statistics
+
+```vtm-hunger
+```
+
+```wod-health
+```
+
+```wod-willpower
+```
+
+```vtm-humanity
+```
+
+```vtm-blood-potency
+```
+
+### Disciplines
+
+```vtm-disciplines
+Animalism
+Auspex
+Blood Sorcery
+```
+
+### Powers
+
+```vtm-power-list
+- name: Sense the Beast
+  discipline: Animalism
+  tags: [Cost: Free, Pool: Wits + Empathy]
+  description: Detect the supernatural nature of nearby creatures.
+- name: Soaring Leap
+  discipline: Potence
+  tags: [Cost: Free, Duration: Passive]
+  description: Leap with supernatural force and distance.
+```
+
+### Merits & Flaws
+
+```vtm-merits
+- name: Iron Gullet
+  type: merit
+  rating: 2
+  description: Can feed on spoiled blood or from animals.
+- name: Obvious Predator
+  type: flaw
+  rating: 2
+  description: Mortals are instinctively unsettled by your presence.
+```
+
+### Experience
+
+```vtm-exp
+```
+````
+
+---
+
+## Notes
+
+- **State is per-note.** Moving a block to a different note will show a fresh state; the data stays on the original note until that note is deleted.
+- **Attribute links are per-note.** Health and Willpower read from the Attributes block on the **same note**. They default to minimum values if no Attributes block is present.
+- **Reload after changing game system.** Use `Ctrl/Cmd+P → Reload app without saving`.
+- **Data cleanup is automatic.** Deleting a note removes its stored character data. Renaming or moving a note preserves it.
