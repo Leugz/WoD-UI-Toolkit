@@ -36,10 +36,10 @@ The toolkit renders interactive, state-aware character sheet blocks inside your 
 
 ## Configuration
 
-Open **Settings → WoD UI Toolkit**.
+Open **Settings > WoD UI Toolkit**.
 
 **Active Game System** — Controls how generic `wod-*` blocks behave and which theme colours are applied. 
-Changing this requires a reload (`Ctrl/Cmd+P → Reload app without saving`).
+Changing this requires a reload (`Ctrl/Cmd+P > Reload app without saving`).
 
 ---
 
@@ -402,5 +402,5 @@ Blood Sorcery
 - **State is per-note.** Moving a block to a different note will show a fresh state; the data stays on the original note until that note is deleted.
 - **Attribute links are per-note.** Health and Willpower read from the Attributes block on the **same note**. 
 _They default to minimum values if no Attributes block is present._
-- **Reload after changing game system.** Use `Ctrl/Cmd+P → Reload app without saving`.
+- **Reload after changing game system.** Use `Ctrl/Cmd+P > Reload app without saving`.
 - **Data cleanup is automatic.** Deleting a note removes its stored character data. Renaming or moving a note preserves it.
