@@ -57,7 +57,7 @@ Every block comes in two flavours:
 
 ### Trackers
 
-All tracker blocks take no content — just an empty code block.
+All tracker blocks take no content just an empty code block.
 All the Attributes below can be found on the block, located on the same note.
 
 ---
@@ -161,7 +161,7 @@ The **Snap Out** button costs 1 Humanity and clears all Stains.
 **For VTM:** Renders 10 dots (0–10) and a derived stats panel showing Blood Surge, Mend Amount, Power Bonus, Feeding restriction, and Bane Severity.
  _all recalculated from V5 rules as you adjust the rating._
 
-**For WTA:** Renders three columns — Glory, Honor, and Wisdom — each with 5 dots.
+**For WTA:** Renders three columns Glory, Honor, and Wisdom each with 5 dots.
 
 | Interaction | Effect |
 | :---------- | :----- |
@@ -289,7 +289,7 @@ Renders detailed cards for individual powers or gifts.
 | `pool` | — | Dice pool shown at the bottom of the card |
 | `description` | — | Full description text |
 
-*Generic: `wod-power-list` — Game-specific: `vtm-power-list`, `wta-gift-list`*
+*Generic: `wod-power-list` <br> Game-specific: `vtm-power-list`, `wta-gift-list`*
 
 ---
 
