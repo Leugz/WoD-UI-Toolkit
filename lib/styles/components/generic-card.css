@@ -183,26 +183,6 @@
 }
 
 .wod-mf-section-title.merit {
-  color: var(--text-success);
-  border-color: var(--text-success);
-}
-
-.wod-mf-section-title.flaw {
-  color: var(--text-error);
-  border-color: var(--text-error);
-}
-
-.wod-mf-section-title {
-  font-size: 16px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid;
-}
-
-.wod-mf-section-title.merit {
   color: green;
   border-color: green;
 }
@@ -218,7 +198,6 @@
   padding: 10px;
 }
 
-/* mobile */
 @media (max-width: 768px) {
   .wod-mf-grid {
     grid-template-columns: 1fr;

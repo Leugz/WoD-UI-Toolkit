@@ -1,4 +1,3 @@
-/* Blood Potency Container */
 .vtm-blood-potency-container {
   padding: 12px;
   background: var(--background-secondary);
@@ -8,7 +7,6 @@
   margin: 0 auto;
 }
 
-/* Header */
 .vtm-bp-header {
   display: flex;
   justify-content: space-between;
@@ -40,7 +38,6 @@
   color: var(--text-normal);
 }
 
-/* Dots */
 .vtm-bp-dots {
   display: flex;
   gap: 10px;
@@ -73,7 +70,6 @@
   border-color: #dc2626;
 }
 
-/* Derived Stats */
 .vtm-bp-stats {
   background: var(--background-primary);
   border-radius: 4px;
@@ -103,7 +99,6 @@
   font-weight: 500;
 }
 
-/* Mobile */
 @media (max-width: 600px) {
   .vtm-blood-potency-container {
     padding: 10px;

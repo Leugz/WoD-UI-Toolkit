@@ -129,7 +129,6 @@ export class ResourceTrackerView extends BaseView {
 			this.renderIcon(iconsContainer, i, currentValue);
 		}
 
-		// Description
 		const currentLevel = this.config.levels.find(
 			(l) => l.value === currentValue,
 		);

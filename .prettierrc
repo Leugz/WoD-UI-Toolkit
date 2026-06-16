@@ -6,7 +6,7 @@
 	"overrides": [
 		{
 			"files": [
-				"** /*.ts",
+				"**/*.ts",
 				"**/*.tsx"
 			],
 			"options": {

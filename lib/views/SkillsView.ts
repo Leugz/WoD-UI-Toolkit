@@ -52,7 +52,6 @@ export class SkillsView extends BaseView {
 
 		const dotsContainer = skillRow.createDiv({ cls: 'wod-dots-container' });
 
-		// Store key now includes file path: "filepath|skill.SkillName"
 		const storeKey = `${this.filePath}|skill.${skillName}`;
 		const currentValue = this.store.get(storeKey) || 0;
 
@@ -65,15 +64,13 @@ export class SkillsView extends BaseView {
 
 			const dotIndex = i + 1;
 
-			// left click - set value
 			dot.addEventListener('click', () => {
-				this.setSkillValue(skillName, dotIndex, container);
+				this.setSkillValue(skillName, dotIndex);
 			});
 
-			// right click - reset value
 			dot.addEventListener('contextmenu', (event) => {
 				event.preventDefault();
-				this.resetSkill(skillName, container);
+				this.resetSkill(skillName);
 			});
 		}
 	}
@@ -81,7 +78,6 @@ export class SkillsView extends BaseView {
 	private async setSkillValue(
 		skillName: string,
 		value: number,
-		container: HTMLElement,
 	): Promise<void> {
 		const storeKey = `${this.filePath}|skill.${skillName}`;
 		const currentValue = this.store.get(storeKey) || 0;
@@ -95,10 +91,7 @@ export class SkillsView extends BaseView {
 		this.refresh();
 	}
 
-	private async resetSkill(
-		skillName: string,
-		container: HTMLElement,
-	): Promise<void> {
+	private async resetSkill(skillName: string): Promise<void> {
 		const storeKey = `${this.filePath}|skill.${skillName}`;
 		await this.store.set(storeKey, 0);
 

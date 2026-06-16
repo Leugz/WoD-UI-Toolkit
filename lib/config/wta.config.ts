@@ -60,7 +60,6 @@ export const WTA_CONFIG: GameConfig = {
 		singularName: 'Gift',
 		codeblock: 'wta-gifts',
 		iconMap: {
-			// Tribes
 			'Black Furies': 'tribes/Black_Furies',
 			'Bone Gnawers': 'tribes/Bone_Gnawers',
 			'Children of Gaia': 'tribes/Children_of_Gaia',
@@ -73,18 +72,15 @@ export const WTA_CONFIG: GameConfig = {
 			'Silent Striders': 'tribes/Silent_Striders',
 			'Silver Fangs': 'tribes/Silver_Fangs',
 
-			// Auspices
 			Ahroun: 'auspices/Ahroun',
 			Galliard: 'auspices/Galliard',
 			Philodox: 'auspices/Philodox',
 			Ragabash: 'auspices/Ragabash',
 			Theurge: 'auspices/Theurge',
 
-			// Native
 			Native: 'misc/Garou_Nation',
 			Garou: 'misc/Garou_Nation',
 
-			// Native Gifts
 			Catfeet: 'misc/Garou_Nation',
 			'An Exchange with Luna': 'misc/Garou_Nation',
 			'Eyes of the Owl': 'misc/Garou_Nation',
@@ -106,7 +102,6 @@ export const WTA_CONFIG: GameConfig = {
 			'Jam Technology': 'misc/Garou_Nation',
 			'Tongue of the Beasts': 'misc/Garou_Nation',
 
-			// Auspice Gifts
 			'Blissful Ignorance': 'auspices/Ragabash',
 			"Crow's Laughter": 'auspices/Ragabash',
 			Gremlins: 'auspices/Ragabash',
@@ -189,7 +184,6 @@ export const WTA_CONFIG: GameConfig = {
 			"Luna's Armor": 'auspices/Ahroun',
 			'Silver Claws': 'auspices/Ahroun',
 
-			//Tribe Gifts
 			'Curse of Aeolus': 'tribes/Black_Furies',
 			'Coup de Grâce': 'tribes/Black_Furies',
 			"Kali's Scar": 'tribes/Black_Furies',

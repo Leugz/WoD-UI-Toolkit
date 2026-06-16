@@ -83,7 +83,6 @@ export const VTM_CONFIG: GameConfig = {
 		name: 'Disciplines',
 		singularName: 'Discipline',
 		codeblock: 'vtm-disciplines',
-		// hasDots: true,
 		iconMap: {
 			'Blood Sorcery': 'Thaumaturgy',
 			'Thin-Blood Alchemy': 'Thinblood_alchemy',

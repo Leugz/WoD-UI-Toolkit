@@ -72,7 +72,7 @@ export class PowerSystemView extends BaseView {
 
 		await Promise.all(
 			disciplines.map((name) =>
-				this.renderDisciplineCard(grid, name, source),
+				this.renderDisciplineCard(grid, name),
 			),
 		);
 	}
@@ -80,7 +80,6 @@ export class PowerSystemView extends BaseView {
 	private async renderDisciplineCard(
 		container: HTMLElement,
 		disciplineName: string,
-		originalSource: string,
 	): Promise<void> {
 		const card = container.createDiv({ cls: 'wod-power-card' });
 

@@ -1,4 +1,3 @@
-/* VtM Health Container */
 .wod-health-container {
   padding: 12px;
   background: var(--background-secondary);
@@ -8,7 +7,6 @@
   margin: 0 auto;
 }
 
-/* Health Title */
 .wod-health-title {
   margin: 0 0 10px 0;
   padding: 4px 0 8px 0;
@@ -20,7 +18,6 @@
   letter-spacing: 0.5px;
 }
 
-/* Health Boxes Container */
 .wod-health-boxes {
   display: flex;
   gap: 6px;
@@ -29,7 +26,6 @@
   justify-content: center;
 }
 
-/* Individual Health Box */
 .wod-health-box {
   width: 32px;
   height: 32px;
@@ -52,21 +48,18 @@
   transform: scale(1.08);
 }
 
-/* Superficial Damage */
 .wod-health-box.superficial {
   background: rgba(255, 165, 0, 0.2);
   color: orange;
   border-color: orange;
 }
 
-/* Aggravated Damage */
 .wod-health-box.aggravated {
   background: rgba(220, 38, 38, 0.2);
   color: #ff6b6b;
   border-color: #ff6b6b;
 }
 
-/* Legend */
 .wod-health-legend {
   margin-top: 8px;
   padding: 6px 8px;
@@ -82,7 +75,6 @@
   line-height: 1.4;
 }
 
-/* Mobile adjustments */
 @media (max-width: 600px) {
   .wod-health-container {
     padding: 10px;

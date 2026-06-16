@@ -17,7 +17,6 @@ import {
 	WodSettingsTab,
 } from 'lib/settings/Settings';
 
-// views
 import { SkillsView } from './lib/views/SkillsView';
 import { AttributesView } from './lib/views/AttributesView';
 import { HealthView } from 'lib/views/HealthView';
@@ -39,7 +38,6 @@ export default class WodUIToolkitPlugin extends Plugin {
 	activeConfig!: GameConfig;
 
 	async onload() {
-		console.log('WoD UI Toolkit loading...');
 		await this.loadSettings();
 
 		this.activeConfig =
@@ -66,7 +64,6 @@ export default class WodUIToolkitPlugin extends Plugin {
 
 		const record = new ViewRegister(this);
 
-		// hunger | rage
 		record.register<ResourceConfig>(
 			'resource',
 			'resource',
@@ -82,7 +79,6 @@ export default class WodUIToolkitPlugin extends Plugin {
 				),
 		);
 
-		// humanity | harmony
 		record.register<MoralityConfig>(
 			'morality',
 			'morality',
@@ -97,7 +93,6 @@ export default class WodUIToolkitPlugin extends Plugin {
 				),
 		);
 
-		// disciplines
 		record.register<PowerSystemConfig>(
 			'powers',
 			'powerSystem',
@@ -140,7 +135,6 @@ export default class WodUIToolkitPlugin extends Plugin {
 				),
 		);
 
-		// blood potency & renown
 		record.register<AdvantageConfig>(
 			'advantage',
 			'advantage',
@@ -231,12 +225,6 @@ export default class WodUIToolkitPlugin extends Plugin {
 					this.eventBus,
 				),
 		);
-
-		console.log('WoD UI Toolkit loaded!');
-	}
-
-	onunload() {
-		console.log('WoD UI Toolkit unloaded!');
 	}
 
 	async loadSettings() {

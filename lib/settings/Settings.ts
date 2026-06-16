@@ -3,7 +3,6 @@ import { IWodPlugin } from 'lib/interfaces/IWodPlugin';
 import { App, Notice, PluginSettingTab, Setting } from 'obsidian';
 
 export interface WodSettings {
-	// gameSystem: 'vtm' | 'wta';
 	gameSystem: string;
 }
 

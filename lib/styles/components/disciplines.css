@@ -1,4 +1,3 @@
-/* Disciplines Container */
 .wod-powers-container {
   padding: 15px;
   background: var(--background-secondary);
@@ -8,7 +7,6 @@
   margin: 0 auto;
 }
 
-/* Disciplines Title */
 .wod-powers-title {
   margin: 0 0 12px 0;
   padding: 6px 0;
@@ -20,14 +18,12 @@
   letter-spacing: 0.5px;
 }
 
-/* Disciplines Grid */
 .wod-powers-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
 }
 
-/* Individual Discipline Card */
 .wod-power-card {
   background: var(--background-primary);
   border: 2px solid var(--background-modifier-border);
@@ -82,7 +78,6 @@
   color: var(--wod-dot-active);
 }
 
-/* Error State */
 .wod-powers-error {
   padding: 12px;
   background: var(--background-modifier-error);
@@ -92,28 +87,19 @@
   margin: 10px 0;
 }
 
-/* Tablet (3 columns) */
 @media (max-width: 768px) {
   .wod-powers-grid {
     grid-template-columns: repeat(3, 1fr);
-    /* 3 columns on tablet */
     gap: 10px;
   }
-
-  /* ... */
 }
 
-/* Mobile (2 columns) */
 @media (max-width: 480px) {
   .wod-powers-grid {
     grid-template-columns: repeat(1, 1fr);
-    /* 2 columns on mobile */
   }
-
-  /* ... */
 }
 
-/* Discipline Icon Styling */
 .wod-power-icon {
   width: 56px;
   height: 56px;
@@ -140,7 +126,6 @@
   filter: brightness(0.75)
 }
 
-/* Fallback text icon */
 .wod-power-icon {
   display: flex;
   align-items: center;

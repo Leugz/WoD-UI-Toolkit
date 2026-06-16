@@ -82,7 +82,6 @@
   border-color: var(--wod-dot-active);
 }
 
-/* Mobile */
 @media (max-width: 600px) {
   .wod-skills-container {
     gap: 12px;

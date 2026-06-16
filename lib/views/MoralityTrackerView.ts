@@ -35,7 +35,6 @@ export class MoralityTrackerView extends BaseView {
 			cls: 'wod-morality-container',
 		});
 
-		// Get current morality (0-10)
 		const moralityKey = `${this.filePath}|${this.config.codeblock}`;
 		let currentMorality = this.store.get(moralityKey);
 
@@ -44,22 +43,18 @@ export class MoralityTrackerView extends BaseView {
 			this.store.set(moralityKey, this.config.defaultValue);
 		}
 
-		// Get current stains
 		const stainsKey = `${this.filePath}|${this.config.codeblock}.stains`;
 		let currentStains = this.config.hasStains
 			? (this.store.get(stainsKey) ?? 0)
 			: 0;
 
-		// Calculate max stains
 		const maxStains = this.config.hasStains
 			? this.config.stainFormula(currentMorality)
 			: 0;
 
-		// Check if impaired
 		const isImpaired = this.config.hasStains && currentStains === maxStains;
 		const overflowStains = Math.max(0, currentStains - maxStains);
 
-		// Header with inline reset button
 		const header = container.createDiv({ cls: 'wod-morality-header' });
 		header.createEl('h3', {
 			text: this.config.name,
@@ -70,7 +65,6 @@ export class MoralityTrackerView extends BaseView {
 			cls: 'wod-morality-header-right',
 		});
 
-		// Reset button
 		const resetBtn = rightSide.createEl('button', {
 			cls: 'wod-reset-btn',
 			attr: { 'aria-label': `Reset to ${this.config.defaultValue}` },
@@ -84,7 +78,6 @@ export class MoralityTrackerView extends BaseView {
 			}
 		});
 
-		// Morality level
 		const moralityLevel = rightSide.createDiv({
 			cls: 'wod-morality-level',
 		});
@@ -96,7 +89,6 @@ export class MoralityTrackerView extends BaseView {
 			moralityLevel.addClass('warning');
 		}
 
-		// Morality icons display (1 to 10)
 		const iconsContainer = container.createDiv({
 			cls: 'wod-morality-icons',
 		});
@@ -105,11 +97,9 @@ export class MoralityTrackerView extends BaseView {
 			this.renderMoralityIcon(iconsContainer, i, currentMorality);
 		}
 
-		// Description
 		const desc = container.createDiv({ cls: 'wod-morality-description' });
 		desc.setText(this.getMoralityDescription(currentMorality));
 
-		// Stains section (if applicable)
 		if (this.config.hasStains) {
 			this.renderStainsSection(
 				container,
@@ -135,7 +125,6 @@ export class MoralityTrackerView extends BaseView {
 			icon.setText('◇');
 		}
 
-		// Click to set morality to this level
 		icon.addEventListener('click', () => {
 			if (currentMorality === 1 && value === 1) {
 				this.setMorality(0);
@@ -177,7 +166,6 @@ export class MoralityTrackerView extends BaseView {
 			stainsCount.addClass('overflow');
 		}
 
-		// Clear stains button
 		const clearBtn = stainsRightSide.createEl('button', {
 			cls: 'wod-reset-btn',
 			attr: { 'aria-label': 'Clear all stains' },
@@ -188,7 +176,6 @@ export class MoralityTrackerView extends BaseView {
 			this.setStains(0);
 		});
 
-		// Stain boxes (show max capacity)
 		const stainsContainer = stainsSection.createDiv({
 			cls: 'wod-stains-boxes',
 		});
@@ -197,7 +184,6 @@ export class MoralityTrackerView extends BaseView {
 			this.renderStainBox(stainsContainer, i, currentStains);
 		}
 
-		// Impairment warning
 		if (isImpaired) {
 			this.renderImpairmentWarning(container, overflowStains);
 		}
@@ -217,7 +203,6 @@ export class MoralityTrackerView extends BaseView {
 			box.setText('□');
 		}
 
-		// Click to set stains to this level
 		box.addEventListener('click', async () => {
 			if (index < currentStains) {
 				await this.setStains(index);
@@ -291,12 +276,10 @@ export class MoralityTrackerView extends BaseView {
 		let currentMorality =
 			this.store.get(moralityKey) ?? this.config.defaultValue;
 
-		// Lose 1 morality
 		if (currentMorality > 0) {
 			await this.store.set(moralityKey, currentMorality - 1);
 		}
 
-		// Clear all stains
 		await this.store.set(stainsKey, 0);
 		this.refresh();
 	}

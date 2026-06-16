@@ -29,7 +29,6 @@ export class ExperienceTrackerView extends BaseView {
 			cls: 'wod-experience-container',
 		});
 
-		// Get values
 		const totalKey = `${this.filePath}|experience.total`;
 		const spentKey = `${this.filePath}|experience.spent`;
 
@@ -37,33 +36,23 @@ export class ExperienceTrackerView extends BaseView {
 		let spentXP = this.store.get(spentKey) ?? 0;
 		let availableXP = totalXP - spentXP;
 
-		// Title
 		const title = container.createDiv({ cls: 'wod-xp-title' });
 		title.setText('Experience');
 
-		// XP Cards Grid
 		const cardsGrid = container.createDiv({ cls: 'wod-xp-cards' });
 
-		// Total XP Card
 		this.renderXPCard(cardsGrid, 'Total XP', totalXP, 'total');
-
-		// Spent XP Card
 		this.renderXPCard(cardsGrid, 'Spent XP', spentXP, 'spent');
-
-		// Available XP Card (read-only)
 		this.renderXPCard(cardsGrid, 'Available XP', availableXP, 'available');
 
-		// Controls for Total XP
 		this.renderControls(container, 'Total XP', totalXP, (val) =>
 			this.updateTotal(val),
 		);
 
-		// Controls for Spent XP
 		this.renderControls(container, 'Spent XP', spentXP, (val) =>
 			this.updateSpent(val),
 		);
 
-		// Reset Button
 		const resetContainer = container.createDiv({
 			cls: 'wod-xp-reset-container',
 		});
@@ -104,7 +93,6 @@ export class ExperienceTrackerView extends BaseView {
 
 		const buttons = controls.createDiv({ cls: 'wod-xp-buttons' });
 
-		// -10 button
 		const minus10 = buttons.createEl('button', {
 			text: '-10',
 			cls: 'wod-xp-btn',
@@ -113,7 +101,6 @@ export class ExperienceTrackerView extends BaseView {
 			onChange(Math.max(0, value - 10));
 		});
 
-		// -1 button
 		const minus1 = buttons.createEl('button', {
 			text: '-1',
 			cls: 'wod-xp-btn',
@@ -122,7 +109,6 @@ export class ExperienceTrackerView extends BaseView {
 			if (value > 0) onChange(value - 1);
 		});
 
-		// +1 button
 		const plus1 = buttons.createEl('button', {
 			text: '+1',
 			cls: 'wod-xp-btn',
@@ -131,7 +117,6 @@ export class ExperienceTrackerView extends BaseView {
 			onChange(value + 1);
 		});
 
-		// +10 button
 		const plus10 = buttons.createEl('button', {
 			text: '+10',
 			cls: 'wod-xp-btn',

@@ -93,14 +93,26 @@ export class BloodPotencyView extends BaseView {
 		const feeding = getFeedingInfo(bp);
 		const baneSeverity = this.getBaneSeverity(bp);
 
-		this.createStatRow(statsContainer, 'Blood Surge', `+${bloodSurge} dice`);
-		this.createStatRow(statsContainer, 'Mend Amount', `${mendAmount} Superficial`);
+		this.createStatRow(
+			statsContainer,
+			'Blood Surge',
+			`+${bloodSurge} dice`,
+		);
+		this.createStatRow(
+			statsContainer,
+			'Mend Amount',
+			`${mendAmount} Superficial`,
+		);
 		this.createStatRow(
 			statsContainer,
 			'Discipline Bonus',
 			powerBonus > 0 ? `+${powerBonus} dice` : 'None',
 		);
-		this.createStatRow(statsContainer, 'Animal/Bagged Blood', feeding.animalBagged);
+		this.createStatRow(
+			statsContainer,
+			'Animal/Bagged Blood',
+			feeding.animalBagged,
+		);
 		this.createStatRow(
 			statsContainer,
 			'Human Blood',
@@ -133,14 +145,13 @@ export class BloodPotencyView extends BaseView {
 		await this.store.set(bpKey, value);
 
 		this.eventBus.emit('blood-potency-changed', {
-        file: this.filePath,
-        value,
-    });
+			file: this.filePath,
+			value,
+		});
 
 		this.refresh();
 	}
 
-	// Derived stat calculations based on VtM V5 rules
 	private getBloodSurge(bp: number): number {
 		if (bp === 0) return 1;
 		if (bp <= 2) return 2;
@@ -155,7 +166,7 @@ export class BloodPotencyView extends BaseView {
 		if (bp <= 3) return 2;
 		if (bp <= 7) return 3;
 		if (bp <= 9) return 4;
-		return 5; // BP 10
+		return 5; 
 	}
 
 	private getPowerBonus(bp: number): number {
@@ -164,7 +175,7 @@ export class BloodPotencyView extends BaseView {
 		if (bp <= 5) return 2;
 		if (bp <= 7) return 3;
 		if (bp <= 9) return 4;
-		return 5; // BP 10
+		return 5;
 	}
 
 	private getBaneSeverity(bp: number): number {
@@ -173,6 +184,6 @@ export class BloodPotencyView extends BaseView {
 		if (bp <= 4) return 3;
 		if (bp <= 7) return 4;
 		if (bp <= 8) return 5;
-		return 6; // BP 9-10
+		return 6;
 	}
 }

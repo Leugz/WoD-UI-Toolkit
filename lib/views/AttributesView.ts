@@ -78,12 +78,10 @@ export class AttributesView extends BaseView {
 				dot.addClass('filled');
 			}
 
-			// Left click - set value
 			dot.addEventListener('click', () => {
 				this.updateAttributeValue(attributeName, i + 1, dots);
 			});
 
-			// Right click - reset to 1
 			dot.addEventListener('contextmenu', (e) => {
 				e.preventDefault();
 				this.updateAttributeValue(attributeName, 1, dots);
