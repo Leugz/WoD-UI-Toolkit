@@ -55,29 +55,6 @@
   border: 1px solid #ff6b6b;
 }
 
-.wod-morality-reset-btn {
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  font-size: 14px;
-  border: 1px solid var(--background-modifier-border);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  font-family: var(--font-interface);
-  background: transparent;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.wod-morality-reset-btn:hover {
-  background: var(--background-modifier-border);
-  color: var(--text-normal);
-  border-color: var(--text-muted);
-}
-
 /* Humanity Icons */
 .wod-morality-icons {
   display: flex;

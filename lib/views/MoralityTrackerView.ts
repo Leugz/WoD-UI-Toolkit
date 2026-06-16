@@ -1,4 +1,4 @@
-import { App } from 'obsidian';
+import { App, setIcon } from 'obsidian';
 import { BaseView } from './BaseView';
 import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
@@ -72,10 +72,11 @@ export class MoralityTrackerView extends BaseView {
 
 		// Reset button
 		const resetBtn = rightSide.createEl('button', {
-			text: '↻',
-			cls: 'wod-morality-reset-btn',
+			cls: 'wod-reset-btn',
 			attr: { 'aria-label': `Reset to ${this.config.defaultValue}` },
 		});
+		setIcon(resetBtn, 'rotate-ccw');
+
 		resetBtn.addEventListener('click', () => {
 			this.setMorality(this.config.defaultValue);
 			if (this.config.hasStains) {
@@ -101,11 +102,7 @@ export class MoralityTrackerView extends BaseView {
 		});
 
 		for (let i = 1; i <= 10; i++) {
-			this.renderMoralityIcon(
-				iconsContainer,
-				i,
-				currentMorality,
-			);
+			this.renderMoralityIcon(iconsContainer, i, currentMorality);
 		}
 
 		// Description
@@ -182,10 +179,11 @@ export class MoralityTrackerView extends BaseView {
 
 		// Clear stains button
 		const clearBtn = stainsRightSide.createEl('button', {
-			text: '↻',
-			cls: 'wod-stains-btn',
+			cls: 'wod-reset-btn',
 			attr: { 'aria-label': 'Clear all stains' },
 		});
+		setIcon(clearBtn, 'rotate-ccw');
+
 		clearBtn.addEventListener('click', () => {
 			this.setStains(0);
 		});
@@ -274,17 +272,13 @@ export class MoralityTrackerView extends BaseView {
 		);
 	}
 
-	private async setMorality(
-		value: number,
-	): Promise<void> {
+	private async setMorality(value: number): Promise<void> {
 		const moralityKey = `${this.filePath}|${this.config.codeblock}`;
 		await this.store.set(moralityKey, value);
 		this.refresh();
 	}
 
-	private async setStains(
-		value: number,
-	): Promise<void> {
+	private async setStains(value: number): Promise<void> {
 		const stainsKey = `${this.filePath}|${this.config.codeblock}.stains`;
 		await this.store.set(stainsKey, value);
 		this.refresh();

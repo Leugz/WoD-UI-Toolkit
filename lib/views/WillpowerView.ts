@@ -1,4 +1,4 @@
-import { App } from 'obsidian';
+import { App, setIcon } from 'obsidian';
 import { BaseView } from './BaseView';
 import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus, EventMap } from '../services/EventBus';
@@ -73,10 +73,11 @@ export class WillpowerView extends BaseView {
 		});
 
 		const resetBtn = rightSide.createEl('button', {
-			text: '↻',
-			cls: 'wod-willpower-reset-btn',
+			cls: 'wod-reset-btn',
 			attr: { 'aria-label': 'Reset to max' },
 		});
+		setIcon(resetBtn, 'rotate-ccw');
+
 		resetBtn.addEventListener('click', () => {
 			this.setWillpower(maxWillpower);
 		});
@@ -113,9 +114,7 @@ export class WillpowerView extends BaseView {
 		});
 	}
 
-	private async setWillpower(
-		value: number,
-	): Promise<void> {
+	private async setWillpower(value: number): Promise<void> {
 		const currentKey = `${this.filePath}|willpower.current`;
 		await this.store.set(currentKey, value);
 

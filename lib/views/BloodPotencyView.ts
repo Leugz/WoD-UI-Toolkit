@@ -1,7 +1,8 @@
-import { App } from 'obsidian';
+import { App, setIcon } from 'obsidian';
 import { BaseView } from './BaseView';
 import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus } from '../services/EventBus';
+import { getFeedingInfo } from '../utils/bloodPotency';
 
 export class BloodPotencyView extends BaseView {
 	private store: KeyValueStore;
@@ -29,44 +30,37 @@ export class BloodPotencyView extends BaseView {
 			cls: 'vtm-blood-potency-container',
 		});
 
-		// Get current Blood Potency (0-10)
 		const bpKey = `${this.filePath}|blood-potency`;
 		let currentBP = this.store.get(bpKey);
 
-		// Default to 0 (thin-blood)
 		if (currentBP === undefined) {
 			currentBP = 0;
 			this.store.set(bpKey, 0);
 		}
 
-		// Header with inline reset button
 		const header = container.createDiv({ cls: 'vtm-bp-header' });
 		header.createEl('h3', { text: 'Blood Potency', cls: 'vtm-bp-title' });
 
 		const rightSide = header.createDiv({ cls: 'vtm-bp-header-right' });
 
-		// Reset button
 		const resetBtn = rightSide.createEl('button', {
-			text: '↻',
-			cls: 'vtm-bp-reset-btn',
-			attr: { 'aria-label': 'Reset to 1' },
+			cls: 'wod-reset-btn',
+			attr: { 'aria-label': 'Reset to Thin-blood (0)' },
 		});
+		setIcon(resetBtn, 'rotate-ccw');
 		resetBtn.addEventListener('click', () => {
-			this.setBloodPotency(1);
+			this.setBloodPotency(0);
 		});
 
-		// BP level display
 		const bpDisplay = rightSide.createDiv({ cls: 'vtm-bp-display' });
 		bpDisplay.setText(`BP ${currentBP}`);
 
-		// Dots (1-10)
 		const dotsContainer = container.createDiv({ cls: 'vtm-bp-dots' });
 
 		for (let i = 1; i <= 10; i++) {
 			this.renderBPDot(dotsContainer, i, currentBP);
 		}
 
-		// Derived Stats
 		this.renderDerivedStats(container, currentBP);
 	}
 
@@ -81,8 +75,6 @@ export class BloodPotencyView extends BaseView {
 			dot.addClass('filled');
 		}
 
-		// Click to set BP to this level
-		// Special case: clicking the first filled dot when BP=1 sets to 0
 		dot.addEventListener('click', () => {
 			if (currentBP === 1 && value === 1) {
 				this.setBloodPotency(0);
@@ -95,31 +87,35 @@ export class BloodPotencyView extends BaseView {
 	private renderDerivedStats(container: HTMLElement, bp: number): void {
 		const statsContainer = container.createDiv({ cls: 'vtm-bp-stats' });
 
-		// Calculate derived values
 		const bloodSurge = this.getBloodSurge(bp);
 		const mendAmount = this.getMendAmount(bp);
 		const powerBonus = this.getPowerBonus(bp);
-		const feedingPenalty = this.getFeedingPenalty(bp);
+		const feeding = getFeedingInfo(bp);
 		const baneSeverity = this.getBaneSeverity(bp);
 
-		// Create stat rows
+		this.createStatRow(statsContainer, 'Blood Surge', `+${bloodSurge} dice`);
+		this.createStatRow(statsContainer, 'Mend Amount', `${mendAmount} Superficial`);
 		this.createStatRow(
 			statsContainer,
-			'Blood Surge',
-			`+${bloodSurge} dice`,
+			'Discipline Bonus',
+			powerBonus > 0 ? `+${powerBonus} dice` : 'None',
+		);
+		this.createStatRow(statsContainer, 'Animal/Bagged Blood', feeding.animalBagged);
+		this.createStatRow(
+			statsContainer,
+			'Human Blood',
+			feeding.humanReduction > 0
+				? `-${feeding.humanReduction} Hunger`
+				: 'Normal',
 		);
 		this.createStatRow(
 			statsContainer,
-			'Mend Amount',
-			`${mendAmount} superficial`,
+			'Hunger Floor',
+			feeding.hungerFloor > 0
+				? `${feeding.hungerFloor} (drain a human to go lower)`
+				: 'None',
 		);
-		this.createStatRow(
-			statsContainer,
-			'Power Bonus',
-			`+${powerBonus} dice`,
-		);
-		this.createStatRow(statsContainer, 'Feeding', feedingPenalty);
-		this.createStatRow(statsContainer, 'Bane Severity', baneSeverity);
+		this.createStatRow(statsContainer, 'Bane Severity', `${baneSeverity}`);
 	}
 
 	private createStatRow(
@@ -132,11 +128,14 @@ export class BloodPotencyView extends BaseView {
 		row.createSpan({ text: value, cls: 'vtm-bp-stat-value' });
 	}
 
-	private async setBloodPotency(
-		value: number,
-	): Promise<void> {
+	private async setBloodPotency(value: number): Promise<void> {
 		const bpKey = `${this.filePath}|blood-potency`;
 		await this.store.set(bpKey, value);
+
+		this.eventBus.emit('blood-potency-changed', {
+        file: this.filePath,
+        value,
+    });
 
 		this.refresh();
 	}
@@ -152,35 +151,28 @@ export class BloodPotencyView extends BaseView {
 	}
 
 	private getMendAmount(bp: number): number {
-		if (bp === 0) return 1;
+		if (bp <= 1) return 1;
 		if (bp <= 3) return 2;
-		if (bp <= 6) return 3;
-		return 4;
+		if (bp <= 7) return 3;
+		if (bp <= 9) return 4;
+		return 5; // BP 10
 	}
 
 	private getPowerBonus(bp: number): number {
-		if (bp <= 2) return 0;
-		if (bp <= 4) return 1;
-		if (bp <= 6) return 2;
-		if (bp <= 8) return 3;
-		return 4;
+		if (bp <= 1) return 0;
+		if (bp <= 3) return 1;
+		if (bp <= 5) return 2;
+		if (bp <= 7) return 3;
+		if (bp <= 9) return 4;
+		return 5; // BP 10
 	}
 
-	private getFeedingPenalty(bp: number): string {
-		if (bp === 0) return 'Slake 2+ per human';
-		if (bp === 1) return 'Slake 2 per human';
-		if (bp === 2) return 'Slake 1-2 per human';
-		if (bp === 3) return 'Slake 1 per human';
-		if (bp === 4) return 'Slake 1, animals 0';
-		if (bp === 5) return 'Slake 1, animals 0';
-		if (bp >= 6) return 'Slake 1, needs resonance';
-		return 'Unknown';
-	}
-
-	private getBaneSeverity(bp: number): string {
-		if (bp <= 2) return 'Minor';
-		if (bp <= 5) return 'Moderate';
-		if (bp <= 7) return 'Severe';
-		return 'Extreme';
+	private getBaneSeverity(bp: number): number {
+		if (bp === 0) return 1;
+		if (bp <= 2) return 2;
+		if (bp <= 4) return 3;
+		if (bp <= 7) return 4;
+		if (bp <= 8) return 5;
+		return 6; // BP 9-10
 	}
 }

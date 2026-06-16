@@ -52,24 +52,6 @@
   gap: 12px;
 }
 
-.wod-resource-reset-btn {
-  padding: 4px 8px;
-  font-size: 14px;
-  font-weight: 600;
-  border: 1px solid var(--background-modifier-border);
-  border-radius: 4px;
-  background: var(--background-secondary);
-  color: var(--wod-text-muted);
-  cursor: pointer;
-  transition: all 0.15s ease;
-  font-family: var(--font-interface);
-}
-
-.wod-resource-reset-btn:hover {
-  background: var(--interactive-hover);
-  color: var(--wod-accent);
-}
-
 .wod-resource-level {
   font-size: 12px;
   font-weight: 600;
@@ -77,18 +59,20 @@
   background: rgba(100, 100, 255, 0.1);
   border: 1px solid rgba(100, 100, 255, 0.3);
   border-radius: 4px;
-  color: var(--wod-accent);
+  /* color: orange; */
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .wod-resource-level.warning {
-  background: rgba(255, 165, 0, 0.1);
-  border-color: orange;
   color: orange;
 }
 
 .wod-resource-level.danger {
+  color: var(--wod-accent);
+}
+
+.wod-resource-level.critical {
   background: rgba(220, 38, 38, 0.1);
   border-color: var(--wod-dot-active);
   color: var(--wod-dot-active);

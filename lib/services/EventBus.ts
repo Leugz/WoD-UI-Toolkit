@@ -4,6 +4,10 @@ export interface EventMap {
 		attribute: string;
 		value: number;
 	};
+	'blood-potency-changed': {
+		file: string;
+		value: number;
+	};
 	[key: string]: any;
 }
 

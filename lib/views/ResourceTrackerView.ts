@@ -1,9 +1,10 @@
-import { App, Plugin } from 'obsidian';
+import { App, Plugin, setIcon } from 'obsidian';
 import { BaseView } from './BaseView';
 import { KeyValueStore } from '../services/KeyValueStore';
-import { EventBus } from '../services/EventBus';
+import { EventBus, EventMap } from '../services/EventBus';
 import { ResourceConfig } from '../config/GameConfig';
 import { EMBEDDED_ASSETS } from '../data/EmbeddedAssets';
+import { getHungerFloor } from 'lib/utils/bloodPotency';
 
 export class ResourceTrackerView extends BaseView {
 	codeblock: string;
@@ -96,24 +97,29 @@ export class ResourceTrackerView extends BaseView {
 			cls: 'wod-resource-header-right',
 		});
 
-		const resetBtn = rightSide.createEl('button', {
-			text: '↻',
-			cls: 'wod-resource-reset-btn',
-			attr: { 'aria-label': 'Reset to 1' },
-		});
-		resetBtn.addEventListener('click', () => {
-			this.setValue(1);
-		});
-
 		const level = this.config.levels.find((l) => l.value === currentValue);
 		const levelLabel = rightSide.createDiv({ cls: 'wod-resource-level' });
 		levelLabel.setText(level?.label || '');
 
-		if (currentValue >= this.config.max - 1) {
+		if (currentValue === this.config.max) {
+			levelLabel.addClass('critical');
+		} else if ([4, 3].includes(currentValue)) {
 			levelLabel.addClass('danger');
-		} else if (currentValue >= Math.floor(this.config.max / 2)) {
+		} else if (currentValue > 0) {
 			levelLabel.addClass('warning');
 		}
+
+		const resetTarget = this.getResetTarget(currentValue);
+
+		const resetBtn = rightSide.createEl('button', {
+			cls: 'wod-reset-btn',
+			attr: { 'aria-label': `Reset to ${resetTarget}` },
+		});
+		setIcon(resetBtn, 'rotate-ccw');
+
+		resetBtn.addEventListener('click', () => {
+			this.setValue(resetTarget);
+		});
 
 		const iconsContainer = container.createDiv({
 			cls: 'wod-resource-icons',
@@ -133,6 +139,15 @@ export class ResourceTrackerView extends BaseView {
 			});
 			desc.setText(currentLevel.description);
 		}
+	}
+
+	private getResetTarget(currentValue: number): number {
+		if (this.config.codeblock !== 'vtm-hunger') return 1;
+
+		const bpKey = `${this.filePath}|blood-potency`;
+		const bloodPotency = this.store.get(bpKey) ?? 0;
+
+		return Math.max(1, getHungerFloor(bloodPotency));
 	}
 
 	private renderIcon(
@@ -158,11 +173,35 @@ export class ResourceTrackerView extends BaseView {
 		});
 	}
 
-	private async setValue(
-		value: number,
-	): Promise<void> {
+	private async setValue(value: number): Promise<void> {
 		const resourceKey = `${this.filePath}|${this.config.codeblock}`;
 		await this.store.set(resourceKey, value);
 		this.refresh();
+	}
+
+	private onBloodPotencyChanged = (
+		data: EventMap['blood-potency-changed'],
+	): void => {
+		if (data.file === this.filePath) {
+			this.refresh();
+		}
+	};
+
+	onload(): void {
+		if (this.config.codeblock === 'vtm-hunger') {
+			this.eventBus.on(
+				'blood-potency-changed',
+				this.onBloodPotencyChanged,
+			);
+		}
+	}
+
+	onunload(): void {
+		if (this.config.codeblock === 'vtm-hunger') {
+			this.eventBus.off(
+				'blood-potency-changed',
+				this.onBloodPotencyChanged,
+			);
+		}
 	}
 }
