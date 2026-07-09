@@ -79,10 +79,11 @@
 .vtm-bp-stat-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 4px 0;
   font-size: 12px;
   border-bottom: 1px solid var(--background-modifier-border);
+  gap: 8px;
 }
 
 .vtm-bp-stat-row:last-child {
@@ -97,6 +98,8 @@
 .vtm-bp-stat-value {
   color: var(--text-normal);
   font-weight: 500;
+  text-align: right;
+  word-break: break-word;
 }
 
 @media (max-width: 600px) {

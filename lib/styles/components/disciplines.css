@@ -11,7 +11,7 @@
   margin: 0 0 12px 0;
   padding: 6px 0;
   border-bottom: 2px solid var(--wod-accent);
-  color: rgb(147, 51, 234);
+  color: var(--wod-accent);
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
@@ -38,7 +38,7 @@
 
 .wod-power-card:hover {
   border-color: var(--wod-accent);
-  box-shadow: 0 2px 6px rgb(var(--wod-accent) / 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .wod-power-icon {

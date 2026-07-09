@@ -124,7 +124,7 @@ export class BloodPotencyView extends BaseView {
 			statsContainer,
 			'Hunger Floor',
 			feeding.hungerFloor > 0
-				? `${feeding.hungerFloor} (drain a human to go lower)`
+				? `${feeding.hungerFloor} (must drain a human)`
 				: 'None',
 		);
 		this.createStatRow(statsContainer, 'Bane Severity', `${baneSeverity}`);

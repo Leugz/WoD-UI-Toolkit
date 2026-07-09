@@ -87,21 +87,16 @@ Automatically updates when Stamina changes.
 
 #### Willpower
 
-````
-```wod-willpower
-```
-````
-
-Renders filled/empty dots equal to **Composure + Resolve**. 
-Defaults to 2 dots if no Attributes block is present.
-
+Renders damage boxes equal to **Composure + Resolve**.
 Automatically updates when Composure or Resolve changes.
 
 | Interaction | Effect |
 | :---------- | :----- |
-| Click a dot | Set current Willpower to that value |
-| Click the last remaining filled dot | Set Willpower to 0 |
-| ↻ button | Restore Willpower to its maximum |
+| Click an empty box | Fill all boxes up to this one with Superficial (/) damage |
+| Click a Superficial box | Upgrade all boxes up to this one to Aggravated (X) |
+| Click an Aggravated box | Clear this box and all boxes to the right |
+| Right-click any box | Clear this box and all boxes to the right |
+| ↻ button | Clear all Willpower damage |
 
 *Game-specific: `vtm-willpower`, `wta-willpower`*
 

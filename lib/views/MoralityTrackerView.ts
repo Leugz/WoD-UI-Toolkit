@@ -53,7 +53,6 @@ export class MoralityTrackerView extends BaseView {
 			: 0;
 
 		const isImpaired = this.config.hasStains && currentStains === maxStains;
-		const overflowStains = Math.max(0, currentStains - maxStains);
 
 		const header = container.createDiv({ cls: 'wod-morality-header' });
 		header.createEl('h3', {
@@ -106,7 +105,6 @@ export class MoralityTrackerView extends BaseView {
 				currentStains,
 				maxStains,
 				isImpaired,
-				overflowStains,
 			);
 		}
 	}
@@ -139,7 +137,6 @@ export class MoralityTrackerView extends BaseView {
 		currentStains: number,
 		maxStains: number,
 		isImpaired: boolean,
-		overflowStains: number,
 	): void {
 		const stainsSection = container.createDiv({
 			cls: 'wod-stains-section',
@@ -162,10 +159,6 @@ export class MoralityTrackerView extends BaseView {
 		});
 		stainsCount.setText(`${currentStains}/${maxStains}`);
 
-		if (isImpaired) {
-			stainsCount.addClass('overflow');
-		}
-
 		const clearBtn = stainsRightSide.createEl('button', {
 			cls: 'wod-reset-btn',
 			attr: { 'aria-label': 'Clear all stains' },
@@ -185,7 +178,7 @@ export class MoralityTrackerView extends BaseView {
 		}
 
 		if (isImpaired) {
-			this.renderImpairmentWarning(container, overflowStains);
+			this.renderImpairmentWarning(container);
 		}
 	}
 
@@ -212,33 +205,39 @@ export class MoralityTrackerView extends BaseView {
 		});
 	}
 
-	private renderImpairmentWarning(
-		container: HTMLElement,
-		overflowStains: number,
-	): void {
+	private renderImpairmentWarning(container: HTMLElement): void {
 		const impairmentWarning = container.createDiv({
 			cls: 'wod-impairment-warning',
 		});
 
-		const warningTitle = impairmentWarning.createEl('div', {
+		impairmentWarning.createEl('div', {
+			text: 'IMPAIRED!',
 			cls: 'wod-impairment-title',
 		});
-		warningTitle.setText(
-			`IMPAIRED (${overflowStains} overflow stain${overflowStains > 1 ? 's' : ''})`,
-		);
 
 		const penaltiesList = impairmentWarning.createEl('ul', {
 			cls: 'wod-impairment-penalties',
 		});
 		penaltiesList.createEl('li', { text: '-2 dice to all pools (regret)' });
 		penaltiesList.createEl('li', {
-			text: `${overflowStains} Aggravated Willpower damage`,
-		});
-		penaltiesList.createEl('li', {
 			text: 'Cannot intentionally violate Tenets',
 		});
 		penaltiesList.createEl('li', {
 			text: 'Forced violations = Terror Frenzy test (Diff 4)',
+		});
+		penaltiesList.createEl('li', {
+			text: 'Each additional Stain taken deals 1 Aggravated Willpower damage',
+		});
+
+		const overflowSection = impairmentWarning.createDiv({
+			cls: 'wod-overflow-section',
+		});
+		const overflowBtn = overflowSection.createEl('button', {
+			text: 'Gain Stain → 1 Aggravated Willpower Damage',
+			cls: 'wod-overflow-btn',
+		});
+		overflowBtn.addEventListener('click', () => {
+			this.applyAggravatedWillpowerDamage();
 		});
 
 		const snapOutBtn = impairmentWarning.createEl('button', {
@@ -249,12 +248,30 @@ export class MoralityTrackerView extends BaseView {
 			this.snapOut();
 		});
 
-		const note = impairmentWarning.createEl('div', {
+		impairmentWarning.createEl('div', {
+			text: 'Impairment lasts until Remorse test at end of session or you snap out.',
 			cls: 'wod-impairment-note',
 		});
-		note.setText(
-			'Impairment lasts until Remorse test at end of session or you snap out.',
-		);
+	}
+
+	private async applyAggravatedWillpowerDamage(): Promise<void> {
+		const composure =
+			this.store.get(`${this.filePath}|attribute.Composure`) ?? 1;
+		const resolve =
+			this.store.get(`${this.filePath}|attribute.Resolve`) ?? 1;
+		const maxWP = composure + resolve;
+
+		for (let i = 0; i < maxWP; i++) {
+			const key = `${this.filePath}|willpower.${i}`;
+			const state = this.store.get(key) || 'none';
+			if (state !== 'aggravated') {
+				await this.store.set(key, 'aggravated');
+				this.eventBus.emit('willpower-changed', {
+					file: this.filePath,
+				});
+				return;
+			}
+		}
 	}
 
 	private async setMorality(value: number): Promise<void> {

@@ -3,6 +3,8 @@ import { BaseView } from './BaseView';
 import { KeyValueStore } from '../services/KeyValueStore';
 import { EventBus, EventMap } from '../services/EventBus';
 
+type WPDamageType = 'none' | 'superficial' | 'aggravated';
+
 export class WillpowerView extends BaseView {
 	private store: KeyValueStore;
 	private filePath: string;
@@ -19,22 +21,32 @@ export class WillpowerView extends BaseView {
 		}
 	};
 
+	private onWillpowerChanged = (
+		data: EventMap['willpower-changed'],
+	): void => {
+		if (data.file === this.filePath) {
+			this.refresh();
+		}
+	};
+
 	onload(): void {
 		this.eventBus.on('attribute-changed', this.onAttributeChanged);
+		this.eventBus.on('willpower-changed', this.onWillpowerChanged);
 	}
 
 	onunload(): void {
 		this.eventBus.off('attribute-changed', this.onAttributeChanged);
+		this.eventBus.off('willpower-changed', this.onWillpowerChanged);
 	}
 
 	constructor(
 		app: App,
-		containerEL: HTMLElement,
+		containerEl: HTMLElement,
 		store: KeyValueStore,
 		filePath: string,
 		eventBus: EventBus,
 	) {
-		super(app, containerEL);
+		super(app, containerEl);
 		this.store = store;
 		this.filePath = filePath;
 		this.eventBus = eventBus;
@@ -48,19 +60,11 @@ export class WillpowerView extends BaseView {
 			cls: 'wod-willpower-container',
 		});
 
-		const composureKey = `${this.filePath}|attribute.Composure`;
-		const resolveKey = `${this.filePath}|attribute.Resolve`;
-		const composure = this.store.get(composureKey) ?? 1;
-		const resolve = this.store.get(resolveKey) ?? 1;
+		const composure =
+			this.store.get(`${this.filePath}|attribute.Composure`) ?? 1;
+		const resolve =
+			this.store.get(`${this.filePath}|attribute.Resolve`) ?? 1;
 		const maxWillpower = composure + resolve;
-
-		const currentKey = `${this.filePath}|willpower.current`;
-		let currentWillpower = this.store.get(currentKey);
-
-		if (currentWillpower === undefined) {
-			currentWillpower = maxWillpower;
-			this.store.set(currentKey, maxWillpower);
-		}
 
 		const header = container.createDiv({ cls: 'wod-willpower-header' });
 		header.createEl('h3', {
@@ -72,52 +76,101 @@ export class WillpowerView extends BaseView {
 			cls: 'wod-willpower-header-right',
 		});
 
-		const resetBtn = rightSide.createEl('button', {
-			cls: 'wod-reset-btn',
-			attr: { 'aria-label': 'Reset to max' },
-		});
-		setIcon(resetBtn, 'rotate-ccw');
-
-		resetBtn.addEventListener('click', () => {
-			this.setWillpower(maxWillpower);
-		});
-
-		const counter = rightSide.createDiv({ cls: 'wod-willpower-counter' });
-		counter.setText(`${currentWillpower} / ${maxWillpower}`);
-
 		const boxesContainer = container.createDiv({
 			cls: 'wod-willpower-boxes',
 		});
 
 		for (let i = 0; i < maxWillpower; i++) {
-			this.renderWillpowerBox(boxesContainer, i, currentWillpower);
-		}
-	}
-
-	private renderWillpowerBox(
-		container: HTMLElement,
-		index: number,
-		currentWillpower: number,
-	): void {
-		const box = container.createDiv({ cls: 'wod-willpower-box' });
-
-		if (index < currentWillpower) {
-			box.addClass('filled');
+			this.renderWillpowerBox(boxesContainer, i);
 		}
 
-		box.addEventListener('click', () => {
-			if (currentWillpower === 1 && index === 0) {
-				this.setWillpower(0);
-			} else {
-				this.setWillpower(index + 1);
-			}
+		const legend = container.createDiv({ cls: 'wod-willpower-legend' });
+		legend.createSpan({
+			text: 'Click to cycle: Empty → Superficial (/) → Aggravated (X) | Right-click to clear',
+			cls: 'wod-willpower-legend-text',
 		});
 	}
 
-	private async setWillpower(value: number): Promise<void> {
-		const currentKey = `${this.filePath}|willpower.current`;
-		await this.store.set(currentKey, value);
+	private renderWillpowerBox(container: HTMLElement, index: number): void {
+		const box = container.createDiv({ cls: 'wod-willpower-box' });
 
+		const damageType = this.getDamageAtIndex(index);
+
+		if (damageType === 'superficial') {
+			box.setText('/');
+			box.addClass('superficial');
+		} else if (damageType === 'aggravated') {
+			box.setText('X');
+			box.addClass('aggravated');
+		} else {
+			box.setText('');
+		}
+
+		box.addEventListener('click', () => {
+			this.cycleDamageAtIndex(index);
+		});
+
+		box.addEventListener('contextmenu', (e) => {
+			e.preventDefault();
+			this.clearDamageFromIndex(index);
+		});
+	}
+
+	private getDamageAtIndex(index: number): WPDamageType {
+		const storeKey = `${this.filePath}|willpower.${index}`;
+		return this.store.get(storeKey) || 'none';
+	}
+
+	private async cycleDamageAtIndex(index: number): Promise<void> {
+		const currentDamage = this.getDamageAtIndex(index);
+
+		if (currentDamage === 'none') {
+			for (let i = 0; i <= index; i++) {
+				const key = `${this.filePath}|willpower.${i}`;
+				if (this.getDamageAtIndex(i) === 'none') {
+					await this.store.set(key, 'superficial');
+				}
+			}
+		} else if (currentDamage === 'superficial') {
+			for (let i = 0; i <= index; i++) {
+				const key = `${this.filePath}|willpower.${i}`;
+				await this.store.set(key, 'aggravated');
+			}
+		} else {
+			const composure =
+				this.store.get(`${this.filePath}|attribute.Composure`) ?? 1;
+			const resolve =
+				this.store.get(`${this.filePath}|attribute.Resolve`) ?? 1;
+			const maxWP = composure + resolve;
+
+			for (let i = index; i < maxWP; i++) {
+				const key = `${this.filePath}|willpower.${i}`;
+				await this.store.set(key, 'none');
+			}
+		}
+
+		this.refresh();
+	}
+
+	private async clearDamageFromIndex(index: number): Promise<void> {
+		const composure =
+			this.store.get(`${this.filePath}|attribute.Composure`) ?? 1;
+		const resolve =
+			this.store.get(`${this.filePath}|attribute.Resolve`) ?? 1;
+		const maxWP = composure + resolve;
+
+		for (let i = index; i < maxWP; i++) {
+			const key = `${this.filePath}|willpower.${i}`;
+			await this.store.set(key, 'none');
+		}
+		this.refresh();
+	}
+
+	private async clearAllDamage(maxWP: number): Promise<void> {
+		for (let i = 0; i < maxWP; i++) {
+			const key = `${this.filePath}|willpower.${i}`;
+			await this.store.set(key, 'none');
+		}
 		this.refresh();
 	}
 }
